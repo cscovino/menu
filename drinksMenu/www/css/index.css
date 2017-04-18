@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+@import url('https://fonts.googleapis.com/css?family=Marck+Script');
+@import url('https://fonts.googleapis.com/css?family=Handlee');
+@import url('https://fonts.googleapis.com/css?family=Poiret+One');
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+@import url('https://fonts.googleapis.com/css?family=Englebert');
+
+body{
+    font-family: 'Josefin Sans', sans-serif;
+    color: #ececec;
+    background-color: #1a2226;
+}
+.header-button{
+    font-size: 20px;
+    color: #ececec;
+    text-decoration: none;
+}
