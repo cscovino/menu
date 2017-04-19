@@ -1,7 +1,7 @@
 var app = {
 
 	model: {
-		"clients": []
+		"clients": {},
 	},
 
 	firebaseConfig: {
@@ -14,13 +14,14 @@ var app = {
   	},
 
   	initFirebase: function(){
-  		firebase.initializeApp(firebaseConfig);
+  		firebase.initializeApp(app.firebaseConfig);
   	},
 
 	addUser: function(){
 		var data = document.getElementById('name-user').value;
 		if (data) {
-			app.model.clients.push({'Nombre':data,'Bebida':''});
+			app.model.clients[data] = {};
+            app.model.clients[data]['Bebida'] = '';
 			app.refreshModal();
 		}
 	},
@@ -33,11 +34,11 @@ var app = {
 	refreshModal: function(){
 		var users = $('#user-body');
 		users.html('');
-		for (var i = 0; i < app.model.clients.length; i++) {
+		for (var key in app.model.clients) {
 			var codigo = '';
 			codigo += '<div class="input-group">';
 				codigo += '<span class="input-group-addon"><i class="fa fa-user"></i></span>';
-				codigo += '<input type="text" class="form-control" placeholder="'+app.model.clients[i].Nombre+'" disabled="">';
+				codigo += '<input type="text" class="form-control" placeholder="'+key+'" disabled="">';
 			codigo += '</div>';
 			codigo += '<br>';
 			users.append(codigo);
@@ -59,42 +60,43 @@ var app = {
 						codigo += '<th>Nombre</th>';
 						codigo += '<th>Bebida</th>';
 					codigo += '</tr>';
-				for (var i = 0; i < app.model.clients.length; i++) {
+				for (var key in app.model.clients) {
 					codigo += '<tr>';
-						codigo += '<td>'+app.model.clients[i].Nombre+'</td>';
-						codigo += '<td></td>';
+						codigo += '<td>'+key+'</td>';
+						codigo += '<td>'+app.model.clients[key]['Bebida']+'</td>';
 					codigo += '</tr>';
 				}
 				codigo += '</tbody>';
 			codigo += '</table>';
 		users.append(codigo);
+        app.saveFirebase();
 	},
 
 	saveFirebase: function(){
-		var ref = firebase.storage().ref('clients.json');
-		ref.putString(JSON.stringify(app.model));
+		firebase.database().ref().set(app.model.clients);
 	},
 
 	selectDrink: function(dat){
 		var client = document.getElementById('client-name').innerHTML;
-		for (var i = 0; i < app.model.clients.length; i++) {
-			if (app.model.clients[i]['Nombre'] === client){
-				app.model.clients[i]['Bebida'] = dat.id;
+		for (var key in app.model.clients) {
+			if (key === client){
+				app.model.clients[key]['Bebida'] = dat.id;
 				break;
 			} 
 		}
 		app.refreshDrink(client);
+        app.save();
 	},
 
 	loadClients: function(){
 		var users = $('#menu-clients');
 		users.html('');
-		for (var i = 0; i < app.model.clients.length; i++) {
+		for (var key in app.model.clients) {
 			var codigo = '';
-			codigo += '<div class="radio" onclick="app.refreshClient(this);" id="'+app.model.clients[i].Nombre+'" data-dismiss="modal">';
+			codigo += '<div class="radio" onclick="app.refreshClient(this);" id="'+key+'" data-dismiss="modal">';
 				codigo += '<label>';
-					codigo += '<input type="radio" value="'+app.model.clients[i].Nombre+'">';
-					codigo += app.model.clients[i].Nombre;
+					codigo += '<input type="radio" value="'+key+'">';
+					codigo += key;
 				codigo += '</label>';
 			codigo += '</div>';
 			codigo += '<br>';
@@ -110,17 +112,17 @@ var app = {
 	refreshDrink: function(client){
 		debugger;
 		var aux = 0;
-		for (var i = 0; i < app.model.clients.length; i++) {
-			if (app.model.clients[i]['Nombre'] === client){
-				if (app.model.clients[i]['Bebida']) {
-					document.getElementById('client-drink').innerHTML = app.model.clients[i]['Bebida'];
+		for (var key in app.model.clients) {
+			if (key === client){
+				if (app.model.clients[key]['Bebida']) {
+					document.getElementById('client-drink').innerHTML = app.model.clients[key]['Bebida'];
 					aux = 1;
 				}
 				break;
 			} 
 		}
 		if (!aux) {
-			document.getElementById('client-drink').innerHTML = "Bebida";
+			document.getElementById('client-drink').innerHTML = "No ha seleccionado bebida";
 		}
 	},
 
