@@ -15,7 +15,19 @@ var app = {
 
   	initFirebase: function(){
   		firebase.initializeApp(app.firebaseConfig);
+        emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
+
+        //firebase.database().ref('clients').set({Avior:{Fabio:{Bebida:"Te"},Ronel:{Bebida:"Coca-Cola"}}});
+        firebase.database().ref('clients').child("Avior").child("Ronel").remove();
   	},
+
+    gotData: function(data){
+        console.log(data.val());
+    },
+
+    errData: function(err){
+        console.log(err);
+    },
 
 	addUser: function(){
 		var data = document.getElementById('name-user').value;
@@ -69,11 +81,10 @@ var app = {
 				codigo += '</tbody>';
 			codigo += '</table>';
 		users.append(codigo);
-        app.saveFirebase();
 	},
 
 	saveFirebase: function(){
-		firebase.database().ref().set(app.model.clients);
+		firebase.database().ref('clients').push(app.model.clients);
 	},
 
 	selectDrink: function(dat){
@@ -110,7 +121,6 @@ var app = {
 	},
 
 	refreshDrink: function(client){
-		debugger;
 		var aux = 0;
 		for (var key in app.model.clients) {
 			if (key === client){
@@ -126,6 +136,25 @@ var app = {
 		}
 	},
 
+    sendMail: function(){
+        var codigo = '<table class="table table-bordered"';
+                codigo += '<tbody>';
+                    codigo += '<tr>';
+                        codigo += '<th>Nombre</th>';
+                        codigo += '<th>Bebida</th>';
+                    codigo += '</tr>';
+                for (var key in app.model.clients) {
+                    codigo += '<tr>';
+                        codigo += '<td>'+key+'</td>';
+                        codigo += '<td>'+app.model.clients[key]['Bebida']+'</td>';
+                    codigo += '</tr>';
+                }
+                codigo += '</tbody>';
+            codigo += '</table>';
+        //emailjs.send("gmail","template_173DO73o",{message_html: codigo});
+        app.saveFirebase();
+    },
+
 }
 
 if ('addEventListener' in document) {
@@ -133,3 +162,4 @@ if ('addEventListener' in document) {
         app.initFirebase();
     }, false);
 }
+
