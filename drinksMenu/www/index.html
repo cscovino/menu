@@ -27,18 +27,34 @@
             </div>
         </nav>
 	</header>
-
+<div class="row">
+<div class="col-md-4">
   <div id="info">
-    <div id="client-name" data-toggle="modal" data-target='#myModal7' onclick="app.loadClients();">Nombre</div>
-    <div id="client-drink">Bebida</div>
+    <div class="form-group">
+    	<label>Nombre:</label>
+    	<div id="client-name" data-toggle="modal" data-target='#myModal7' onclick="app.loadClients();">Nombre</div>
+    </div>
+    <div class="form-group">
+    	<label>Bebida:</label>
+    	<div id="client-drink">Bebida</div>
+    </div>
+    <div class="form-group">
+    	<label>Comentarios:</label>
+    	<textarea id="client-comment" class="form-control" rows="2" placeholder="Ingresa tu comentario..."></textarea>
+    </div>
+	  <div class="form-group">
+	  	<button type="button" class="btn btn-primary" onclick="app.saveComments();">Guardar</button>
+	  </div>
   </div>
-
+</div>
+<div class="col-md-8">
   <div id="menu-options">
     <div><a data-toggle="modal" data-target='#myModal3'><div class="options" id="alcohol">Bebidas Alcohólicas<img src="img/glass.svg" height="50px" class="icons" id="glass"></div></a></div><br>
     <div><a data-toggle="modal" data-target='#myModal4'><div class="options" id="soda">Bebidas Gaseosas<img src="img/can.svg" height="50px" class="icons" id="can"></div></a></div><br>
     <div><a data-toggle="modal" data-target='#myModal5'><div class="options" id="hot">Bebidas Calientes<img src="img/tea-cup.svg" height="50px" class="icons" id="tea"></div></a></div><br>
     <div><a data-toggle="modal" data-target='#myModal6'><div class="options" id="refresh">Bebidas Refrescantes<img src="img/glass-1.svg" height="50px" class="icons" id="glass-1"></div></a><br></div>
   </div>
+</div> 
 
 <!-- ###################################################################################################### -->
 <!-- #######################################  Modal ####################################################### -->
@@ -102,15 +118,15 @@
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Alcohólicas</h4>
       </div>
       <div id="menu-options-alcol">
-        <div class="options-alcol" id="Vino-Espumante" onclick="app.selectDrink(this);">Vino Espumante</div>
-        <div class="options-alcol" id="Vino-Tinto" onclick="app.selectDrink(this);">Vino Tinto</div>
-        <div class="options-alcol" id="Vino-Blanco" onclick="app.selectDrink(this);">Vino Blanco</div>
-        <div class="options-alcol" id="Ron" onclick="app.selectDrink(this);">Ron (Diplomático)</div>
-        <div class="options-alcol" id="Whisky" onclick="app.selectDrink(this);">Whisky (Buchanan's 18 años)</div>
+        <div class="options-alcol" id="Vino-Espumante" onclick="app.selectDrink(this);" data-dismiss="modal">Vino Espumante</div>
+        <div class="options-alcol" id="Vino-Tinto" onclick="app.selectDrink(this);" data-dismiss="modal">Vino Tinto</div>
+        <div class="options-alcol" id="Vino-Blanco" onclick="app.selectDrink(this);" data-dismiss="modal">Vino Blanco</div>
+        <div class="options-alcol" id="Ron" onclick="app.selectDrink(this);" data-dismiss="modal">Ron (Diplomático)</div>
+        <div class="options-alcol" id="Whisky" onclick="app.selectDrink(this);" data-dismiss="modal">Whisky (Buchanan's 18 años)</div>
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -128,14 +144,14 @@
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Gaseosas</h4>
       </div>
       <div id="menu-options-alcol">
-        <div class="options-alcol" id="Coca-Cola" onclick="app.selectDrink(this);">Coca-Cola</div>
-        <div class="options-alcol" id="Coca-Cola-Light" onclick="app.selectDrink(this);">Coca-Cola Light</div>
-        <div class="options-alcol" id="Chinotto" onclick="app.selectDrink(this);">Chinotto</div>
-        <div class="options-alcol" id="Frescolita" onclick="app.selectDrink(this);">Frescolita</div>
+        <div class="options-alcol" id="Coca-Cola" onclick="app.selectDrink(this);" data-dismiss="modal">Coca-Cola</div>
+        <div class="options-alcol" id="Coca-Cola-Light" onclick="app.selectDrink(this);" data-dismiss="modal">Coca-Cola Light</div>
+        <div class="options-alcol" id="Chinotto" onclick="app.selectDrink(this);" data-dismiss="modal">Chinotto</div>
+        <div class="options-alcol" id="Frescolita" onclick="app.selectDrink(this);" data-dismiss="modal">Frescolita</div>
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -153,17 +169,17 @@
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Calientes</h4>
       </div>
       <div id="menu-options-alcol">
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Cafe-Negro">Café Negro</div>
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Cafe-Marron">Café Marrón</div>
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Cafe-Leche">Café con Leche</div>
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Te-Verde">Té Verde</div>
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Te-Negro">Té Negro</div>
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Te-Jamaica">Té Flor de Jamaica</div>
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Manzanilla">Manzanilla</div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Cafe-Negro" data-dismiss="modal">Café Negro</div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Cafe-Marron" data-dismiss="modal">Café Marrón</div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Cafe-Leche" data-dismiss="modal">Café con Leche</div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Te-Verde" data-dismiss="modal">Té Verde</div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Te-Negro" data-dismiss="modal">Té Negro</div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Te-Jamaica" data-dismiss="modal">Té Flor de Jamaica</div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Manzanilla" data-dismiss="modal">Manzanilla</div>
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -181,12 +197,12 @@
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Refrescantes</h4>
       </div>
       <div id="menu-options-alcol">
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Agua">Agua</div>
-        <div class="options-alcol" onclick="app.selectDrink(this);" id="Jugo-Naranja">Jugo de Naranja</div>
-      </div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Agua" data-dismiss="modal">Agua</div>
+        <div class="options-alcol" onclick="app.selectDrink(this);" id="Jugo-Naranja" data-dismiss="modal">Jugo de Naranja</div>
+      </div><!-- 
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

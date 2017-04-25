@@ -18,7 +18,7 @@ var app = {
         emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
 
         //firebase.database().ref('clients').set({Avior:{Fabio:{Bebida:"Te"},Ronel:{Bebida:"Coca-Cola"}}});
-        firebase.database().ref('clients').child("Avior").child("Ronel").remove();
+        //firebase.database().ref('clients').child("Avior").child("Ronel").remove();
   	},
 
     gotData: function(data){
@@ -34,6 +34,7 @@ var app = {
 		if (data) {
 			app.model.clients[data] = {};
             app.model.clients[data]['Bebida'] = '';
+            app.model.clients[data]['Coment'] = '';
 			app.refreshModal();
 		}
 	},
@@ -71,17 +72,34 @@ var app = {
 					codigo += '<tr>';
 						codigo += '<th>Nombre</th>';
 						codigo += '<th>Bebida</th>';
+                        codigo += '<th>Comentario</th>';
 					codigo += '</tr>';
 				for (var key in app.model.clients) {
 					codigo += '<tr>';
 						codigo += '<td>'+key+'</td>';
 						codigo += '<td>'+app.model.clients[key]['Bebida']+'</td>';
+                        codigo += '<td>'+app.model.clients[key]['Coment']+'</td>';
 					codigo += '</tr>';
 				}
 				codigo += '</tbody>';
 			codigo += '</table>';
 		users.append(codigo);
 	},
+
+    saveComments: function(){
+        var comment = document.getElementById('client-comment').value;
+        var client = document.getElementById('client-name').innerHTML;
+        for(var key in app.model.clients){
+            if (key === client) {
+                app.model.clients[key]['Coment'] = comment;
+                break;
+            }
+        }
+        app.save();
+        document.getElementById('client-comment').value = '';
+        document.getElementById('client-name').innerHTML = 'Nombre';
+        document.getElementById('client-drink').innerHTML = "Bebida";
+    },
 
 	saveFirebase: function(){
 		firebase.database().ref('clients').push(app.model.clients);
@@ -116,8 +134,14 @@ var app = {
 	},
 
 	refreshClient: function(dat){
-		document.getElementById('client-name').innerHTML = dat.id;
-		app.refreshDrink(dat.id);
+        if (!dat.id) {
+            document.getElementById('client-name').innerHTML = "No ha seleccionado nombre";
+            document.getElementById('client-drink').innerHTML = "No ha seleccionado bebida";
+        }
+        else{
+            document.getElementById('client-name').innerHTML = dat.id;
+            app.refreshDrink(dat.id);
+        }
 	},
 
 	refreshDrink: function(client){
@@ -132,7 +156,14 @@ var app = {
 			} 
 		}
 		if (!aux) {
-			document.getElementById('client-drink').innerHTML = "No ha seleccionado bebida";
+            if (client === 'Nombre') {
+                alert("No ha seleccionado nombre");
+                document.getElementById('client-name').innerHTML = "No ha seleccionado nombre";
+            }
+            else{
+                alert("No ha seleccionado bebida");
+                document.getElementById('client-drink').innerHTML = "No ha seleccionado bebida";
+            }
 		}
 	},
 
