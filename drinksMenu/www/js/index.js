@@ -1,10 +1,6 @@
 var app = {
 
-	model: {
-		"clients": {},
-	},
-
-	model2:{},
+	model: {},
 
 	firebaseConfig: {
 	    apiKey: "AIzaSyC50skbZWPdmbhMgSz9ulM8pBJ8r8F8lag",
@@ -16,28 +12,25 @@ var app = {
   	},
 
   	initFirebase: function(){
-  		firebase.initializeApp(app.firebaseConfig);
         emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
-
-        //firebase.database().ref('clients').set({Avior:{Fabio:{Bebida:"Te"},Ronel:{Bebida:"Coca-Cola"}}});
-        //firebase.database().ref('clients').child("Avior").child("Ronel").remove();
-        firebase.database().ref().on('child_added', function(snap){
-        	app.model2 = snap.val();
-        	for(var key in app.model2){
-        		for(var key2 in app.model2[key]){
-        			console.log(app.model2[key][key2]);
-        		}
-        	}
-        });
   	},
 
-    gotData: function(data){
-        console.log(data.val());
-    },
+  	setSnap: function(snap){
+  		app.model = snap;
+  		app.refreshName();
+  	},
 
-    errData: function(err){
-        console.log(err);
-    },
+  	refreshName: function(){
+		var users = $('#menu-options');
+		users.html('');
+		var codigo = '';
+  		for(var key in app.model.hoy){
+  			for(var key2 in app.model.hoy[key]){
+  				codigo += '<div class="name" id="'+key+'">'+key2+'</div>';
+  			}
+  		}
+  		users.append(codigo);
+  	},
 
 	addUser: function(){
 		var cc = document.getElementById('name-client').value;
@@ -246,6 +239,14 @@ var app = {
     },
 
 }
+
+
+firebase.initializeApp(app.firebaseConfig);
+firebase.database().ref().on('value', function(snap){
+	if (snap.val() !== null) {
+		app.setSnap(snap.val());
+	}
+});
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
