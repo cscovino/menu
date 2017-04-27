@@ -2,6 +2,10 @@ var app = {
 
 	model: {},
 
+	order: [],
+
+	odd: 0,
+
 	firebaseConfig: {
 	    apiKey: "AIzaSyC50skbZWPdmbhMgSz9ulM8pBJ8r8F8lag",
 	    authDomain: "drinksmenu-ab56b.firebaseapp.com",
@@ -26,62 +30,65 @@ var app = {
 		var codigo = '';
   		for(var key in app.model.hoy){
   			for(var key2 in app.model.hoy[key]){
-  				codigo += '<div class="name" id="'+key+'">'+key2+'</div>';
+  				if (app.odd) {
+  					codigo += '<div class="name-odd" id="'+key+'" onclick="app.nextPage(this);">'+key2+'</div>';
+  					app.odd = 0;
+  				}
+  				else{
+  					codigo += '<div class="name-even" id="'+key+'" onclick="app.nextPage(this);">'+key2+'</div>';
+  					app.odd = 1;
+  				}
   			}
   		}
   		users.append(codigo);
   	},
 
-	addUser: function(){
-		var cc = document.getElementById('name-client').value;
-		try {
-			var data = document.getElementById('name-user').value;
-		}
-		catch(err){
-			console.log(err);
-		}
-		if (data && cc) {
-			app.model.clients[cc][data] = {};
-            app.model.clients[cc][data]['Bebida'] = '';
-            app.model.clients[cc][data]['Coment'] = '';
-			app.refreshModal();
-		}
-		else if (cc) {
-			app.model.clients[cc] = {};
-			app.refreshModal();
-		}
-	},
+  	nextPage: function(data){
+  		document.getElementsByClassName('title-clients')[1].innerHTML = data.innerHTML + ', escoge aquí tu bebida';
+  		document.getElementsByClassName('title-clients')[1].id = data.id;
+  		document.getElementById('title').style.display = 'none';
+  		document.getElementById('menu-options').style.display = 'none';
+  		document.getElementById('menu').style.display = 'block';
+  		document.getElementsByClassName('glyphicon glyphicon-triangle-left')[0].style.display = 'inline';;
+  	},
 
-	delUser: function(){
-		app.model.pop();
-		app.refreshModal();
-	},
+  	previousPage: function(){
+  		document.getElementById('menu').style.display = 'none';
+  		document.getElementsByClassName('glyphicon glyphicon-triangle-left')[0].style.display = 'none';
+  		document.getElementById('menu-options').style.display = 'block';
+  		document.getElementById('title').style.display = 'block';
+  	},
 
-	refreshModal: function(){
-		var users = $('#user-body');
-		var cc = document.getElementById('name-client').value;
-		users.html('');
-		var codigo = '';
-		codigo += '<div class="input-group">';
-			codigo += '<span class="input-group-addon"><i class="fa fa-briefcase"></i></span>';
-			codigo += '<input type="text" class="form-control" value="'+cc+'" id="name-client" disabled="">'
-		codigo += '</div>';
-		codigo += '<br>';
-		for (var key in app.model.clients[cc]) {
-			codigo += '<div class="input-group">';
-				codigo += '<span class="input-group-addon"><i class="fa fa-user"></i></span>';
-				codigo += '<input type="text" class="form-control" value="'+key+'" disabled="">';
-			codigo += '</div>';
-			codigo += '<br>';
-		}
-		codigo += '<div class="input-group">';
-			codigo += '<span class="input-group-addon"><i class="fa fa-user"></i></span>';
-			codigo += '<input type="text" class="form-control" placeholder="Nombre" id="name-user">'
-		codigo += '</div>';
-		users.append(codigo);
-	},
+  	saveOrder: function(){
+  		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split(',')[0];
+  		var client = document.getElementsByClassName('title-clients')[1].id;
+  		var opts = document.getElementsByClassName('options-hot');
+  		var coment = document.getElementById('hot-comment').innerHTML;
+  		var drink;
+  		for(var i=0; i<opts.length; i++){
+  			if (opts[i].checked) {
+  				drink = opts[i].id.replace(/-+/g,' ');
+  			}
+  		}
+  		var aux = {};
+  		aux[client] = {};
+  		aux[client][user] = {'Bebida':drink,'Coment':coment};
+  		app.order.push(aux);
+  		app.refreshCart();
+  		app.refreshShopping();
+  	},
 
-	save: function(){
+  	refreshShopping: function(){
+  		document.getElementById('number-order').innerHTML = app.order.length;
+  		if (app.order.length) {
+  			document.getElementById('number-order').className = 'label label-danger';
+  		}
+  		else{
+  			document.getElementById('number-order').className = 'label label-default';
+  		}
+  	},
+
+	refreshCart: function(){
 		var users = $('#user-body2');
 		users.html('');
 		var codigo = '<table class="table table-bordered"';
@@ -92,19 +99,30 @@ var app = {
 						codigo += '<th>Bebida</th>';
                         codigo += '<th>Comentario</th>';
 					codigo += '</tr>';
-				for (var key in app.model.clients) {
-						for(var key2 in app.model.clients[key]){
-							codigo += '<tr>';
+				for (var i=0; i<app.order.length; i++) {
+					for(var key in app.order[i]){
+						for(var key2 in app.order[i][key])
+							codigo += '<tr onclick="app.idConfirm('+i+');" data-toggle="modal" data-target="#myModal7">';
 								codigo += '<td>'+key+'</td>'
 								codigo += '<td>'+key2+'</td>';
-								codigo += '<td>'+app.model.clients[key][key2]['Bebida']+'</td>';
-		                        codigo += '<td>'+app.model.clients[key][key2]['Coment']+'</td>';
+								codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
+		                        codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
 							codigo += '</tr>';
-                    	}
+                	}
 				}
 				codigo += '</tbody>';
 			codigo += '</table>';
 		users.append(codigo);
+	},
+
+	idConfirm: function(data){
+		document.getElementsByClassName('confirm')[0].id = data;
+	},
+
+	delOrder: function(){
+		app.order.splice(document.getElementsByClassName('confirm')[0].id,1);
+		app.refreshCart();
+		app.refreshShopping();
 	},
 
     saveComments: function(){
@@ -128,91 +146,6 @@ var app = {
 		firebase.database().ref('clients').push(app.model.clients);
 	},
 
-	selectDrink: function(dat){
-		var client = document.getElementById('client-name').innerHTML;
-		var cc = document.getElementById('client').innerHTML;
-		for (var key in app.model.clients[cc]) {
-			if (key === client){
-				app.model.clients[cc][key]['Bebida'] = dat.id;
-				break;
-			} 
-		}
-		app.refreshDrink(client);
-        app.save();
-	},
-
-	loadClients: function(opt){
-		if (opt) {
-			var cc = document.getElementById('client').innerHTML;
-			var users = $('#menu-clients');
-			users.html('');
-			for (var key in app.model.clients[cc]) {
-				var codigo = '';
-				codigo += '<div class="radio" onclick="app.refreshClient(this,1);" id="'+key+'" data-dismiss="modal">';
-					codigo += '<label>';
-						codigo += '<input type="radio" value="'+key+'">&nbsp;&nbsp;';
-						codigo += key;
-					codigo += '</label>';
-				codigo += '</div>';
-				codigo += '<br>';
-				users.append(codigo);
-			}
-		}
-		else{
-			var users = $('#clients');
-			users.html('');
-			for (var key in app.model.clients) {
-				var codigo = '';
-				codigo += '<div class="radio" onclick="app.refreshClient(this,0);" id="'+key+'" data-dismiss="modal">';
-					codigo += '<label>';
-						codigo += '<input type="radio" value="'+key+'">&nbsp;&nbsp;';
-						codigo += key;
-					codigo += '</label>';
-				codigo += '</div>';
-				codigo += '<br>';
-				users.append(codigo);
-			}
-		}	
-	},
-
-	refreshClient: function(dat,opt){
-        if (!dat.id) {
-            document.getElementById('client-name').innerHTML = "No ha seleccionado nombre";
-            document.getElementById('client-drink').innerHTML = "No ha seleccionado bebida";
-        }
-        else if(opt){
-            document.getElementById('client-name').innerHTML = dat.id;
-            app.refreshDrink(dat.id);
-        }
-        else if(!opt){
-            document.getElementById('client').innerHTML = dat.id;
-        }
-	},
-
-	refreshDrink: function(client){
-		var aux = 0;
-		var cc = document.getElementById('client').innerHTML;
-		for (var key in app.model.clients[cc]) {
-			if (key === client){
-				if (app.model.clients[cc][key]['Bebida']) {
-					document.getElementById('client-drink').innerHTML = app.model.clients[cc][key]['Bebida'];
-					aux = 1;
-				}
-				break;
-			} 
-		}
-		if (!aux) {
-            if (client === 'Nombre') {
-                alert("No ha seleccionado nombre");
-                document.getElementById('client-name').innerHTML = "No ha seleccionado nombre";
-            }
-            else{
-                alert("No ha seleccionado bebida");
-                document.getElementById('client-drink').innerHTML = "No ha seleccionado bebida";
-            }
-		}
-	},
-
     sendMail: function(){
         var codigo = '<table class="table table-bordered"';
 				codigo += '<tbody>';
@@ -222,15 +155,16 @@ var app = {
 						codigo += '<th>Bebida</th>';
                         codigo += '<th>Comentario</th>';
 					codigo += '</tr>';
-				for (var key in app.model.clients) {
-						for(var key2 in app.model.clients[key]){
+				for (var i=0; i<app.order.length; i++) {
+					for(var key in app.order[i]){
+						for(var key2 in app.order[i][key])
 							codigo += '<tr>';
 								codigo += '<td>'+key+'</td>'
 								codigo += '<td>'+key2+'</td>';
-								codigo += '<td>'+app.model.clients[key][key2]['Bebida']+'</td>';
-		                        codigo += '<td>'+app.model.clients[key][key2]['Coment']+'</td>';
+								codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
+		                        codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
 							codigo += '</tr>';
-                    	}
+                	}
 				}
 				codigo += '</tbody>';
 			codigo += '</table>';
@@ -239,7 +173,6 @@ var app = {
     },
 
 }
-
 
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref().on('value', function(snap){

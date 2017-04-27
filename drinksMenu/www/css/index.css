@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans');
 *{
     font-family: 'Nunito Sans', sans-serif;
+    color: #395062;
 }
 body{
-    color: #ececec;
-    background-color: #1a2226;
+    background-color: #fff;
 }
 table{
 	color: #383838;
@@ -18,11 +18,6 @@ th{
 }
 label{
 	font-weight: normal;
-}
-.header-button{
-    font-size: 30px;
-    color: #ececec;
-    text-decoration: none;
 }
 .navbar-custom-menu{
 	margin-right: 8%;
@@ -45,9 +40,9 @@ label{
 	font-size: 15px;
 	color: #383838;
 }
-.name{
-	font-size: 30px;
-	font-weight: bold;
+.name-odd, .name-even{
+	font-size: 20px;
+	font-weight: lighter;
 	text-align: center;
 	margin-top: 4%;
 	margin-bottom: 4%;
@@ -55,11 +50,47 @@ label{
 	border-style: solid;
 	border-width: 3px;
 }
+.name-even{
+	border-color: #00a4b9;
+}
+.name-odd{
+	border-color: #395062;
+}
+.cuadro{
+	height: 100px;
+	width: 100px;
+	border-style: solid;
+	border-width: 3px;
+	border-color: #00a4b9;
+}
+.form-group{
+	margin-left: 2%;
+	margin-right: 2%;
+}
+.title-clients{
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+	color: #306589;
+	margin-top: 3%;
+}
+.confirm{
+	margin-top: 3%;
+	margin-bottom: 3%;
+	text-align: center;
+	font-size: 15px;
+}
+#buttons{
+	position: fixed;
+	top: 1em;
+	right: 1em;
+}
 #add-user{
 	padding-top: 8px;
 }
 #menu-options{
 	margin: 5%;
+	margin-top: 2%;
 }
 #menu-options-alcol{
 	margin: 1%;
@@ -81,16 +112,4 @@ label{
 	margin-left: 7%;
 	margin-top: 3%;
 	font-size: 15px;
-}
-#client-name, #client-drink, #client{
-	background-color: #fff;
-	color: #383838;
-	width: 80%;
-	padding-left: 1%;
-}
-#client-name{
-	margin-bottom: 1%;
-}
-#client-comment{
-    width: 80%;
 }

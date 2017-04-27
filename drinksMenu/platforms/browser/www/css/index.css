@@ -1,12 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
-@import url('https://fonts.googleapis.com/css?family=Marck+Script');
-@import url('https://fonts.googleapis.com/css?family=Handlee');
-@import url('https://fonts.googleapis.com/css?family=Poiret+One');
-@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
-@import url('https://fonts.googleapis.com/css?family=Englebert');
-
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans');
 *{
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
 }
 body{
     color: #ececec;
@@ -51,6 +45,16 @@ label{
 	font-size: 15px;
 	color: #383838;
 }
+.name{
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 4%;
+	margin-bottom: 4%;
+	padding: 2%;
+	border-style: solid;
+	border-width: 3px;
+}
 #add-user{
 	padding-top: 8px;
 }
@@ -72,15 +76,6 @@ label{
 #add-user-modal{
 	margin-left: 90%;
 	font-size: 20px;
-}
-#can{
-	margin-left: 13%;
-}
-#tea{
-	margin-left: 14.5%;
-}
-#glass-1{
-	margin-left: 8.5%;
 }
 #info{
 	margin-left: 7%;
