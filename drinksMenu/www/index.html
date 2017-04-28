@@ -13,22 +13,21 @@
     <link rel="stylesheet" type="text/css" href="css/AdminLTE.min.css">
     <link rel="stylesheet" type="text/css" href="css/_all-skins.min.css">
     <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link href="img/favicon.ico" rel="shortcut icon"/>
     <title>Menú de Bebidas</title>
 </head>
 
 <body>
-	<header>
-    <div style="margin-top:0.4%;margin-left:0.4%;"><img src="img/soutec.png" height="30px" style="margin-top:1%;margin-left:1%;"></div>
+	<header id="header-menu">
+    <div style="position:fixed;top:1em;left:1em;"><img src="img/soutec.png" height="30px"></div>
     <div id="buttons">
-      <span class="glyphicon glyphicon-triangle-left" style="display: none;font-size: 30px;" onclick="app.previousPage();"></span></a>
+      <span class="glyphicon glyphicon-triangle-left" style="display: none;font-size: 30px;" onclick="app.previousPage();"></span>
       &nbsp;&nbsp;&nbsp;
       <span class="glyphicon glyphicon-copy" id="shopping" data-toggle="modal" data-target="#myModal2" style="font-size: 30px;"></span><span class="label label-default" id="number-order" style="font-size: 8px;">0</span>
     </div>
-	</header>
-  <div>
     <div id="title" class="title-clients">¡Bienvenido! Por favor seleccione su nombre</div>
-    <div id="menu-options"></div>
-  </div>
+  </header>
+  <div id="menu-options"></div>
   <div id="menu" style="display: none;">
     <div class="title-clients" id="client-name"></div>
     <div class="row">
@@ -107,19 +106,19 @@
       </div>
       <div class="modal-body">
         <div id="menu-options-alcol">
-          <div><label><input type="radio" id="Vino-Espumante" name="optionsRadios">&nbsp;&nbsp;Vino Espumante</label></div><br>
-          <div><label><input type="radio" id="Vino-Tinto" name="optionsRadios">&nbsp;&nbsp;Vino Tinto</label></div><br>
-          <div><label><input type="radio" id="Vino-Blanco" name="optionsRadios">&nbsp;&nbsp;Vino Blanco</label></div><br>
-          <div><label><input type="radio" id="Ron" name="optionsRadios">&nbsp;&nbsp;Ron (Diplomático)</label></div><br>
-          <div><label><input type="radio" id="Whisky" name="optionsRadios">&nbsp;&nbsp;Whisky (Buchanan's 18 años)</label></div>
+          <div><label><input type="radio" id="Vino-Espumante" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Espumante</label></div><br>
+          <div><label><input type="radio" id="Vino-Tinto" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Tinto</label></div><br>
+          <div><label><input type="radio" id="Vino-Blanco" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Blanco</label></div><br>
+          <div><label><input type="radio" id="Ron" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Ron (Diplomático)</label></div><br>
+          <div><label><input type="radio" id="Whisky" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Whisky (Buchanan's 18 años)</label></div>
         </div>
         <div class="form-group">
           <label>Comentarios:</label>
-          <textarea class="form-control" rows="2" placeholder="Ingrese comentario..."></textarea>
+          <textarea class="form-control" rows="2" placeholder="Ingrese comentario..." id="alcol-comment"></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder();">Guardar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(4);">Guardar</button>
         </div>
       </div>
     </div>
@@ -140,18 +139,18 @@
       </div>
       <div class="modal-body">
         <div id="menu-options-alcol">
-          <div><label><input type="radio" id="Coca-Cola" name="optionsRadios">&nbsp;&nbsp;Coca-Cola</label></div><br>
-          <div><label><input type="radio" id="Coca-Cola-Light" name="optionsRadios">&nbsp;&nbsp;Coca-Cola Light</label></div><br>
-          <div><label><input type="radio" id="Chinotto" name="optionsRadios">&nbsp;&nbsp;Chinotto</label></div><br>
-          <div><label><input type="radio" id="Frescolita" name="optionsRadios">&nbsp;&nbsp;Frescolita</label></div>
+          <div><label><input type="radio" id="Coca-Cola" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Coca-Cola</label></div><br>
+          <div><label><input type="radio" id="Coca-Cola-Light" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Coca-Cola Light</label></div><br>
+          <div><label><input type="radio" id="Chinotto" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Chinotto</label></div><br>
+          <div><label><input type="radio" id="Frescolita" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Frescolita</label></div>
         </div>
         <div class="form-group">
           <label>Comentarios:</label>
-          <textarea class="form-control" rows="2" placeholder="Ingrese comentario..."></textarea>
+          <textarea class="form-control" rows="2" placeholder="Ingrese comentario..." id="soda-comment"></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder();">Guardar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(3);">Guardar</button>
         </div>
       </div>
     </div>
@@ -186,7 +185,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder();">Guardar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(2);">Guardar</button>
         </div>
       </div>
     </div>
@@ -207,17 +206,17 @@
       </div>
       <div class="modal-body">
         <div id="menu-options-alcol">
-          <div><label><input type="radio" id="Agua" name="optionsRadios">&nbsp;&nbsp;Agua</label></div><br>
-          <div><label><input type="radio" id="Jugo-Naranja" name="optionsRadios">&nbsp;&nbsp;Jugo de Naranja</label></div>
+          <div><label><input type="radio" id="Agua" name="optionsRadios" class="options-refresh">&nbsp;&nbsp;Agua</label></div><br>
+          <div><label><input type="radio" id="Jugo-Naranja" name="optionsRadios" class="options-refresh">&nbsp;&nbsp;Jugo de Naranja</label></div>
         </div>
         <div class="form-group">
           <label>Comentarios:</label>
-          <textarea class="form-control" rows="2" placeholder="Ingrese comentario..."></textarea>
+          <textarea class="form-control" rows="2" placeholder="Ingrese comentario..." id="refresh-comment"></textarea>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder();">Guardar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(1);">Guardar</button>
       </div>
     </div>
   </div>
