@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans');
 *{
     font-family: 'Nunito Sans', sans-serif;
-    color: #395062;
+    color: #106f96;
 }
 body{
     background-color: #fff;
@@ -19,26 +19,10 @@ th{
 label{
 	font-weight: normal;
 }
-.navbar-custom-menu{
-	margin-right: 8%;
-	height: 50px;
-}
-.options{
-	margin: 2%;
-	font-size: 22px;
-}
-.options-alcol{
-	color: #383838;
-	font-size: 18px;
-	font-weight: normal;
-}
-.icons{
-	margin-left: 10%;
-}
-.radio{
-	margin-left: 3%;
-	font-size: 15px;
-	color: #383838;
+.badge-pill{
+	border-radius: 20px;
+	padding-left: 5px;
+	padding-right: 6px;
 }
 .name-odd, .name-even{
 	font-size: 20px;
@@ -49,12 +33,13 @@ label{
 	padding: 2%;
 	border-style: solid;
 	border-width: 3px;
+	color: #1a2226;
 }
 .name-even{
-	border-color: #00a4b9;
+	border-color: #15acc0;
 }
 .name-odd{
-	border-color: #395062;
+	border-color: #004f64;
 }
 .cuadro{
 	height: 100px;
@@ -68,8 +53,8 @@ label{
 	margin-right: 2%;
 }
 .title-clients{
-	padding-top:5%;
-	padding-bottom:0.5%;
+	padding-top:15%;
+	padding-bottom:3%;
 	width: 100%;
 	text-align: center;
 	font-size: 15px;
@@ -96,24 +81,12 @@ label{
 	top: 1em;
 	right: 1em;
 }
-#add-user{
-	padding-top: 8px;
-}
 #menu-options{
 	margin: 5%;
-	margin-top: 9%;
+	margin-top: 25%;
 }
 #menu-options-alcol{
 	margin: 1%;
-}
-#alcol-title{
-	font-size: 25px;
-	float: left;
-	margin-top: 0.8%;
-	margin-left: 15%;
-}
-#before{
-	padding-top: 35%;
 }
 #add-user-modal{
 	margin-left: 90%;
@@ -123,4 +96,12 @@ label{
 	margin-left: 7%;
 	margin-top: 3%;
 	font-size: 15px;
+}
+@media screen and (min-width: 650px){	
+	#menu-options{
+		margin-top: 12%;
+	}
+	.title-clients{
+		padding-top:6%;
+	}
 }

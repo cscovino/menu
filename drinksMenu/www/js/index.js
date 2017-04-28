@@ -6,8 +6,6 @@ var app = {
 
 	odd: 0,
 
-  quant: 0,
-
 	firebaseConfig: {
     apiKey: "AIzaSyC50skbZWPdmbhMgSz9ulM8pBJ8r8F8lag",
     authDomain: "drinksmenu-ab56b.firebaseapp.com",
@@ -64,55 +62,73 @@ var app = {
 	saveOrder: function(opt){
 		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split(',')[0];
 		var client = document.getElementsByClassName('title-clients')[1].id;
-		console.log(user);
 		var opts;
 		var coment;
 		var drink;
-    switch(opt){
-      case 1:
-        opts = document.getElementsByClassName('options-refresh');
-        coment = document.getElementById('refresh-comment').innerHTML;
-        break;
-      case 2:
-        opts = document.getElementsByClassName('options-hot');
-        coment = document.getElementById('hot-comment').innerHTML;
-        break;
-      case 3:
-        opts = document.getElementsByClassName('options-soda');
-        coment = document.getElementById('soda-comment').innerHTML;          
-        break;
-      case 4:
-        opts = document.getElementsByClassName('options-alcol');
-        coment = document.getElementById('alcol-comment').innerHTML;
-        break;
-    }
+		switch(opt){
+		  case 1:
+		    opts = document.getElementsByClassName('options-refresh');
+		    coment = document.getElementById('refresh-comment').innerHTML;
+		    break;
+		  case 2:
+		    opts = document.getElementsByClassName('options-hot');
+		    coment = document.getElementById('hot-comment').innerHTML;
+		    break;
+		  case 3:
+		    opts = document.getElementsByClassName('options-soda');
+		    coment = document.getElementById('soda-comment').innerHTML;          
+		    break;
+		  case 4:
+		    opts = document.getElementsByClassName('options-alcol');
+		    coment = document.getElementById('alcol-comment').innerHTML;
+		    break;
+		}
 		for(var i=0; i<opts.length; i++){
 			if (opts[i].checked) {
 				drink = opts[i].id.replace(/-+/g,' ');
 			}
 		}
-    app.quant += 1;
-    if (app.quant <= 2) {
-      var aux = {};
-      aux[client] = {};
-      aux[client][user] = {'Bebida':drink,'Coment':coment,'Cantidad':app.quant};
-      app.order.push(aux);
-      app.refreshCart();
-      app.refreshShopping();
-    }
-  	else{
-      alert('Sólo se permiten máximo dos bebidas por persona');
-      app.quant = 0;
-    }	
+		debugger;
+		var aux2 = 0;
+		for(var i=0; i<app.order.length; i++){
+			for(var key in app.order[i]){
+				if (key === client) {
+					for(var key2 in app.order[i][client]){
+						if (key2 === user) {
+							var cant = app.order[i][client][user]['Cantidad'];
+							aux2 = 1;
+							break;
+						}
+					}
+				}
+			}
+		}
+		if (!aux2) {
+			var cant = 0;
+		}
+		cant += 1;
+		console.log(app.order);
+		if (cant <= 2) {
+		  var aux = {};
+		  aux[client] = {};
+		  aux[client][user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant};
+		  app.order.push(aux);
+		  app.refreshCart();
+		  app.refreshShopping();
+		}
+		else{
+		  alert('Sólo se permiten máximo dos bebidas por persona');
+		}	
 	},
 
 	refreshShopping: function(){
 		document.getElementById('number-order').innerHTML = app.order.length;
 		if (app.order.length) {
-			document.getElementById('number-order').className = 'label label-danger';
+			document.getElementsByClassName('badge-pill')[0].style.display = 'block';
+			document.getElementsByClassName('badge-pill')[0].style.backgroundColor = '#e80303';
 		}
 		else{
-			document.getElementById('number-order').className = 'label label-default';
+			document.getElementsByClassName('badge-pill')[0].style.display = 'none';
 		}
 	},
 
@@ -129,13 +145,14 @@ var app = {
 					codigo += '</tr>';
 				for (var i=0; i<app.order.length; i++) {
 					for(var key in app.order[i]){
-						for(var key2 in app.order[i][key])
+						for(var key2 in app.order[i][key]){
 							codigo += '<tr onclick="app.idConfirm('+i+');" data-toggle="modal" data-target="#myModal7">';
 								codigo += '<td>'+key+'</td>'
 								codigo += '<td>'+key2+'</td>';
 								codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
 		                        codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
 							codigo += '</tr>';
+						}
                 	}
 				}
 				codigo += '</tbody>';
@@ -153,49 +170,50 @@ var app = {
 		app.refreshShopping();
 	},
 
-  saveComments: function(){
+	saveComments: function(){
 	  var cc = document.getElementById('client').innerHTML;
-    var comment = document.getElementById('client-comment').value;
-    var client = document.getElementById('client-name').innerHTML;
-    for(var key in app.model.clients[cc]){
-        if (key === client) {
-            app.model.clients[cc][key]['Coment'] = comment;
-            break;
-        }
-    }
-    app.save();
-    document.getElementById('client-comment').value = '';
-    document.getElementById('client-name').innerHTML = 'Nombre';
-    document.getElementById('client-drink').innerHTML = "Bebida";
-    document.getElementById('client').innerHTML = "Empresa";
-  },
+	var comment = document.getElementById('client-comment').value;
+	var client = document.getElementById('client-name').innerHTML;
+	for(var key in app.model.clients[cc]){
+	    if (key === client) {
+	        app.model.clients[cc][key]['Coment'] = comment;
+	        break;
+	    }
+	}
+	app.save();
+	document.getElementById('client-comment').value = '';
+	document.getElementById('client-name').innerHTML = 'Nombre';
+	document.getElementById('client-drink').innerHTML = "Bebida";
+	document.getElementById('client').innerHTML = "Empresa";
+	},
 
 	saveFirebase: function(){
-    var aux = 1;
     for(var i=0; i<app.order.length; i++){
       for(var key in app.order[i]){
         for(var key2 in app.order[i][key]){
-          if (aux) {
-            app.model.clients[key][key2]['Bebida'] = [app.model.clients[key][key2]['Bebida']];
-            app.model.clients[key][key2]['Coment'] = [app.model.clients[key][key2]['Coment']];
-          }
-          app.model.clients[key][key2]['Bebida'].push(app.order[i][key][key2]['Bebida']);
-          app.model.clients[key][key2]['Coment'].push(app.order[i][key][key2]['Coment']);
+        	debugger;
+        	if (app.model.clients[key][key2]['Bebida'][0] === '') {
+        		app.model.clients[key][key2]['Bebida'] = [app.order[i][key][key2]['Bebida']];
+        		app.model.clients[key][key2]['Coment'] = [app.order[i][key][key2]['Coment']];
+        	}
+        	else{
+		        app.model.clients[key][key2]['Bebida'].push(app.order[i][key][key2]['Bebida']);
+		        app.model.clients[key][key2]['Coment'].push(app.order[i][key][key2]['Coment']);
+        	}
         }
       }
-      aux = 0;
     }
     firebase.database().ref('clients').update(app.model.clients);
 	},
 
-  sendMail: function(){
-    var codigo = '<table class="table table-bordered"';
+	sendMail: function(){
+	var codigo = '<table class="table table-bordered"';
 		codigo += '<tbody>';
 			codigo += '<tr>';
 				codigo += '<th>Empresa</th>';
 				codigo += '<th>Nombre</th>';
 				codigo += '<th>Bebida</th>';
-                    codigo += '<th>Comentario</th>';
+	                codigo += '<th>Comentario</th>';
 			codigo += '</tr>';
 		for (var i=0; i<app.order.length; i++) {
 			for(var key in app.order[i]){
@@ -204,16 +222,20 @@ var app = {
 						codigo += '<td>'+key+'</td>'
 						codigo += '<td>'+key2+'</td>';
 						codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
-            codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
+	        			codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
 					codigo += '</tr>';
-        }
-		  }
-    }
+	   			}
+			}
+		}
 			codigo += '</tbody>';
 		codigo += '</table>';
-      //emailjs.send("gmail","template_173DO73o",{message_html: codigo});
-      app.saveFirebase();
-  },
+	  emailjs.send("gmail","template_173DO73o",{message_html: codigo});
+	  app.order = [];
+	  app.refreshCart();
+	  app.refreshShopping();
+	  app.previousPage();
+	  app.saveFirebase();
+	},
 }
 
 firebase.initializeApp(app.firebaseConfig);

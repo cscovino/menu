@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans');
 *{
     font-family: 'Nunito Sans', sans-serif;
+    color: #106f96;
 }
 body{
-    color: #ececec;
-    background-color: #1a2226;
+    background-color: #fff;
 }
 table{
 	color: #383838;
@@ -19,59 +19,74 @@ th{
 label{
 	font-weight: normal;
 }
-.header-button{
-    font-size: 30px;
-    color: #ececec;
-    text-decoration: none;
+.badge-pill{
+	border-radius: 20px;
+	padding-left: 5px;
+	padding-right: 6px;
 }
-.navbar-custom-menu{
-	margin-right: 8%;
-	height: 50px;
-}
-.options{
-	margin: 2%;
-	font-size: 22px;
-}
-.options-alcol{
-	color: #383838;
-	font-size: 18px;
-	font-weight: normal;
-}
-.icons{
-	margin-left: 10%;
-}
-.radio{
-	margin-left: 3%;
-	font-size: 15px;
-	color: #383838;
-}
-.name{
-	font-size: 30px;
-	font-weight: bold;
+.name-odd, .name-even{
+	font-size: 20px;
+	font-weight: lighter;
 	text-align: center;
 	margin-top: 4%;
 	margin-bottom: 4%;
 	padding: 2%;
 	border-style: solid;
 	border-width: 3px;
+	color: #1a2226;
 }
-#add-user{
-	padding-top: 8px;
+.name-even{
+	border-color: #15acc0;
+}
+.name-odd{
+	border-color: #004f64;
+}
+.cuadro{
+	height: 100px;
+	width: 100px;
+	border-style: solid;
+	border-width: 3px;
+	border-color: #00a4b9;
+}
+.form-group{
+	margin-left: 2%;
+	margin-right: 2%;
+}
+.title-clients{
+	padding-top:15%;
+	padding-bottom:3%;
+	width: 100%;
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+	color: #306589;
+}
+.confirm{
+	margin-top: 3%;
+	margin-bottom: 3%;
+	text-align: center;
+	font-size: 15px;
+}
+.row{
+	margin-top:2%;
+}
+#header-menu{
+	width: 100%;
+	position: fixed;
+	top: 0px;
+	background-color:rgba(255,255,255,1);
+}
+#buttons{
+	position: fixed;
+	top: 1em;
+	right: 1em;
 }
 #menu-options{
 	margin: 5%;
+	margin-top: 25%;
 }
 #menu-options-alcol{
 	margin: 1%;
-}
-#alcol-title{
-	font-size: 25px;
-	float: left;
-	margin-top: 0.8%;
-	margin-left: 15%;
-}
-#before{
-	padding-top: 35%;
 }
 #add-user-modal{
 	margin-left: 90%;
@@ -82,15 +97,11 @@ label{
 	margin-top: 3%;
 	font-size: 15px;
 }
-#client-name, #client-drink, #client{
-	background-color: #fff;
-	color: #383838;
-	width: 80%;
-	padding-left: 1%;
-}
-#client-name{
-	margin-bottom: 1%;
-}
-#client-comment{
-    width: 80%;
+@media screen and (min-width: 650px){	
+	#menu-options{
+		margin-top: 12%;
+	}
+	.title-clients{
+		padding-top:6%;
+	}
 }
