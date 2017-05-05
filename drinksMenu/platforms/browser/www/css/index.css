@@ -67,9 +67,6 @@ label{
 	text-align: center;
 	font-size: 15px;
 }
-.row{
-	margin-top:2%;
-}
 #header-menu{
 	width: 100%;
 	position: fixed;
@@ -81,6 +78,10 @@ label{
 	top: 1em;
 	right: 1em;
 }
+#menu-meetings{
+	margin: 5%;
+	margin-top: 20%;
+ }
 #menu-options{
 	margin: 5%;
 	margin-top: 25%;

@@ -119,18 +119,57 @@ var app = {
 		  case 1:
 		    opts = document.getElementsByClassName('options-refresh');
 		    coment = document.getElementById('refresh-comment').innerHTML;
+		    if (document.getElementById('ice2').checked) {
+		    	coment = document.getElementById('ice2').value+'. '+coment;
+		    }  
 		    break;
 		  case 2:
 		    opts = document.getElementsByClassName('options-hot');
 		    coment = document.getElementById('hot-comment').innerHTML;
+		    if (document.getElementById('sugar1').checked) {
+		    	coment = document.getElementById('sugar1').value+'. '+coment;
+		    }
+		    else if (document.getElementById('sugar2').checked) {
+		    	coment = document.getElementById('sugar2').value+'. '+coment;
+		    }
+		    else if (document.getElementById('sugar3').checked) {
+		    	coment = document.getElementById('sugar3').value+'. '+coment;
+		    }
+		    else if (document.getElementById('sugar4').checked) {
+		    	coment = document.getElementById('sugar4').value+'. '+coment;
+		    }
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');
-		    coment = document.getElementById('soda-comment').innerHTML;          
+		    coment = document.getElementById('soda-comment').innerHTML;
+		    if (document.getElementById('ice').checked) {
+		    	coment = document.getElementById('ice').value+'. '+coment;
+		    }        
 		    break;
 		  case 4:
 		    opts = document.getElementsByClassName('options-alcol');
 		    coment = document.getElementById('alcol-comment').innerHTML;
+		    if (document.getElementById('ice3').checked) {
+		    	coment = document.getElementById('ice3').value+'. '+coment;
+		    }
+		    else if (document.getElementById('water').checked) {
+		    	coment = document.getElementById('water').value+'. '+coment;
+		    }
+		    else if (document.getElementById('soda').checked) {
+		    	coment = document.getElementById('soda').value+'. '+coment;
+		    }
+		    else if (document.getElementById('aguakina').checked) {
+		    	coment = document.getElementById('aguakina').value+'. '+coment;
+		    }
+		    else if (document.getElementById('chinott').checked) {
+		    	coment = document.getElementById('chinott').value+'. '+coment;
+		    }
+		    else if (document.getElementById('coke').checked) {
+		    	coment = document.getElementById('coke').value+'. '+coment;
+		    }
+		    else if (document.getElementById('lemon').checked) {
+		    	coment = document.getElementById('lemon').value+'. '+coment;
+		    }
 		    break;
 		}
 		for(var i=0; i<opts.length; i++){

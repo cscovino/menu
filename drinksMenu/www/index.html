@@ -113,12 +113,64 @@
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Alcohólicas</h4>
       </div>
       <div class="modal-body">
-        <div id="menu-options-alcol">
-          <div><label><input type="radio" id="Vino-Espumante" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Espumante</label></div><br>
-          <div><label><input type="radio" id="Vino-Tinto" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Tinto</label></div><br>
-          <div><label><input type="radio" id="Vino-Blanco" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Blanco</label></div><br>
-          <div><label><input type="radio" id="Ron" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Ron (Diplomático)</label></div><br>
-          <div><label><input type="radio" id="Whisky" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Whisky (Buchanan's 18 años)</label></div>
+        <div id="menu-options-alcol" class="row" style="margin-bottom:3%;">
+          <div class="col-md-6">
+            <div><label><input type="radio" id="Vino-Espumante" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Espumante</label></div>
+            <div><label><input type="radio" id="Vino-Tinto" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Tinto</label></div>
+            <div><label><input type="radio" id="Vino-Blanco" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Vino Blanco</label></div>
+          </div>
+          <div class="col-md-6">
+            <div><label><input type="radio" id="Ron" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Ron (Diplomático)</label></div>
+            <div><label><input type="radio" id="Whisky" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Whisky (Buchanan's 18 años)</label></div>
+          </div>
+        </div>
+        <div class="row" style="padding-top:1%;margin-left:1%;margin-top:1%;border-top:1px solid;border-color:#efefef;width:98%;">
+          <div class="col-md-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="ice3" value="Con hielo">
+                Con hielo
+              </label>
+            </div>  
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="water" value="Con agua">
+                Agua
+              </label>
+            </div> 
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="soda" value="Con soda">
+                Soda
+              </label>
+            </div> 
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="lemon" value="Con limón">
+                Limón
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="aguakina" value="Con aguakina">
+                Aguakina
+              </label>
+            </div> 
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="chinott" value="Con chinotto">
+                Chinotto
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="coke" value="Con coca-cola">
+                Coca-cola
+              </label>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label>Comentarios:</label>
@@ -146,11 +198,25 @@
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Gaseosas</h4>
       </div>
       <div class="modal-body">
-        <div id="menu-options-alcol">
-          <div><label><input type="radio" id="Coca-Cola" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Coca-Cola</label></div><br>
-          <div><label><input type="radio" id="Coca-Cola-Light" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Coca-Cola Light</label></div><br>
-          <div><label><input type="radio" id="Chinotto" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Chinotto</label></div><br>
-          <div><label><input type="radio" id="Frescolita" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Frescolita</label></div>
+        <div id="menu-options-alcol" class="row" style="margin-bottom:3%;">
+          <div class="col-md-6">
+            <div><label><input type="radio" id="Coca-Cola" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Coca-Cola</label></div>
+            <div><label><input type="radio" id="Coca-Cola-Light" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Coca-Cola Light</label></div>
+          </div>
+          <div class="col-md-6">
+            <div><label><input type="radio" id="Chinotto" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Chinotto</label></div>
+            <div><label><input type="radio" id="Frescolita" name="optionsRadios" class="options-soda">&nbsp;&nbsp;Frescolita</label></div>
+          </div>
+        </div>
+        <div class="row" style="padding-top:1%;margin-left:1%;margin-top:1%;border-top:1px solid;border-color:#efefef;width:98%;">
+          <div class="col-md-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="ice" value="Con hielo">
+                Con hielo
+              </label>
+            </div>  
+          </div>
         </div>
         <div class="form-group">
           <label>Comentarios:</label>
@@ -178,14 +244,48 @@
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Calientes</h4>
       </div>
       <div class="modal-body">
-        <div id="menu-options-alcol">
-          <div><label><input type="radio" id="Cafe-Negro" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Café Negro</label></div><br>
-          <div><label><input type="radio" id="Cafe-Marron" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Café Marrón</label></div><br>
-          <div><label><input type="radio" id="Cafe-con-Leche" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Café con Leche</label></div><br>
-          <div><label><input type="radio" id="Te-Verde" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Té Verde</label></div><br>
-          <div><label><input type="radio" id="Te-Negro" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Té Negro</label></div><br>
-          <div><label><input type="radio" id="Te-Flor-de-Jamaica" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Té Flor de Jamaica</label></div><br>
-          <div><label><input type="radio" id="Manzanilla" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Manzanilla</label></div>
+        <div id="menu-options-alcol" class="row" style="margin-bottom:3%;">
+          <div class="col-md-6">
+            <div><label><input type="radio" id="Cafe-Negro" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Café Negro</label></div>
+            <div><label><input type="radio" id="Cafe-Marron" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Café Marrón</label></div>
+            <div><label><input type="radio" id="Cafe-con-Leche" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Café con Leche</label></div>
+            <div><label><input type="radio" id="Te-Verde" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Té Verde</label></div>
+          </div>
+          <div class="col-md-6">
+            <div><label><input type="radio" id="Te-Negro" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Té Negro</label></div>
+            <div><label><input type="radio" id="Te-Flor-de-Jamaica" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Té Flor de Jamaica</label></div>
+            <div><label><input type="radio" id="Manzanilla" name="optionsRadios" class="options-hot">&nbsp;&nbsp;Manzanilla</label></div>
+          </div>
+        </div>
+        <div class="row" style="padding-top:1%;margin-left:1%;margin-top:1%;border-top:1px solid;border-color:#efefef;width:98%;">
+          <div class="col-md-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="sugar1" value="1 azucar">
+                1 azúcar
+              </label>
+            </div>  
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="sugar2" value="2 azucar">
+                2 azúcar
+              </label>
+            </div> 
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="sugar3" value="3 azucar">
+                3 azúcar
+              </label>
+            </div> 
+          </div>
+          <div class="col-md-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="sugar4" value="splenda">
+                Splenda
+              </label>
+            </div> 
+          </div>
         </div>
         <div class="form-group">
           <label>Comentarios:</label>
@@ -213,9 +313,23 @@
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Refrescantes</h4>
       </div>
       <div class="modal-body">
-        <div id="menu-options-alcol">
-          <div><label><input type="radio" id="Agua" name="optionsRadios" class="options-refresh">&nbsp;&nbsp;Agua</label></div><br>
-          <div><label><input type="radio" id="Jugo-Naranja" name="optionsRadios" class="options-refresh">&nbsp;&nbsp;Jugo de Naranja</label></div>
+        <div id="menu-options-alcol" class="row" style="margin-bottom:3%;">
+          <div class="col-md-6">
+            <div><label><input type="radio" id="Agua" name="optionsRadios" class="options-refresh">&nbsp;&nbsp;Agua</label></div>
+          </div>
+          <div class="col-md-6">
+            <div><label><input type="radio" id="Jugo-Naranja" name="optionsRadios" class="options-refresh">&nbsp;&nbsp;Jugo de Naranja</label></div>
+          </div>
+        </div>
+        <div class="row" style="padding-top:1%;margin-left:1%;margin-top:1%;border-top:1px solid;border-color:#efefef;width:98%;">
+          <div class="col-md-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="ice2" value="Con hielo">
+                Con hielo
+              </label>
+            </div>  
+          </div>
         </div>
         <div class="form-group">
           <label>Comentarios:</label>
