@@ -21,7 +21,7 @@
 	<header id="header-menu">
     <div style="position:fixed;top:1em;left:1em;"><img src="img/soutec.png" height="30px"></div>
     <div id="buttons">
-      <span style="margin-bottom:5%;"><img src="img/social5.svg" height="30px" data-toggle="modal" data-target="#myModal11" style="margin-bottom:5%;"></span>
+      <span style="margin-bottom:5%;display:none;" id="add-client"><img src="img/social5.svg" height="30px" data-toggle="modal" data-target="#myModal12" style="margin-bottom:5%;"></span>
       &nbsp;&nbsp;&nbsp;
       <span class="glyphicon glyphicon-triangle-left" style="display:none;font-size:30px;" id="back"></span>
       &nbsp;&nbsp;&nbsp;
@@ -511,6 +511,74 @@
 </div>
 <!-- ###################################################################################################### -->
 <!-- ###################################################################################################### -->
+
+<!-- ###################################################################################################### -->
+<!-- #######################################  Modal ####################################################### -->
+<!-- ###################################################################################################### -->
+<div class="modal fade" id="myModal12" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" style="color: #000;">Agregar clientes</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Cliente:</label>
+          <div class="input-group">
+                <span class="input-group-addon"><img src="img/office-block.svg" height="20px"></span>
+                <input type="text" class="form-control" placeholder="Cliente" id="name-clients2" style="width: 80%;">
+            </div>
+        </div>
+        <div class="form-group">
+          <label>Nombre:</label>
+          <div class="input-group">
+                <span class="input-group-addon"><img src="img/social2.svg" height="20px"></span>
+                <input type="text" class="form-control" placeholder="Nombre" id="name-client2"  style="width: 80%;">
+            </div>
+        </div>
+        <div class="form-group">
+          <label>Email:</label>
+          <div class="input-group">
+                <span class="input-group-addon"><img src="img/internet.svg" height="20px"></span>
+                <input type="text" class="form-control" placeholder="Email" id="email-client2"  style="width: 80%;">
+            </div>
+        </div>
+        <br>
+        <div id="datab" data-toggle="modal" data-target="#modalclientes2" class="form-group"><img src="img/social.svg" height="30px"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveNameMeet();">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ###################################################################################################### -->
+<!-- ###################################################################################################### -->
+
+<!-- ###################################################################################################### -->
+<!-- #####################################  Modal Cliente ################################################# -->
+<!-- ###################################################################################################### -->
+<div class="modal fade" id="modalclientes2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" style="color: #000;">Clientes</h4>
+      </div>
+      <div id="clients-modal2" class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ###################################################################################################### -->
+<!-- ###################################################################################################### -->
+
 
 </body>
 

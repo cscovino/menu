@@ -82,7 +82,7 @@ label{
 	margin: 5%;
 	margin-top: 20%;
  }
-#menu-options{
+#menu-options, #menu-meetings{
 	margin: 5%;
 	margin-top: 25%;
 }
@@ -99,7 +99,7 @@ label{
 	font-size: 15px;
 }
 @media screen and (min-width: 650px){	
-	#menu-options{
+	#menu-options, #menu-meetings{
 		margin-top: 12%;
 	}
 	.title-clients{

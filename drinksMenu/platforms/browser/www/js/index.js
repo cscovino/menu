@@ -15,13 +15,13 @@ var app = {
 	odd: 0,
 
 	firebaseConfig: {
-    apiKey: "AIzaSyC50skbZWPdmbhMgSz9ulM8pBJ8r8F8lag",
-    authDomain: "drinksmenu-ab56b.firebaseapp.com",
-    databaseURL: "https://drinksmenu-ab56b.firebaseio.com",
-    projectId: "drinksmenu-ab56b",
-    storageBucket: "drinksmenu-ab56b.appspot.com",
-    messagingSenderId: "495209622347"
-  },
+	apiKey: "AIzaSyC50skbZWPdmbhMgSz9ulM8pBJ8r8F8lag",
+	authDomain: "drinksmenu-ab56b.firebaseapp.com",
+	databaseURL: "https://drinksmenu-ab56b.firebaseio.com",
+	projectId: "drinksmenu-ab56b",
+	storageBucket: "drinksmenu-ab56b.appspot.com",
+	messagingSenderId: "495209622347"
+	},
 
 	initFirebase: function(){
       emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
@@ -47,7 +47,10 @@ var app = {
 				app.odd = 1;
 			}
 		}
+		app.odd = 0;
+		codigo += '<div id="meet-id" style="display:none;">'+data+'</div>'
 		users.append(codigo);
+		app.modelMeet = app.model.meetings[data];
 	},
 
 	refreshMeets: function(){
@@ -78,12 +81,14 @@ var app = {
 		document.getElementById('title').style.display = 'block';
 		document.getElementById('title').innerHTML = '¡Bienvenido! Por favor seleccione su reunión';
 		document.getElementById('menu-meetings').style.display = 'block';
+		document.getElementById('add-client').style.display = 'none';
 	},
 
 	userPage: function(data){
 		app.refreshName(data);
 		document.getElementById('back').style.display = 'inline';
 		$('#back').attr("onclick","app.meetPage()");
+		document.getElementById('add-client').style.display = 'block';
 		document.getElementById('menu-options').style.display = 'block';
 		document.getElementById('title').style.display = 'block';
 		document.getElementById('title').innerHTML = 'Seleccione su nombre';
@@ -101,12 +106,14 @@ var app = {
 		document.getElementById('menu').style.display = 'block';
 		document.getElementById('back').style.display = 'inline';
 		$('#back').attr("onclick","app.userPage('"+prev+"')");
+		document.getElementById('add-client').style.display = 'none';
 	},
 
 	previousPage: function(){
 		document.getElementById('menu').style.display = 'none';
 		document.getElementById('menu-options').style.display = 'block';
 		document.getElementById('title').style.display = 'block';
+		document.getElementById('add-client').style.display = 'block';
 	},
 
 	saveOrder: function(opt){
@@ -251,23 +258,35 @@ var app = {
 
 	refreshData: function(){
 		var clients = $('#clients-modal');
+		var clients2 = $('#clients-modal2');
 		clients.html('');
+		clients2.html('');
 		var codigo = '';
 		var codigo2 = '';
 		codigo += '<ul class="nav nav-list">';
+		codigo2 += '<ul class="nav nav-list">';
 		for(var key in app.model.clients){
 			codigo += '<li>';
+			codigo2 += '<li>';
 				codigo += '<label class="tree-toggle nav-header">'+key+'</label>';
+				codigo2 += '<label class="tree-toggle nav-header">'+key+'</label>';
 				codigo += '<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>';
+				codigo2 += '<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>';
 				codigo += '<ul class="nav nav-list tree">';
+				codigo2 += '<ul class="nav nav-list tree">';
 				for(var key2 in app.model.clients[key]){
 					codigo += '<li id="'+key+'_'+key2+'" data-dismiss="modal" onclick="app.addUser(this);">&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>&nbsp;'+key2+'</li>';
+					codigo2 += '<li id="'+key+'_'+key2+'" data-dismiss="modal" onclick="app.addUserMeet(this);">&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>&nbsp;'+key2+'</li>';
 				}
 				codigo += '</ul>';
+				codigo2 += '</ul>';
 			codigo += '</li>';
+			codigo2 += '</li>';
 		}
 		codigo += '</ul>';
+		codigo2 += '</ul>';
 		clients.append(codigo);
+		clients2.append(codigo2);
 		$('.tree-toggle').click(function () {
 			$(this).parent().children('ul.tree').toggle(200);
 		});
@@ -279,6 +298,14 @@ var app = {
 		var args = dato.split("_");
 		$('#invited').attr('value',args[1]);
 		$('.ocult').attr('id',args[0]);
+	},
+
+	addUserMeet: function(data){
+		var dato = data.id
+		var args = dato.split("_");
+    	document.getElementById('name-clients2').value = args[0];
+        document.getElementById('name-client2').value = args[1];
+        document.getElementById('email-client2').value = app.model.clients[args[0]][args[1]]['Email'];
 	},
 
 	addClient: function(){
@@ -355,8 +382,40 @@ var app = {
         document.getElementById('email-client').value = '';
     },
 
+    saveNameMeet: function(){
+    	var client = document.getElementById('name-clients2').value;
+        var name = document.getElementById('name-client2').value;
+        var email = document.getElementById('email-client2').value;
+        var id = document.getElementById('meet-id').innerHTML;
+        var aux = 0;
+        for(var key in app.model.clients){
+            if (key === client) {
+                for(var key2 in app.model.clients[client]){
+                	if (key2 === name){
+                		aux = 1;
+                		break;
+                	}
+                }
+            }
+        }
+        if (!aux) {
+        	app.saveFirebase2(client,name,email);
+        }
+        app.modelMeet['users'].push({'Nombre':name,'Cliente':client});
+        app.model.meetings[id] = app.modelMeet;
+        app.saveFirebase3(id);
+        app.refreshName(id);
+        document.getElementById('name-clients').value = '';
+        document.getElementById('name-client').value = '';
+        document.getElementById('email-client').value = '';
+    },
+
 	saveFirebase2: function(client,name,email){
 		firebase.database().ref('clients').child(client).child(name).update({Bebida:[''],Coment:[''],Email:email});
+	},
+
+	saveFirebase3: function(id){
+		firebase.database().ref('meetings').child(id).child('users').set(app.modelMeet['users']);
 	},
 
 	refreshMeetingModal: function(){
