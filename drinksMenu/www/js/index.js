@@ -47,6 +47,7 @@ var app = {
 				app.odd = 1;
 			}
 		}
+		codigo += '<div data-toggle="modal" data-target="#myModal12" style="padding:5%;padding-bottom:2%;font-size:20px;border-color:#004f64;text-align:center;">Agregar Persona <b>+</b></div>';
 		app.odd = 0;
 		codigo += '<div id="meet-id" style="display:none;">'+data+'</div>'
 		users.append(codigo);
@@ -77,21 +78,21 @@ var app = {
 	meetPage: function(){
 		app.refreshMeets();
 		document.getElementById('back').style.display = 'none';
+		document.getElementById('back2').style.display = 'none';
 		document.getElementById('menu-options').style.display = 'none';
 		document.getElementById('title').style.display = 'block';
-		document.getElementById('title').innerHTML = '¡Bienvenido! Por favor seleccione su reunión';
+		document.getElementById('title').innerHTML = 'Vive la experiencia Soutec';
 		document.getElementById('menu-meetings').style.display = 'block';
-		document.getElementById('add-client').style.display = 'none';
 	},
 
 	userPage: function(data){
 		app.refreshName(data);
 		document.getElementById('back').style.display = 'inline';
+		document.getElementById('back2').style.display = 'inline';
 		$('#back').attr("onclick","app.meetPage()");
-		document.getElementById('add-client').style.display = 'block';
 		document.getElementById('menu-options').style.display = 'block';
 		document.getElementById('title').style.display = 'block';
-		document.getElementById('title').innerHTML = 'Seleccione su nombre';
+		document.getElementById('title').innerHTML = '¡Bienvenido! Por favor seleccione su nombre';
 		document.getElementById('menu-meetings').style.display = 'none';
 		document.getElementById('menu').style.display = 'none'
 	},
@@ -99,25 +100,25 @@ var app = {
 	nextPage: function(data){
 		var next = data.id.split(/_(.+)/)[0];
 		var prev = data.id.split(/_(.+)/)[1];
-		document.getElementsByClassName('title-clients')[1].innerHTML = data.innerHTML + ', escoge aquí tu bebida';
+		document.getElementsByClassName('title-clients')[1].innerHTML = '<span style="font-style:italic;color:#00a5ba;font-size:24px;">' + data.innerHTML + '</span>, escoge aquí tu bebida';
 		document.getElementsByClassName('title-clients')[1].id = next;
 		document.getElementById('title').style.display = 'none';
 		document.getElementById('menu-options').style.display = 'none';
 		document.getElementById('menu').style.display = 'block';
 		document.getElementById('back').style.display = 'inline';
+		document.getElementById('back2').style.display = 'inline';
 		$('#back').attr("onclick","app.userPage('"+prev+"')");
-		document.getElementById('add-client').style.display = 'none';
+		d
 	},
 
 	previousPage: function(){
 		document.getElementById('menu').style.display = 'none';
 		document.getElementById('menu-options').style.display = 'block';
 		document.getElementById('title').style.display = 'block';
-		document.getElementById('add-client').style.display = 'block';
 	},
 
 	saveOrder: function(opt){
-		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split(',')[0];
+		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split('>')[1].split('<')[0];
 		var client = document.getElementsByClassName('title-clients')[1].id;
 		var opts;
 		var coment;
@@ -184,7 +185,6 @@ var app = {
 				drink = opts[i].id.replace(/-+/g,' ');
 			}
 		}
-		debugger;
 		var aux2 = 0;
 		for(var i=0; i<app.order.length; i++){
 			for(var key in app.order[i]){
@@ -501,7 +501,6 @@ var app = {
 	    for(var i=0; i<app.order.length; i++){
 	      for(var key in app.order[i]){
 	        for(var key2 in app.order[i][key]){
-	        	debugger;
 	        	if (app.model.clients[key][key2]['Bebida'][0] === '') {
 	        		app.model.clients[key][key2]['Bebida'] = [app.order[i][key][key2]['Bebida']];
 	        		app.model.clients[key][key2]['Coment'] = [app.order[i][key][key2]['Coment']];
@@ -517,7 +516,7 @@ var app = {
 	},
 
 	sendMail: function(){
-	var codigo = '<table class="table table-bordered"';
+		var codigo = '<table class="table table-bordered"';
 		codigo += '<tbody>';
 			codigo += '<tr>';
 				codigo += '<th>Empresa</th>';
