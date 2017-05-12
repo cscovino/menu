@@ -532,7 +532,10 @@ var app = {
 		}
 			codigo += '</tbody>';
 		codigo += '</table>';
-	  emailjs.send("gmail","template_173DO73o",{message_html: codigo});
+	  if (app.order.length > 0) {
+	    firebase.database().ref().update({order:app.order});
+	  	//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
+	  }
 	  app.order = [];
 	  app.refreshCart();
 	  app.refreshShopping();
