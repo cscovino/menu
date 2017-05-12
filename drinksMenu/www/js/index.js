@@ -47,7 +47,7 @@ var app = {
 				app.odd = 1;
 			}
 		}
-		codigo += '<div data-toggle="modal" data-target="#myModal12" style="padding:5%;padding-bottom:2%;font-size:20px;border-color:#004f64;text-align:center;">Agregar Persona <b>+</b></div>';
+		codigo += '<div data-toggle="modal" data-target="#myModal12" style="padding:5%;padding-bottom:20%;font-size:20px;border-color:#004f64;text-align:center;">Agregar Persona <b>+</b></div>';
 		app.odd = 0;
 		codigo += '<div id="meet-id" style="display:none;">'+data+'</div>'
 		users.append(codigo);
@@ -108,7 +108,6 @@ var app = {
 		document.getElementById('back').style.display = 'inline';
 		document.getElementById('back2').style.display = 'inline';
 		$('#back').attr("onclick","app.userPage('"+prev+"')");
-		d
 	},
 
 	previousPage: function(){
@@ -345,12 +344,10 @@ var app = {
 			codigo += '<input type="text" class="form-control" placeholder="Invitado" style="width:100%;" data-toggle="modal" data-target="#modalclientes" id="invited">';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
-		codigo += '<div class="input-group">';
-			codigo += '<img src="img/social3.svg" height="30px" onclick="app.addClient();">&nbsp;&nbsp;&nbsp;';
-			codigo += '<img src="img/social4.svg" height="30px" onclick="app.delMeet();">&nbsp;&nbsp;&nbsp;';
-			codigo += '<img src="img/arrows2.svg" height="25px" data-toggle="modal" data-target="#myModal10">&nbsp;&nbsp;&nbsp;&nbsp;';
-			codigo += '<img src="img/social5.svg" height="30px" data-toggle="modal" data-target="#myModal11">';
-		codigo += '</div><br>';
+		if (app.modelMeet['users'].length > 0) {
+			document.getElementById('borrar-button').disabled = false;
+			document.getElementById('guardar-button').disabled = false;
+		}
 		users.append(codigo);	
 	},
 
@@ -462,11 +459,9 @@ var app = {
 			codigo += '<input type="text" class="form-control" placeholder="Invitado" style="width:100%;" data-toggle="modal" data-target="#modalclientes" id="invited">';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
-		codigo += '<div class="input-group">';
-			codigo += '<img src="img/social3.svg" height="30px" onclick="app.addClient();">&nbsp;&nbsp;&nbsp;&nbsp;';
-			codigo += '<img src="img/social5.svg" height="30px" data-toggle="modal" data-target="#myModal11">';
-		codigo += '</div><br>';
 		users.append(codigo);
+		document.getElementById('borrar-button').disabled = true;
+		document.getElementById('guardar-button').disabled = true;
 		app.modelMeet['users'] = [];
 	},
 
