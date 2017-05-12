@@ -47,7 +47,7 @@ var app = {
 				app.odd = 1;
 			}
 		}
-		codigo += '<div data-toggle="modal" data-target="#myModal12" style="padding:5%;padding-bottom:2%;font-size:20px;border-color:#004f64;text-align:center;">Agregar Persona <b>+</b></div>';
+		codigo += '<div data-toggle="modal" data-target="#myModal12" style="padding:5%;padding-bottom:20%;font-size:20px;border-color:#004f64;text-align:center;">Agregar Persona <b>+</b></div>';
 		app.odd = 0;
 		codigo += '<div id="meet-id" style="display:none;">'+data+'</div>'
 		users.append(codigo);
@@ -108,7 +108,6 @@ var app = {
 		document.getElementById('back').style.display = 'inline';
 		document.getElementById('back2').style.display = 'inline';
 		$('#back').attr("onclick","app.userPage('"+prev+"')");
-		d
 	},
 
 	previousPage: function(){
@@ -126,14 +125,14 @@ var app = {
 		switch(opt){
 		  case 1:
 		    opts = document.getElementsByClassName('options-refresh');
-		    coment = document.getElementById('refresh-comment').innerHTML;
+		    coment = document.getElementById('refresh-comment').value;
 		    if (document.getElementById('ice2').checked) {
 		    	coment = document.getElementById('ice2').value+'. '+coment;
 		    }  
 		    break;
 		  case 2:
 		    opts = document.getElementsByClassName('options-hot');
-		    coment = document.getElementById('hot-comment').innerHTML;
+		    coment = document.getElementById('hot-comment').value;
 		    if (document.getElementById('sugar1').checked) {
 		    	coment = document.getElementById('sugar1').value+'. '+coment;
 		    }
@@ -149,14 +148,14 @@ var app = {
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');
-		    coment = document.getElementById('soda-comment').innerHTML;
+		    coment = document.getElementById('soda-comment').value;
 		    if (document.getElementById('ice').checked) {
 		    	coment = document.getElementById('ice').value+'. '+coment;
 		    }        
 		    break;
 		  case 4:
 		    opts = document.getElementsByClassName('options-alcol');
-		    coment = document.getElementById('alcol-comment').innerHTML;
+		    coment = document.getElementById('alcol-comment').value;
 		    if (document.getElementById('ice3').checked) {
 		    	coment = document.getElementById('ice3').value+'. '+coment;
 		    }
@@ -179,7 +178,7 @@ var app = {
 		    	coment = document.getElementById('lemon').value+'. '+coment;
 		    }
 		    break;
-		}
+		}	
 		for(var i=0; i<opts.length; i++){
 			if (opts[i].checked) {
 				drink = opts[i].id.replace(/-+/g,' ');
@@ -203,7 +202,6 @@ var app = {
 			var cant = 0;
 		}
 		cant += 1;
-		console.log(app.order);
 		if (cant <= 2) {
 		  var aux = {};
 		  aux[client] = {};
@@ -214,7 +212,7 @@ var app = {
 		}
 		else{
 		  alert('Sólo se permiten máximo dos bebidas por persona');
-		}	
+		}
 	},
 
 	refreshShopping: function(){
@@ -345,12 +343,10 @@ var app = {
 			codigo += '<input type="text" class="form-control" placeholder="Invitado" style="width:100%;" data-toggle="modal" data-target="#modalclientes" id="invited">';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
-		codigo += '<div class="input-group">';
-			codigo += '<img src="img/social3.svg" height="30px" onclick="app.addClient();">&nbsp;&nbsp;&nbsp;';
-			codigo += '<img src="img/social4.svg" height="30px" onclick="app.delMeet();">&nbsp;&nbsp;&nbsp;';
-			codigo += '<img src="img/arrows2.svg" height="25px" data-toggle="modal" data-target="#myModal10">&nbsp;&nbsp;&nbsp;&nbsp;';
-			codigo += '<img src="img/social5.svg" height="30px" data-toggle="modal" data-target="#myModal11">';
-		codigo += '</div><br>';
+		if (app.modelMeet['users'].length > 0) {
+			document.getElementById('borrar-button').disabled = false;
+			document.getElementById('guardar-button').disabled = false;
+		}
 		users.append(codigo);	
 	},
 
@@ -462,11 +458,9 @@ var app = {
 			codigo += '<input type="text" class="form-control" placeholder="Invitado" style="width:100%;" data-toggle="modal" data-target="#modalclientes" id="invited">';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
-		codigo += '<div class="input-group">';
-			codigo += '<img src="img/social3.svg" height="30px" onclick="app.addClient();">&nbsp;&nbsp;&nbsp;&nbsp;';
-			codigo += '<img src="img/social5.svg" height="30px" data-toggle="modal" data-target="#myModal11">';
-		codigo += '</div><br>';
 		users.append(codigo);
+		document.getElementById('borrar-button').disabled = true;
+		document.getElementById('guardar-button').disabled = true;
 		app.modelMeet['users'] = [];
 	},
 

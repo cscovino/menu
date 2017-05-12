@@ -125,14 +125,14 @@ var app = {
 		switch(opt){
 		  case 1:
 		    opts = document.getElementsByClassName('options-refresh');
-		    coment = document.getElementById('refresh-comment').innerHTML;
+		    coment = document.getElementById('refresh-comment').value;
 		    if (document.getElementById('ice2').checked) {
 		    	coment = document.getElementById('ice2').value+'. '+coment;
 		    }  
 		    break;
 		  case 2:
 		    opts = document.getElementsByClassName('options-hot');
-		    coment = document.getElementById('hot-comment').innerHTML;
+		    coment = document.getElementById('hot-comment').value;
 		    if (document.getElementById('sugar1').checked) {
 		    	coment = document.getElementById('sugar1').value+'. '+coment;
 		    }
@@ -148,14 +148,14 @@ var app = {
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');
-		    coment = document.getElementById('soda-comment').innerHTML;
+		    coment = document.getElementById('soda-comment').value;
 		    if (document.getElementById('ice').checked) {
 		    	coment = document.getElementById('ice').value+'. '+coment;
 		    }        
 		    break;
 		  case 4:
 		    opts = document.getElementsByClassName('options-alcol');
-		    coment = document.getElementById('alcol-comment').innerHTML;
+		    coment = document.getElementById('alcol-comment').value;
 		    if (document.getElementById('ice3').checked) {
 		    	coment = document.getElementById('ice3').value+'. '+coment;
 		    }
@@ -178,7 +178,7 @@ var app = {
 		    	coment = document.getElementById('lemon').value+'. '+coment;
 		    }
 		    break;
-		}
+		}	
 		for(var i=0; i<opts.length; i++){
 			if (opts[i].checked) {
 				drink = opts[i].id.replace(/-+/g,' ');
@@ -202,7 +202,6 @@ var app = {
 			var cant = 0;
 		}
 		cant += 1;
-		console.log(app.order);
 		if (cant <= 2) {
 		  var aux = {};
 		  aux[client] = {};
@@ -213,7 +212,7 @@ var app = {
 		}
 		else{
 		  alert('Sólo se permiten máximo dos bebidas por persona');
-		}	
+		}
 	},
 
 	refreshShopping: function(){
