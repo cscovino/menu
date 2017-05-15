@@ -142,8 +142,8 @@ var app = {
 		    else if (document.getElementById('sugar3').checked) {
 		    	coment = document.getElementById('sugar3').value+'. '+coment;
 		    }
-		    else if (document.getElementById('sugar4').checked) {
-		    	coment = document.getElementById('sugar4').value+'. '+coment;
+		    if (document.getElementById('sugar4').checked) {
+		    	coment = coment.replace('azucar','splenda');
 		    }
 		    break;
 		  case 3:
@@ -159,22 +159,22 @@ var app = {
 		    if (document.getElementById('ice3').checked) {
 		    	coment = document.getElementById('ice3').value+'. '+coment;
 		    }
-		    else if (document.getElementById('water').checked) {
+		    if (document.getElementById('water').checked) {
 		    	coment = document.getElementById('water').value+'. '+coment;
 		    }
-		    else if (document.getElementById('soda').checked) {
+		    if (document.getElementById('soda').checked) {
 		    	coment = document.getElementById('soda').value+'. '+coment;
 		    }
-		    else if (document.getElementById('aguakina').checked) {
+		    if (document.getElementById('aguakina').checked) {
 		    	coment = document.getElementById('aguakina').value+'. '+coment;
 		    }
-		    else if (document.getElementById('chinott').checked) {
+		    if (document.getElementById('chinott').checked) {
 		    	coment = document.getElementById('chinott').value+'. '+coment;
 		    }
-		    else if (document.getElementById('coke').checked) {
+		    if (document.getElementById('coke').checked) {
 		    	coment = document.getElementById('coke').value+'. '+coment;
 		    }
-		    else if (document.getElementById('lemon').checked) {
+		    if (document.getElementById('lemon').checked) {
 		    	coment = document.getElementById('lemon').value+'. '+coment;
 		    }
 		    break;
