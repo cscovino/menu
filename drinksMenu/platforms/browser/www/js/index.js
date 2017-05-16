@@ -8,9 +8,19 @@ var app = {
 		'users':[]
 	},
 
+	auxModelMeet: {
+		'titulo': '',
+		'fecha': '',
+		'users':[]
+	},
+
 	order: [],
 
 	meets: [],
+
+	weekday: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+
+	monthyear: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
 
 	odd: 0,
 
@@ -56,18 +66,30 @@ var app = {
 
 	refreshMeets: function(){
 		var users = $('#meets');
+		var today = new Date();
 		users.html('');
 		var codigo = '';
 		var codigo = '<table class="table table-bordered" id="guests3">';
 				codigo += '<tbody>';
 					codigo += '<tr>';
-						codigo += '<th>Título</th>';
 						codigo += '<th>Fecha</th>';
+						codigo += '<th>Hora</th>';
+						codigo += '<th>Título</th>';
 					codigo += '</tr>';
 				for (var key in app.model.meetings) {
 					codigo += '<tr onclick="app.userPage('+"'"+key+"'"+');" data-dismiss="modal">';
+						var dd = app.model.meetings[key]['fecha'].split(' ');
+						var datee = dd[0].split('/');
+						var dait = new Date(datee[2],datee[0]-1,datee[1]);
+						var today = new Date();
+						if (dait.toDateString() === today.toDateString()) {
+							codigo += '<td>Hoy</td>';
+						}
+						else{
+							codigo += '<td>'+app.weekday[dait.getDay()]+' '+dait.getDate()+' '+app.monthyear[dait.getMonth()]+'</td>';
+						}
+						codigo += '<td>'+dd[1]+' '+dd[2]+' - '+dd[5]+' '+dd[6]+'</td>';
 						codigo += '<td>'+app.model.meetings[key]['titulo']+'</td>';
-						codigo += '<td>'+app.model.meetings[key]['fecha']+'</td>';
 					codigo += '</tr>';
 				}
 				codigo += '</tbody>';
@@ -142,8 +164,8 @@ var app = {
 		    else if (document.getElementById('sugar3').checked) {
 		    	coment = document.getElementById('sugar3').value+'. '+coment;
 		    }
-		    else if (document.getElementById('sugar4').checked) {
-		    	coment = document.getElementById('sugar4').value+'. '+coment;
+		    if (document.getElementById('sugar4').checked) {
+		    	coment = coment.replace('azucar','splenda');
 		    }
 		    break;
 		  case 3:
@@ -159,22 +181,22 @@ var app = {
 		    if (document.getElementById('ice3').checked) {
 		    	coment = document.getElementById('ice3').value+'. '+coment;
 		    }
-		    else if (document.getElementById('water').checked) {
+		    if (document.getElementById('water').checked) {
 		    	coment = document.getElementById('water').value+'. '+coment;
 		    }
-		    else if (document.getElementById('soda').checked) {
+		    if (document.getElementById('soda').checked) {
 		    	coment = document.getElementById('soda').value+'. '+coment;
 		    }
-		    else if (document.getElementById('aguakina').checked) {
+		    if (document.getElementById('aguakina').checked) {
 		    	coment = document.getElementById('aguakina').value+'. '+coment;
 		    }
-		    else if (document.getElementById('chinott').checked) {
+		    if (document.getElementById('chinott').checked) {
 		    	coment = document.getElementById('chinott').value+'. '+coment;
 		    }
-		    else if (document.getElementById('coke').checked) {
+		    if (document.getElementById('coke').checked) {
 		    	coment = document.getElementById('coke').value+'. '+coment;
 		    }
-		    else if (document.getElementById('lemon').checked) {
+		    if (document.getElementById('lemon').checked) {
 		    	coment = document.getElementById('lemon').value+'. '+coment;
 		    }
 		    break;
@@ -209,6 +231,7 @@ var app = {
 		  app.order.push(aux);
 		  app.refreshCart();
 		  app.refreshShopping();
+		  alert('Pedido anotado');
 		}
 		else{
 		  alert('Sólo se permiten máximo dos bebidas por persona');
@@ -311,15 +334,15 @@ var app = {
 		var user = document.getElementById('invited').value;
 		var client = document.getElementsByClassName('ocult')[0].id;
 		if(user){
-			for(var i=0; i<app.modelMeet['users'].length; i++) {
-				if(app.modelMeet['users'][i]['Nombre'] === user && app.modelMeet['users'][i]['Cliente'] === client){
+			for(var i=0; i<app.auxModelMeet['users'].length; i++) {
+				if(app.auxModelMeet['users'][i]['Nombre'] === user && app.auxModelMeet['users'][i]['Cliente'] === client){
 					alert('Ya se agregó esta persona a la reunión');
 					aux = 1;
 					break;
 				}
 			}
 			if (!aux) {
-				app.modelMeet['users'].push({'Nombre':user,'Cliente':client});
+				app.auxModelMeet['users'].push({'Nombre':user,'Cliente':client});
 			}
 			app.refreshMeeting();
 			app.refreshMeetingModal();
@@ -331,11 +354,11 @@ var app = {
 		users.html('');
 		var codigo = '';
 		codigo += '<label>Invitados para la reunión:</label>';
-		for(var i=0; i<app.modelMeet['users'].length; i++){
+		for(var i=0; i<app.auxModelMeet['users'].length; i++){
 			codigo += '<div class="input-group">';
 				codigo += '<span class="input-group-addon"><img src="img/social.svg" height="20px"></span>';
-				codigo += '<input type="text" class="form-control" value="'+app.modelMeet['users'][i]['Nombre']+'" style="width:100%;" id="" disabled="">';
-				codigo += '<span id="ocult" style="display: none;" class='+app.modelMeet['users'][i]['Cliente']+'></span>';
+				codigo += '<input type="text" class="form-control" value="'+app.auxModelMeet['users'][i]['Nombre']+'" style="width:100%;" id="" disabled="">';
+				codigo += '<span id="ocult" style="display: none;" class='+app.auxModelMeet['users'][i]['Cliente']+'></span>';
 			codigo += '</div><br>';
 		}
 		codigo += '<div class="input-group">';
@@ -343,7 +366,7 @@ var app = {
 			codigo += '<input type="text" class="form-control" placeholder="Invitado" style="width:100%;" data-toggle="modal" data-target="#modalclientes" id="invited">';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
-		if (app.modelMeet['users'].length > 0) {
+		if (app.auxModelMeet['users'].length > 0) {
 			document.getElementById('borrar-button').disabled = false;
 			document.getElementById('guardar-button').disabled = false;
 		}
@@ -423,24 +446,47 @@ var app = {
 						codigo += '<th>Empresa</th>';
 						codigo += '<th>Nombre</th>';
 					codigo += '</tr>';
-				for (var i=0; i<app.modelMeet['users'].length; i++) {
-					codigo += '<tr onclick="app.idConfirm('+app.modelMeet['users'][i]['Cliente']+'_'+app.modelMeet['users'][i]['Nombre']+');" data-toggle="modal" data-target="#myModal3">';
-						codigo += '<td>'+app.modelMeet['users'][i]['Cliente']+'</td>';
-						codigo += '<td>'+app.modelMeet['users'][i]['Nombre']+'</td>';
+				for (var i=0; i<app.auxModelMeet['users'].length; i++) {
+					codigo += '<tr onclick="app.idConfirm('+app.auxModelMeet['users'][i]['Cliente']+'_'+app.auxModelMeet['users'][i]['Nombre']+');" data-toggle="modal" data-target="#myModal3">';
+						codigo += '<td>'+app.auxModelMeet['users'][i]['Cliente']+'</td>';
+						codigo += '<td>'+app.auxModelMeet['users'][i]['Nombre']+'</td>';
 					codigo += '</tr>';
 				}
 				codigo += '</tbody>';
 			codigo += '</table>';
 		users.append(codigo);
-		if (!app.modelMeet['users'][0]) {
+		if (!app.auxModelMeet['users'][0]) {
 			app.delMeet();
 		}
 	},
 
 	sendMeet: function(){
 		$('#myModal9').modal('hide');
-		app.modelMeet['titulo'] = document.getElementById('title-meet').value;
-		firebase.database().ref('meetings').push(app.modelMeet);
+		app.auxModelMeet['titulo'] = document.getElementById('title-meet').value;
+		var today = new Date();
+		var month = today.getMonth()+1;
+		var hour = today.getHours();
+		var hour2 = hour+1;
+		var amopm = 'AM';
+		var amopm2 = 'AM';
+		if (month < 10) {
+			month = '0'+month;
+		}
+		if (hour >= 12) {
+			amopm = 'PM';
+			if (hour > 12) {
+				hour -= 12;
+			}
+		}
+		if (hour2 >= 12) {
+			amopm2 = 'PM';
+			if (hour2 > 12) {
+				hour2 -= 12;
+			}
+		}
+		app.auxModelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+today.getMinutes()+' '+amopm+' - ';
+		app.auxModelMeet['fecha'] += month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour2+':'+today.getMinutes()+' '+amopm2;
+		firebase.database().ref('meetings').push(app.auxModelMeet);
 		for(var key in app.model.meetings){
 			if (app.model.meetings[key]['titulo'] === document.getElementById('title-meet').value && app.model.meetings[key]['fecha'] === '') {
 				app.userPage(key);
@@ -461,7 +507,7 @@ var app = {
 		users.append(codigo);
 		document.getElementById('borrar-button').disabled = true;
 		document.getElementById('guardar-button').disabled = true;
-		app.modelMeet['users'] = [];
+		app.auxModelMeet['users'] = [];
 	},
 
 	idConfirm: function(data){
@@ -535,6 +581,7 @@ var app = {
 	  if (app.order.length > 0) {
 	    firebase.database().ref().update({order:app.order});
 	  	//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
+	  	alert('Pedido enviado');
 	  }
 	  app.order = [];
 	  app.refreshCart();
@@ -553,6 +600,7 @@ firebase.database().ref().on('value', function(snap){
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
+    	FastClick.attach(document.body);
         app.initFirebase();
     }, false);
 }
