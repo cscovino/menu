@@ -88,7 +88,7 @@ var app = {
 						else{
 							codigo += '<td>'+app.weekday[dait.getDay()]+' '+dait.getDate()+' '+app.monthyear[dait.getMonth()]+'</td>';
 						}
-						codigo += '<td>'+dd[1]+' '+dd[2]+' - '+dd[5]+' '+dd[6]+'</td>';
+						codigo += '<td>'+dd[1]+' '+dd[2]+' - '+dd[4]+' '+dd[5]+'</td>';
 						codigo += '<td>'+app.model.meetings[key]['titulo']+'</td>';
 					codigo += '</tr>';
 				}
@@ -485,7 +485,7 @@ var app = {
 			}
 		}
 		app.auxModelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+today.getMinutes()+' '+amopm+' - ';
-		app.auxModelMeet['fecha'] += month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour2+':'+today.getMinutes()+' '+amopm2;
+		app.auxModelMeet['fecha'] += hour2+':'+today.getMinutes()+' '+amopm2;
 		firebase.database().ref('meetings').push(app.auxModelMeet);
 		for(var key in app.model.meetings){
 			if (app.model.meetings[key]['titulo'] === document.getElementById('title-meet').value && app.model.meetings[key]['fecha'] === '') {
