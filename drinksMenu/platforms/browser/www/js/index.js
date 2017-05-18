@@ -59,7 +59,7 @@ var app = {
 		}
 		codigo += '<div data-toggle="modal" data-target="#myModal12" style="padding:5%;padding-bottom:20%;font-size:20px;border-color:#004f64;text-align:center;">Agregar Persona <b>+</b></div>';
 		app.odd = 0;
-		codigo += '<div id="meet-id" style="display:none;">'+data+'</div>'
+		codigo += '<div id="meet-id" style="display:none;">'+data+'</div>';
 		users.append(codigo);
 		app.modelMeet = app.model.meetings[data];
 	},
@@ -88,7 +88,7 @@ var app = {
 						else{
 							codigo += '<td>'+app.weekday[dait.getDay()]+' '+dait.getDate()+' '+app.monthyear[dait.getMonth()]+'</td>';
 						}
-						codigo += '<td>'+dd[1]+' '+dd[2]+' - '+dd[5]+' '+dd[6]+'</td>';
+						codigo += '<td>'+dd[1]+' '+dd[2]+' - '+dd[4]+' '+dd[5]+'</td>';
 						codigo += '<td>'+app.model.meetings[key]['titulo']+'</td>';
 					codigo += '</tr>';
 				}
@@ -485,7 +485,7 @@ var app = {
 			}
 		}
 		app.auxModelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+today.getMinutes()+' '+amopm+' - ';
-		app.auxModelMeet['fecha'] += month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour2+':'+today.getMinutes()+' '+amopm2;
+		app.auxModelMeet['fecha'] += hour2+':'+today.getMinutes()+' '+amopm2;
 		firebase.database().ref('meetings').push(app.auxModelMeet);
 		for(var key in app.model.meetings){
 			if (app.model.meetings[key]['titulo'] === document.getElementById('title-meet').value && app.model.meetings[key]['fecha'] === '') {
@@ -578,16 +578,27 @@ var app = {
 		}
 			codigo += '</tbody>';
 		codigo += '</table>';
-	  if (app.order.length > 0) {
-	    firebase.database().ref().update({order:app.order});
-	  	//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
-	  	alert('Pedido enviado');
-	  }
-	  app.order = [];
-	  app.refreshCart();
-	  app.refreshShopping();
-	  app.previousPage();
-	  app.saveFirebase();
+		if (app.order.length > 0) {
+			var hoy = new Date();
+			hoy = hoy.toDateString();
+			if (app.model.order['fecha'] === hoy) {
+				var aux = app.model.order['orders'];
+				for (var i=0; i<app.order.length; i++) {
+				aux.push(app.order[i]);
+				}
+				firebase.database().ref().update({order:{'fecha':hoy,'orders':aux}});
+			}
+			else{
+				firebase.database().ref().update({order:{'fecha':hoy,'orders':app.order}});
+			}
+			//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
+			alert('Pedido enviado');
+		}
+		app.order = [];
+		app.refreshCart();
+		app.refreshShopping();
+		app.previousPage();
+		app.saveFirebase();
 	},
 }
 
