@@ -59,7 +59,7 @@ var app = {
 		}
 		codigo += '<div data-toggle="modal" data-target="#myModal12" style="padding:5%;padding-bottom:20%;font-size:20px;border-color:#004f64;text-align:center;">Agregar Persona <b>+</b></div>';
 		app.odd = 0;
-		codigo += '<div id="meet-id" style="display:none;">'+data+'</div>'
+		codigo += '<div id="meet-id" style="display:none;">'+data+'</div>';
 		users.append(codigo);
 		app.modelMeet = app.model.meetings[data];
 	},
@@ -578,16 +578,27 @@ var app = {
 		}
 			codigo += '</tbody>';
 		codigo += '</table>';
-	  if (app.order.length > 0) {
-	    firebase.database().ref().update({order:app.order});
-	  	//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
-	  	alert('Pedido enviado');
-	  }
-	  app.order = [];
-	  app.refreshCart();
-	  app.refreshShopping();
-	  app.previousPage();
-	  app.saveFirebase();
+		if (app.order.length > 0) {
+			var hoy = new Date();
+			hoy = hoy.toDateString();
+			if (app.model.order['fecha'] === hoy) {
+				var aux = app.model.order['orders'];
+				for (var i=0; i<app.order.length; i++) {
+				aux.push(app.order[i]);
+				}
+				firebase.database().ref().update({order:{'fecha':hoy,'orders':aux}});
+			}
+			else{
+				firebase.database().ref().update({order:{'fecha':hoy,'orders':app.order}});
+			}
+			//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
+			alert('Pedido enviado');
+		}
+		app.order = [];
+		app.refreshCart();
+		app.refreshShopping();
+		app.previousPage();
+		app.saveFirebase();
 	},
 }
 
