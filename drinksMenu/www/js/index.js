@@ -593,12 +593,12 @@ var app = {
 			}
 			//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
 			alert('Pedido enviado');
+			app.saveFirebase();
 		}
 		app.order = [];
 		app.refreshCart();
 		app.refreshShopping();
 		app.previousPage();
-		app.saveFirebase();
 	},
 }
 
@@ -615,4 +615,3 @@ if ('addEventListener' in document) {
         app.initFirebase();
     }, false);
 }
-
