@@ -167,6 +167,9 @@ var app = {
 		    if (document.getElementById('sugar4').checked) {
 		    	coment = coment.replace('azucar','splenda');
 		    }
+		    else if (document.getElementById('sugar5').checked) {
+		    	coment = document.getElementById('sugar3').value+'. '+coment;
+		    }
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');

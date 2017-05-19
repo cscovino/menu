@@ -593,12 +593,19 @@ var app = {
 			}
 			//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
 			alert('Pedido enviado');
+<<<<<<< HEAD
 			app.saveFirebase();
+=======
+>>>>>>> origin/master
 		}
 		app.order = [];
 		app.refreshCart();
 		app.refreshShopping();
 		app.previousPage();
+<<<<<<< HEAD
+=======
+		app.saveFirebase();
+>>>>>>> origin/master
 	},
 }
 
