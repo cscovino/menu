@@ -168,7 +168,7 @@ var app = {
 		    	coment = coment.replace('azucar','splenda');
 		    }
 		    else if (document.getElementById('sugar5').checked) {
-		    	coment = document.getElementById('sugar3').value+'. '+coment;
+		    	coment = document.getElementById('sugar5').value+'. '+coment;
 		    }
 		    break;
 		  case 3:
@@ -559,18 +559,27 @@ var app = {
 	},
 
 	sendMail: function(){
-		var codigo = '<table class="table table-bordered"';
+		var tituloMail;
+		var aux = 0;
+		var codigo = '<table style="color:#383838;">';
 		codigo += '<tbody>';
 			codigo += '<tr>';
-				codigo += '<th>Empresa</th>';
-				codigo += '<th>Nombre</th>';
-				codigo += '<th>Bebida</th>';
+				codigo += '<th style="background:#395062;color:#fff;">Empresa</th>';
+				codigo += '<th style="background:#395062;color:#fff;">Nombre</th>';
+				codigo += '<th style="background:#395062;color:#fff;">Bebida</th>';
 	                codigo += '<th>Comentario</th>';
 			codigo += '</tr>';
 		for (var i=0; i<app.order.length; i++) {
 			for(var key in app.order[i]){
 				for(var key2 in app.order[i][key]){
+					if (aux) {
+					codigo += '<tr style="background:#eaeaea;">';
+						aux = 0;	
+					}
+					else{
 					codigo += '<tr>';
+						aux = 1;
+					}
 						codigo += '<td>'+key+'</td>'
 						codigo += '<td>'+key2+'</td>';
 						codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
@@ -585,6 +594,7 @@ var app = {
 			var hoy = new Date();
 			hoy = hoy.toDateString();
 			if (app.model.order['fecha'] === hoy) {
+				tituloMail = app.model.order['titulo'];
 				var aux = app.model.order['orders'];
 				for (var i=0; i<app.order.length; i++) {
 				aux.push(app.order[i]);
@@ -594,7 +604,7 @@ var app = {
 			else{
 				firebase.database().ref().update({order:{'fecha':hoy,'orders':app.order}});
 			}
-			//emailjs.send("gmail","template_173DO73o",{message_html: codigo});
+			emailjs.send("gmail","pedidos",{message_html: codigo});
 			alert('Pedido enviado');
 			app.saveFirebase();
 		}
