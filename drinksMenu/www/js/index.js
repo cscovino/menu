@@ -567,7 +567,7 @@ var app = {
 				codigo += '<th style="background:#395062;color:#fff;">Empresa</th>';
 				codigo += '<th style="background:#395062;color:#fff;">Nombre</th>';
 				codigo += '<th style="background:#395062;color:#fff;">Bebida</th>';
-	                codigo += '<th>Comentario</th>';
+	            codigo += '<th style="background:#395062;color:#fff;">Comentario</th>';
 			codigo += '</tr>';
 		for (var i=0; i<app.order.length; i++) {
 			for(var key in app.order[i]){
@@ -590,6 +590,7 @@ var app = {
 		}
 			codigo += '</tbody>';
 		codigo += '</table>';
+		console.log(codigo);
 		if (app.order.length > 0) {
 			var hoy = new Date();
 			hoy = hoy.toDateString();
