@@ -112,6 +112,7 @@ var app = {
 		document.getElementById('back').style.display = 'inline';
 		document.getElementById('back2').style.display = 'inline';
 		$('#back').attr("onclick","app.meetPage()");
+		$('#back2').attr("onclick","app.meetPage()");
 		document.getElementById('menu-options').style.display = 'block';
 		document.getElementById('title').style.display = 'block';
 		document.getElementById('title').innerHTML = '¡Bienvenido! Por favor seleccione su nombre';
@@ -130,6 +131,7 @@ var app = {
 		document.getElementById('back').style.display = 'inline';
 		document.getElementById('back2').style.display = 'inline';
 		$('#back').attr("onclick","app.userPage('"+prev+"')");
+		$('#back2').attr("onclick","app.userPage('"+prev+"')");
 	},
 
 	previousPage: function(){
