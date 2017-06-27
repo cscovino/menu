@@ -143,6 +143,7 @@ var app = {
 	saveOrder: function(opt){
 		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split('>')[1].split('<')[0];
 		var client = document.getElementsByClassName('title-clients')[1].id;
+		var meetId = document.getElementById('meet-id').innerHTML;
 		var opts;
 		var coment;
 		var drink;
@@ -214,14 +215,12 @@ var app = {
 		var aux2 = 0;
 		for(var i=0; i<app.order.length; i++){
 			for(var key in app.order[i]){
-				if (key === client) {
-					for(var key2 in app.order[i][client]){
-						if (key2 === user) {
-							var cant = app.order[i][client][user]['Cantidad'];
+				if (key === user) {
+						if (app.order[i][user]['client'] === client) {
+							var cant = app.order[i][user]['Cantidad'];
 							aux2 = 1;
 							break;
 						}
-					}
 				}
 			}
 		}
@@ -231,8 +230,9 @@ var app = {
 		cant += 1;
 		if (cant <= 2) {
 		  var aux = {};
-		  aux[client] = {};
-		  aux[client][user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant};
+		  aux[user] = {};
+		  aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client};
+		  aux
 		  app.order.push(aux);
 		  app.refreshCart();
 		  app.refreshShopping();
@@ -267,14 +267,12 @@ var app = {
 					codigo += '</tr>';
 				for (var i=0; i<app.order.length; i++) {
 					for(var key in app.order[i]){
-						for(var key2 in app.order[i][key]){
 							codigo += '<tr onclick="app.idConfirm('+i+');" data-toggle="modal" data-target="#myModal7">';
+								codigo += '<td>'+app.order[i][key]['client']+'</td>';
 								codigo += '<td>'+key+'</td>'
-								codigo += '<td>'+key2+'</td>';
-								codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
-		                        codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
+								codigo += '<td>'+app.order[i][key]['Bebida']+'</td>';
+		                        codigo += '<td>'+app.order[i][key]['Coment']+'</td>';
 							codigo += '</tr>';
-						}
                 	}
 				}
 				codigo += '</tbody>';
@@ -562,7 +560,7 @@ var app = {
 
 	sendMail: function(){
 		var tituloMail;
-		var aux = 0;
+		var aux = [];
 		var codigo = '<table style="color:#383838;">';
 		codigo += '<tbody>';
 			codigo += '<tr>';
@@ -573,7 +571,6 @@ var app = {
 			codigo += '</tr>';
 		for (var i=0; i<app.order.length; i++) {
 			for(var key in app.order[i]){
-				for(var key2 in app.order[i][key]){
 					if (aux) {
 					codigo += '<tr style="background:#eaeaea;">';
 						aux = 0;	
@@ -582,25 +579,25 @@ var app = {
 					codigo += '<tr>';
 						aux = 1;
 					}
-						codigo += '<td>'+key+'</td>'
-						codigo += '<td>'+key2+'</td>';
-						codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
-	        			codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
+						codigo += '<td>'+app.order[i][key]['client']+'</td>'
+						codigo += '<td>'+key+'</td>';
+						codigo += '<td>'+app.order[i][key]['Bebida']+'</td>';
+	        			codigo += '<td>'+app.order[i][key]['Coment']+'</td>';
 					codigo += '</tr>';
-	   			}
 			}
 		}
 			codigo += '</tbody>';
 		codigo += '</table>';
-		console.log(codigo);
+		debugger;
+		console.log(app.order);
 		if (app.order.length > 0) {
 			var hoy = new Date();
-			hoy = hoy.toDateString();
+			hoy = hoy.toLocaleDateString();
 			if (app.model.order['fecha'] === hoy) {
-				tituloMail = app.model.order['titulo'];
+				//tituloMail = app.model.order['titulo'];
 				var aux = app.model.order['orders'];
 				for (var i=0; i<app.order.length; i++) {
-				aux.push(app.order[i]);
+					aux.push(app.order[i]);
 				}
 				firebase.database().ref().update({order:{'fecha':hoy,'orders':aux}});
 			}
