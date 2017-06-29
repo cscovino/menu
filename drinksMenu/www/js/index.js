@@ -39,6 +39,7 @@ var app = {
 
 	setSnap: function(snap){
 		app.model = snap;
+		app.order = snap.order['orders'];
 		app.refreshData();
 		app.refreshMeets();
 	},
@@ -216,11 +217,11 @@ var app = {
 		for(var i=0; i<app.order.length; i++){
 			for(var key in app.order[i]){
 				if (key === user) {
-						if (app.order[i][user]['client'] === client) {
-							var cant = app.order[i][user]['Cantidad'];
-							aux2 = 1;
-							break;
-						}
+					if (app.order[i][user]['client'] === client) {
+						var cant = app.order[i][user]['Cantidad'];
+						aux2 = 1;
+						break;
+					}
 				}
 			}
 		}
@@ -228,11 +229,14 @@ var app = {
 			var cant = 0;
 		}
 		cant += 1;
+		var fecha = new Date();
+		var h = fecha.getHours();
+		var m = fecha.getMinutes();
+		var hora = h+':'+m;
 		if (cant <= 2) {
 		  var aux = {};
 		  aux[user] = {};
-		  aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client};
-		  aux
+		  aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
 		  app.order.push(aux);
 		  app.refreshCart();
 		  app.refreshShopping();
@@ -561,6 +565,7 @@ var app = {
 	sendMail: function(){
 		var tituloMail;
 		var aux = [];
+		var color = 0;
 		var codigo = '<table style="color:#383838;">';
 		codigo += '<tbody>';
 			codigo += '<tr>';
@@ -571,13 +576,13 @@ var app = {
 			codigo += '</tr>';
 		for (var i=0; i<app.order.length; i++) {
 			for(var key in app.order[i]){
-					if (aux) {
+					if (color) {
 					codigo += '<tr style="background:#eaeaea;">';
-						aux = 0;	
+						color = 0;	
 					}
 					else{
 					codigo += '<tr>';
-						aux = 1;
+						color = 1;
 					}
 						codigo += '<td>'+app.order[i][key]['client']+'</td>'
 						codigo += '<td>'+key+'</td>';
@@ -588,13 +593,10 @@ var app = {
 		}
 			codigo += '</tbody>';
 		codigo += '</table>';
-		debugger;
-		console.log(app.order);
 		if (app.order.length > 0) {
 			var hoy = new Date();
 			hoy = hoy.toLocaleDateString();
 			if (app.model.order['fecha'] === hoy) {
-				//tituloMail = app.model.order['titulo'];
 				var aux = app.model.order['orders'];
 				for (var i=0; i<app.order.length; i++) {
 					aux.push(app.order[i]);
@@ -605,13 +607,13 @@ var app = {
 				firebase.database().ref().update({order:{'fecha':hoy,'orders':app.order}});
 			}
 			emailjs.send("gmail","pedidos",{message_html: codigo});
+			app.order = [];
+			app.refreshCart();
+			app.refreshShopping();
+			app.previousPage();
+		}
 			alert('Pedido enviado');
 			app.saveFirebase();
-		}
-		app.order = [];
-		app.refreshCart();
-		app.refreshShopping();
-		app.previousPage();
 	},
 }
 
