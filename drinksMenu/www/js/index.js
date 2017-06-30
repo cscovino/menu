@@ -39,7 +39,6 @@ var app = {
 
 	setSnap: function(snap){
 		app.model = snap;
-		app.order = snap.order['orders'];
 		app.refreshData();
 		app.refreshMeets();
 	},
@@ -142,6 +141,7 @@ var app = {
 	},
 
 	saveOrder: function(opt){
+		debugger;
 		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split('>')[1].split('<')[0];
 		var client = document.getElementsByClassName('title-clients')[1].id;
 		var meetId = document.getElementById('meet-id').innerHTML;
@@ -234,13 +234,13 @@ var app = {
 		var m = fecha.getMinutes();
 		var hora = h+':'+m;
 		if (cant <= 2) {
-		  var aux = {};
-		  aux[user] = {};
-		  aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
-		  app.order.push(aux);
-		  app.refreshCart();
-		  app.refreshShopping();
-		  alert('Pedido anotado');
+			var aux = {};
+			aux[user] = {};
+			aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
+			app.order.push(aux);
+			app.refreshCart();
+			app.refreshShopping();
+			alert('Pedido anotado');
 		}
 		else{
 		  alert('Sólo se permiten máximo dos bebidas por persona');
