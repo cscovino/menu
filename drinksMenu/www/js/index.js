@@ -141,7 +141,6 @@ var app = {
 	},
 
 	saveOrder: function(opt){
-		debugger;
 		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split('>')[1].split('<')[0];
 		var client = document.getElementsByClassName('title-clients')[1].id;
 		var meetId = document.getElementById('meet-id').innerHTML;
