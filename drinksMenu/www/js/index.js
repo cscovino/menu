@@ -16,6 +16,8 @@ var app = {
 
 	order: [],
 
+	inventory: {},
+
 	meets: [],
 
 	weekday: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
@@ -39,6 +41,7 @@ var app = {
 
 	setSnap: function(snap){
 		app.model = snap;
+		app.inventory = snap.inventory;
 		app.refreshData();
 		app.refreshMeets();
 	},
@@ -99,6 +102,9 @@ var app = {
 
 	meetPage: function(){
 		app.refreshMeets();
+		app.order = [];
+		app.refreshCart();
+		app.refreshShopping();
 		document.getElementById('back').style.display = 'none';
 		document.getElementById('back2').style.display = 'none';
 		document.getElementById('menu-options').style.display = 'none';
@@ -606,13 +612,102 @@ var app = {
 				firebase.database().ref().update({order:{'fecha':hoy,'orders':app.order}});
 			}
 			emailjs.send("gmail","pedidos",{message_html: codigo});
+			for(var i=0; i<app.order.length; i++){
+				for(var key in app.order[i]){
+					if (app.order[i][key]['Bebida'] === 'Agua'){
+						app.inventory['Agua'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Jugo Naranja') {
+						app.inventory['Jugo'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Cafe Negro') {
+						app.inventory['Cafe'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Cafe Marron') {
+						app.inventory['Cafe'] -= 1;
+						app.inventory['Leche'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Cafe con Leche') {
+						app.inventory['Cafe'] -= 1;
+						app.inventory['Leche'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Te Verde') {
+						app.inventory['TeVerde'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Te Negro') {
+						app.inventory['TeNegro'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Te Flor de Jamaica') {
+						app.inventory['FlorJamaica'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Manzanilla') {
+						app.inventory['Manzanilla'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Coca Cola') {
+						app.inventory['CocaCola'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Coca Cola Light') {
+						app.inventory['CocaLight'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Chinotto') {
+						app.inventory['Chinotto'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Frescolita') {
+						app.inventory['Frescolita'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Vino Espumante') {
+						app.inventory['VinoEspumante'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Vino Tinto') {
+						app.inventory['VinoTinto'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Vino Blanco') {
+						app.inventory['VinoBlanco'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Ron') {
+						app.inventory['Ron'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Whisky') {
+						app.inventory['Whisky'] -= 1;
+					}
+					var xxx = app.order[i][key]['Coment'].split(' ');
+					for(var i=0; i<xxx.length; i++){
+						com = xxx[i].split(' ');
+						var num;
+						try{
+							num = int(com[0]);
+						}
+						catch(err){}
+						if (com[index] === 'agua'){
+							app.inventory['Agua'] -= 1;
+						}
+						if (com[index] === 'soda'){
+							app.inventory['Soda'] -= 1;
+						}
+						if(com[index] === 'limón'){
+							app.inventory['Limon'] -= 1;
+						}
+						if(com[index] === 'aguakina'){
+							app.inventory['Aguakina'] -= 1;
+						}
+						if(com[index] === 'chinotto'){
+							app.inventory['Chinotto'] -= 1;
+						}
+						if(com[index] === 'coca-cola'){
+							app.inventory['CocaCola'] -= 1;
+						}
+						if (true) {}
+					}
+				}
+			}
+			firebase.database().ref().update({inventory:app.inventory});
 			app.order = [];
 			app.refreshCart();
 			app.refreshShopping();
 			app.previousPage();
-		}
 			alert('Pedido enviado');
 			app.saveFirebase();
+		}
 	},
 }
 
