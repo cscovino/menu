@@ -158,58 +158,58 @@ var app = {
 		    opts = document.getElementsByClassName('options-refresh');
 		    coment = document.getElementById('refresh-comment').value;
 		    if (document.getElementById('ice2').checked) {
-		    	coment = document.getElementById('ice2').value+'. '+coment;
+		    	coment = document.getElementById('ice2').value+'.'+coment;
 		    }  
 		    break;
 		  case 2:
 		    opts = document.getElementsByClassName('options-hot');
 		    coment = document.getElementById('hot-comment').value;
 		    if (document.getElementById('sugar1').checked) {
-		    	coment = document.getElementById('sugar1').value+'. '+coment;
+		    	coment = document.getElementById('sugar1').value+'.'+coment;
 		    }
 		    else if (document.getElementById('sugar2').checked) {
-		    	coment = document.getElementById('sugar2').value+'. '+coment;
+		    	coment = document.getElementById('sugar2').value+'.'+coment;
 		    }
 		    else if (document.getElementById('sugar3').checked) {
-		    	coment = document.getElementById('sugar3').value+'. '+coment;
+		    	coment = document.getElementById('sugar3').value+'.'+coment;
 		    }
 		    if (document.getElementById('sugar4').checked) {
 		    	coment = coment.replace('azucar','splenda');
 		    }
 		    else if (document.getElementById('sugar5').checked) {
-		    	coment = document.getElementById('sugar5').value+'. '+coment;
+		    	coment = document.getElementById('sugar5').value+'.'+coment;
 		    }
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');
 		    coment = document.getElementById('soda-comment').value;
 		    if (document.getElementById('ice').checked) {
-		    	coment = document.getElementById('ice').value+'. '+coment;
+		    	coment = document.getElementById('ice').value+'.'+coment;
 		    }        
 		    break;
 		  case 4:
 		    opts = document.getElementsByClassName('options-alcol');
 		    coment = document.getElementById('alcol-comment').value;
 		    if (document.getElementById('ice3').checked) {
-		    	coment = document.getElementById('ice3').value+'. '+coment;
+		    	coment = document.getElementById('ice3').value+'.'+coment;
 		    }
 		    if (document.getElementById('water').checked) {
-		    	coment = document.getElementById('water').value+'. '+coment;
+		    	coment = document.getElementById('water').value+'.'+coment;
 		    }
 		    if (document.getElementById('soda').checked) {
-		    	coment = document.getElementById('soda').value+'. '+coment;
+		    	coment = document.getElementById('soda').value+'.'+coment;
 		    }
 		    if (document.getElementById('aguakina').checked) {
-		    	coment = document.getElementById('aguakina').value+'. '+coment;
+		    	coment = document.getElementById('aguakina').value+'.'+coment;
 		    }
 		    if (document.getElementById('chinott').checked) {
-		    	coment = document.getElementById('chinott').value+'. '+coment;
+		    	coment = document.getElementById('chinott').value+'.'+coment;
 		    }
 		    if (document.getElementById('coke').checked) {
-		    	coment = document.getElementById('coke').value+'. '+coment;
+		    	coment = document.getElementById('coke').value+'.'+coment;
 		    }
 		    if (document.getElementById('lemon').checked) {
-		    	coment = document.getElementById('lemon').value+'. '+coment;
+		    	coment = document.getElementById('lemon').value+'.'+coment;
 		    }
 		    break;
 		}	
@@ -670,7 +670,7 @@ var app = {
 					else if (app.order[i][key]['Bebida'] === 'Whisky') {
 						app.inventory['Whisky'] -= 1;
 					}
-					var xxx = app.order[i][key]['Coment'].split(' ');
+					var xxx = app.order[i][key]['Coment'].split('.');
 					for(var i=0; i<xxx.length; i++){
 						com = xxx[i].split(' ');
 						var num;
@@ -678,25 +678,30 @@ var app = {
 							num = int(com[0]);
 						}
 						catch(err){}
-						if (com[index] === 'agua'){
+						if (com[1] === 'agua'){
 							app.inventory['Agua'] -= 1;
 						}
-						if (com[index] === 'soda'){
+						if (com[1] === 'soda'){
 							app.inventory['Soda'] -= 1;
 						}
-						if(com[index] === 'limón'){
+						if(com[1] === 'limón'){
 							app.inventory['Limon'] -= 1;
 						}
-						if(com[index] === 'aguakina'){
+						if(com[1] === 'aguakina'){
 							app.inventory['Aguakina'] -= 1;
 						}
-						if(com[index] === 'chinotto'){
+						if(com[1] === 'chinotto'){
 							app.inventory['Chinotto'] -= 1;
 						}
-						if(com[index] === 'coca-cola'){
+						if(com[1] === 'coca-cola'){
 							app.inventory['CocaCola'] -= 1;
 						}
-						if (true) {}
+						if(com[1] === 'azucar'){
+							app.inventory['Azucar'] -= num;
+						}
+						if(com[1] === 'splenda'){
+							app.inventory['Splenda'] -= num;
+						}
 					}
 				}
 			}
