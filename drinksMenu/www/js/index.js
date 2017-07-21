@@ -598,6 +598,7 @@ var app = {
 		}
 			codigo += '</tbody>';
 		codigo += '</table>';
+		debugger;
 		if (app.order.length > 0) {
 			var hoy = new Date();
 			hoy = hoy.toLocaleDateString();
@@ -671,8 +672,8 @@ var app = {
 						app.inventory['Whisky'] -= 1;
 					}
 					var xxx = app.order[i][key]['Coment'].split('.');
-					for(var i=0; i<xxx.length; i++){
-						com = xxx[i].split(' ');
+					for(var j=0; j<xxx.length; j++){
+						com = xxx[j].split(' ');
 						var num;
 						try{
 							num = int(com[0]);
@@ -716,6 +717,8 @@ var app = {
 	},
 }
 
+emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
+
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref().on('value', function(snap){
 	if (snap.val() !== null) {
@@ -726,6 +729,5 @@ firebase.database().ref().on('value', function(snap){
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
     	FastClick.attach(document.body);
-        app.initFirebase();
     }, false);
 }
