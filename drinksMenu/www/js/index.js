@@ -240,7 +240,6 @@ var app = {
 		var h = fecha.getHours();
 		var m = fecha.getMinutes();
 		var hora = h+':'+m;
-		debugger;
 		if (cant <= 2) {
 			if (alcohol) {
 				console.log(app.model.meetings[meetId]['users'].length);
