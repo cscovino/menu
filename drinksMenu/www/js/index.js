@@ -153,6 +153,7 @@ var app = {
 		var opts;
 		var coment;
 		var drink;
+		var alcohol = 0;
 		switch(opt){
 		  case 1:
 		    opts = document.getElementsByClassName('options-refresh');
@@ -188,6 +189,7 @@ var app = {
 		    }        
 		    break;
 		  case 4:
+		  	alcohol = 1;
 		    opts = document.getElementsByClassName('options-alcol');
 		    coment = document.getElementById('alcol-comment').value;
 		    if (document.getElementById('ice3').checked) {
@@ -238,14 +240,39 @@ var app = {
 		var h = fecha.getHours();
 		var m = fecha.getMinutes();
 		var hora = h+':'+m;
+		debugger;
 		if (cant <= 2) {
-			var aux = {};
-			aux[user] = {};
-			aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
-			app.order.push(aux);
-			app.refreshCart();
-			app.refreshShopping();
-			alert('Pedido anotado');
+			if (alcohol) {
+				console.log(app.model.meetings[meetId]['users'].length);
+				for(var k=0; k<app.model.meetings[meetId]['users'].length; k++) {
+					console.log(app.model.meetings[meetId]['users'][i]['Nombre']);
+					if (app.model.meetings[meetId]['users'][k]['Nombre']===user) {
+						if (app.model.meetings[meetId]['users'][k]['Tipo']==='vip') {
+							var aux = {};
+							aux[user] = {};
+							aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
+							app.order.push(aux);
+							app.refreshCart();
+							app.refreshShopping();
+							alert('Pedido anotado');
+							break;
+						}
+						else{
+							alert('Lo sentimos, las bebidas alcohólicas son exclusivas para clientes V.I.P.');
+							break;
+						}
+					}
+				}
+			}
+			else{
+				var aux = {};
+				aux[user] = {};
+				aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
+				app.order.push(aux);
+				app.refreshCart();
+				app.refreshShopping();
+				alert('Pedido anotado');
+			}
 		}
 		else{
 		  alert('Sólo se permiten máximo dos bebidas por persona');
