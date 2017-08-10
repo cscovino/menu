@@ -16,6 +16,8 @@ var app = {
 
 	order: [],
 
+	inventory: {},
+
 	meets: [],
 
 	weekday: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
@@ -39,6 +41,7 @@ var app = {
 
 	setSnap: function(snap){
 		app.model = snap;
+		app.inventory = snap.inventory;
 		app.refreshData();
 		app.refreshMeets();
 	},
@@ -99,6 +102,9 @@ var app = {
 
 	meetPage: function(){
 		app.refreshMeets();
+		app.order = [];
+		app.refreshCart();
+		app.refreshShopping();
 		document.getElementById('back').style.display = 'none';
 		document.getElementById('back2').style.display = 'none';
 		document.getElementById('menu-options').style.display = 'none';
@@ -112,6 +118,7 @@ var app = {
 		document.getElementById('back').style.display = 'inline';
 		document.getElementById('back2').style.display = 'inline';
 		$('#back').attr("onclick","app.meetPage()");
+		$('#back2').attr("onclick","app.meetPage()");
 		document.getElementById('menu-options').style.display = 'block';
 		document.getElementById('title').style.display = 'block';
 		document.getElementById('title').innerHTML = '¡Bienvenido! Por favor seleccione su nombre';
@@ -130,6 +137,7 @@ var app = {
 		document.getElementById('back').style.display = 'inline';
 		document.getElementById('back2').style.display = 'inline';
 		$('#back').attr("onclick","app.userPage('"+prev+"')");
+		$('#back2').attr("onclick","app.userPage('"+prev+"')");
 	},
 
 	previousPage: function(){
@@ -141,66 +149,69 @@ var app = {
 	saveOrder: function(opt){
 		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split('>')[1].split('<')[0];
 		var client = document.getElementsByClassName('title-clients')[1].id;
+		var meetId = document.getElementById('meet-id').innerHTML;
 		var opts;
 		var coment;
 		var drink;
+		var alcohol = 0;
 		switch(opt){
 		  case 1:
 		    opts = document.getElementsByClassName('options-refresh');
 		    coment = document.getElementById('refresh-comment').value;
 		    if (document.getElementById('ice2').checked) {
-		    	coment = document.getElementById('ice2').value+'. '+coment;
+		    	coment = document.getElementById('ice2').value+'.'+coment;
 		    }  
 		    break;
 		  case 2:
 		    opts = document.getElementsByClassName('options-hot');
 		    coment = document.getElementById('hot-comment').value;
 		    if (document.getElementById('sugar1').checked) {
-		    	coment = document.getElementById('sugar1').value+'. '+coment;
+		    	coment = document.getElementById('sugar1').value+'.'+coment;
 		    }
 		    else if (document.getElementById('sugar2').checked) {
-		    	coment = document.getElementById('sugar2').value+'. '+coment;
+		    	coment = document.getElementById('sugar2').value+'.'+coment;
 		    }
 		    else if (document.getElementById('sugar3').checked) {
-		    	coment = document.getElementById('sugar3').value+'. '+coment;
+		    	coment = document.getElementById('sugar3').value+'.'+coment;
 		    }
 		    if (document.getElementById('sugar4').checked) {
 		    	coment = coment.replace('azucar','splenda');
 		    }
 		    else if (document.getElementById('sugar5').checked) {
-		    	coment = document.getElementById('sugar5').value+'. '+coment;
+		    	coment = document.getElementById('sugar5').value+'.'+coment;
 		    }
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');
 		    coment = document.getElementById('soda-comment').value;
 		    if (document.getElementById('ice').checked) {
-		    	coment = document.getElementById('ice').value+'. '+coment;
+		    	coment = document.getElementById('ice').value+'.'+coment;
 		    }        
 		    break;
 		  case 4:
+		  	alcohol = 1;
 		    opts = document.getElementsByClassName('options-alcol');
 		    coment = document.getElementById('alcol-comment').value;
 		    if (document.getElementById('ice3').checked) {
-		    	coment = document.getElementById('ice3').value+'. '+coment;
+		    	coment = document.getElementById('ice3').value+'.'+coment;
 		    }
 		    if (document.getElementById('water').checked) {
-		    	coment = document.getElementById('water').value+'. '+coment;
+		    	coment = document.getElementById('water').value+'.'+coment;
 		    }
 		    if (document.getElementById('soda').checked) {
-		    	coment = document.getElementById('soda').value+'. '+coment;
+		    	coment = document.getElementById('soda').value+'.'+coment;
 		    }
 		    if (document.getElementById('aguakina').checked) {
-		    	coment = document.getElementById('aguakina').value+'. '+coment;
+		    	coment = document.getElementById('aguakina').value+'.'+coment;
 		    }
 		    if (document.getElementById('chinott').checked) {
-		    	coment = document.getElementById('chinott').value+'. '+coment;
+		    	coment = document.getElementById('chinott').value+'.'+coment;
 		    }
 		    if (document.getElementById('coke').checked) {
-		    	coment = document.getElementById('coke').value+'. '+coment;
+		    	coment = document.getElementById('coke').value+'.'+coment;
 		    }
 		    if (document.getElementById('lemon').checked) {
-		    	coment = document.getElementById('lemon').value+'. '+coment;
+		    	coment = document.getElementById('lemon').value+'.'+coment;
 		    }
 		    break;
 		}	
@@ -212,13 +223,11 @@ var app = {
 		var aux2 = 0;
 		for(var i=0; i<app.order.length; i++){
 			for(var key in app.order[i]){
-				if (key === client) {
-					for(var key2 in app.order[i][client]){
-						if (key2 === user) {
-							var cant = app.order[i][client][user]['Cantidad'];
-							aux2 = 1;
-							break;
-						}
+				if (key === user) {
+					if (app.order[i][user]['client'] === client) {
+						var cant = app.order[i][user]['Cantidad'];
+						aux2 = 1;
+						break;
 					}
 				}
 			}
@@ -227,14 +236,40 @@ var app = {
 			var cant = 0;
 		}
 		cant += 1;
+		var fecha = new Date();
+		var h = fecha.getHours();
+		var m = fecha.getMinutes();
+		var hora = h+':'+m;
 		if (cant <= 2) {
-		  var aux = {};
-		  aux[client] = {};
-		  aux[client][user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant};
-		  app.order.push(aux);
-		  app.refreshCart();
-		  app.refreshShopping();
-		  alert('Pedido anotado');
+			if (alcohol) {
+				for(var k=0; k<app.model.meetings[meetId]['users'].length; k++) {
+					if (app.model.meetings[meetId]['users'][k]['Nombre']===user) {
+						if (app.model.meetings[meetId]['users'][k]['Tipo']==='vip') {
+							var aux = {};
+							aux[user] = {};
+							aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
+							app.order.push(aux);
+							app.refreshCart();
+							app.refreshShopping();
+							alert('Pedido anotado');
+							break;
+						}
+						else{
+							alert('Lo sentimos, las bebidas alcohólicas son exclusivas para clientes V.I.P.');
+							break;
+						}
+					}
+				}
+			}
+			else{
+				var aux = {};
+				aux[user] = {};
+				aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
+				app.order.push(aux);
+				app.refreshCart();
+				app.refreshShopping();
+				alert('Pedido anotado');
+			}
 		}
 		else{
 		  alert('Sólo se permiten máximo dos bebidas por persona');
@@ -265,14 +300,12 @@ var app = {
 					codigo += '</tr>';
 				for (var i=0; i<app.order.length; i++) {
 					for(var key in app.order[i]){
-						for(var key2 in app.order[i][key]){
 							codigo += '<tr onclick="app.idConfirm('+i+');" data-toggle="modal" data-target="#myModal7">';
+								codigo += '<td>'+app.order[i][key]['client']+'</td>';
 								codigo += '<td>'+key+'</td>'
-								codigo += '<td>'+key2+'</td>';
-								codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
-		                        codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
+								codigo += '<td>'+app.order[i][key]['Bebida']+'</td>';
+		                        codigo += '<td>'+app.order[i][key]['Coment']+'</td>';
 							codigo += '</tr>';
-						}
                 	}
 				}
 				codigo += '</tbody>';
@@ -334,18 +367,31 @@ var app = {
 
 	addClient: function(){
 		var aux = 0;
+		var type;
 		var user = document.getElementById('invited').value;
 		var client = document.getElementsByClassName('ocult')[0].id;
+		opts = document.getElementsByClassName('options');
+		for(var i=0; i<opts.length; i++){
+			if (opts[i].checked) {
+				type = opts[i].id;
+			}
+		}
 		if(user){
-			for(var i=0; i<app.auxModelMeet['users'].length; i++) {
-				if(app.auxModelMeet['users'][i]['Nombre'] === user && app.auxModelMeet['users'][i]['Cliente'] === client){
+			for(var i=0; i<app.modelMeet['users'].length; i++) {
+				if(app.modelMeet['users'][i]['Nombre'] === user && (app.modelMeet['users'][i]['Cliente'] === client || app.modelMeet['users'][i]['Cliente'] === client.replace(' ',''))){
 					alert('Ya se agregó esta persona a la reunión');
 					aux = 1;
 					break;
 				}
 			}
 			if (!aux) {
-				app.auxModelMeet['users'].push({'Nombre':user,'Cliente':client});
+				try{
+					var car = app.model['clients'][client][user]['Caract'];
+				}
+				catch(err){
+					var car = app.model['clients'][client.replace(' ','')][user]['Caract'];
+				}
+				app.modelMeet['users'].push({'Nombre':user,'Cliente':client,'Caract':car,'Tipo':type});
 			}
 			app.refreshMeeting();
 			app.refreshMeetingModal();
@@ -357,22 +403,22 @@ var app = {
 		users.html('');
 		var codigo = '';
 		codigo += '<label>Invitados para la reunión:</label>';
-		for(var i=0; i<app.auxModelMeet['users'].length; i++){
-			codigo += '<div class="input-group">';
+		for(var i=0; i<app.modelMeet['users'].length; i++){
+			codigo += '<div class="input-group" style="width:62.5%;">';
 				codigo += '<span class="input-group-addon"><img src="img/social.svg" height="20px"></span>';
-				codigo += '<input type="text" class="form-control" value="'+app.auxModelMeet['users'][i]['Nombre']+'" style="width:100%;" id="" disabled="">';
-				codigo += '<span id="ocult" style="display: none;" class='+app.auxModelMeet['users'][i]['Cliente']+'></span>';
+				codigo += '<input type="text" class="form-control" value="'+app.modelMeet['users'][i]['Nombre']+'" id="" disabled="">';
+				codigo += '<span id="ocult" style="display: none;" class='+app.modelMeet['users'][i]['Cliente']+'></span>';
 			codigo += '</div><br>';
 		}
-		codigo += '<div class="input-group">';
+		if (app.modelMeet['users'].length > 0) {
+			document.getElementById('guardar-button').disabled = false;
+			document.getElementById('borrar-button').disabled = false;
+		}
+		codigo += '<div class="input-group" style="width:62.5%;">';
 			codigo += '<span class="input-group-addon"><img src="img/social.svg" height="20px"></span>';
-			codigo += '<input type="text" class="form-control" placeholder="Invitado" style="width:100%;" data-toggle="modal" data-target="#modalclientes" id="invited">';
+			codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#modalclientes" id="invited">';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
-		if (app.auxModelMeet['users'].length > 0) {
-			document.getElementById('borrar-button').disabled = false;
-			document.getElementById('guardar-button').disabled = false;
-		}
 		users.append(codigo);	
 	},
 
@@ -441,31 +487,6 @@ var app = {
 	},
 
 	refreshMeetingModal: function(){
-		var users = $('#user-body3');
-		users.html('');
-		var codigo = '<table class="table table-bordered" id="guests">';
-				codigo += '<tbody>';
-					codigo += '<tr>';
-						codigo += '<th>Empresa</th>';
-						codigo += '<th>Nombre</th>';
-					codigo += '</tr>';
-				for (var i=0; i<app.auxModelMeet['users'].length; i++) {
-					codigo += '<tr onclick="app.idConfirm('+app.auxModelMeet['users'][i]['Cliente']+'_'+app.auxModelMeet['users'][i]['Nombre']+');" data-toggle="modal" data-target="#myModal3">';
-						codigo += '<td>'+app.auxModelMeet['users'][i]['Cliente']+'</td>';
-						codigo += '<td>'+app.auxModelMeet['users'][i]['Nombre']+'</td>';
-					codigo += '</tr>';
-				}
-				codigo += '</tbody>';
-			codigo += '</table>';
-		users.append(codigo);
-		if (!app.auxModelMeet['users'][0]) {
-			app.delMeet();
-		}
-	},
-
-	sendMeet: function(){
-		$('#myModal9').modal('hide');
-		app.auxModelMeet['titulo'] = document.getElementById('title-meet').value;
 		var today = new Date();
 		var month = today.getMonth()+1;
 		var hour = today.getHours();
@@ -487,36 +508,217 @@ var app = {
 				hour2 -= 12;
 			}
 		}
-		app.auxModelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+today.getMinutes()+' '+amopm+' - ';
-		app.auxModelMeet['fecha'] += hour2+':'+today.getMinutes()+' '+amopm2;
-		firebase.database().ref('meetings').push(app.auxModelMeet);
-		for(var key in app.model.meetings){
-			if (app.model.meetings[key]['titulo'] === document.getElementById('title-meet').value && app.model.meetings[key]['fecha'] === '') {
-				app.userPage(key);
-			}
+		app.modelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+today.getMinutes()+' '+amopm+' - ';
+		app.modelMeet['fecha'] += hour2+':'+today.getMinutes()+' '+amopm2;
+		app.modelMeet['sala'] = '';
+		app.modelMeet['titulo'] = document.getElementById('title-meet').value;
+		app.modelMeet['tech'] = {video:0,sound:0,laser:0,comment:''};
+		app.modelMeet['mat'] = {brochures:0,brochurep:0,notebook:0,pens:0,magazine:0};
+		if (document.getElementById('video').checked) {
+	    	app.modelMeet['tech']['video'] = 1;
+	    }
+	    if (document.getElementById('sound').checked) {
+	    	app.modelMeet['tech']['sound'] = 1;
+	    }
+	    if (document.getElementById('laser').checked) {
+	    	app.modelMeet['tech']['laser'] = 1;
+	    }
+	    app.modelMeet['mat']['brochures'] = document.getElementById('brochures').value;
+	    app.modelMeet['mat']['brochurep'] = document.getElementById('brochurep').value;
+	    app.modelMeet['mat']['notebook'] = document.getElementById('notebook').value;
+	    app.modelMeet['mat']['pens'] = document.getElementById('pens').value;
+	    app.modelMeet['mat']['magazine'] = document.getElementById('magazine').value;
+	    app.modelMeet['tech']['comment'] = '';
+		var users = $('#user-body3');
+		users.html('');
+		var codigo = '<div id="" class="confirmmeet">¿Deseas programar esta reunión?</div><br>';
+			codigo += '<div>Título: '+app.modelMeet['titulo']+'</div>';
+			codigo += '<div>Sala: '+app.modelMeet['sala']+'</div>';
+			codigo += '<div>Fecha: '+app.modelMeet['fecha']+'</div>';
+			codigo += '<div>Tecnología: </div>';
+				if (app.modelMeet['tech']['video']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Video Beam</div>';
+				}
+				if (app.modelMeet['tech']['sound']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cornetas</div>';
+				}
+				if (app.modelMeet['tech']['laser']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apuntador</div>';
+				}
+				if (app.modelMeet['tech']['comment']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['tech']['comment']+'</div>';
+				}
+			codigo += '<div>Materiales POP:</div>';
+				if (app.modelMeet['mat']['brochures'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brochure Soutec: '+app.modelMeet['mat']['brochures']+'</div>';
+				}
+				if (app.modelMeet['mat']['brochurep'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brochure Proyecto U: '+app.modelMeet['mat']['brochurep']+'</div>';
+				}
+				if (app.modelMeet['mat']['notebook'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cuadernos Soutec: '+app.modelMeet['mat']['notebook']+'</div>';
+				}
+				if (app.modelMeet['mat']['pens'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bolígrafos: '+app.modelMeet['mat']['pens']+'</div>';
+				}
+				if (app.modelMeet['mat']['magazine'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revistas: '+app.modelMeet['mat']['magazine']+'</div>';
+				}
+			codigo += '<div>Invitados:</div>';
+			codigo += '<table class="table table-bordered" id="guests">';
+				codigo += '<tbody>';
+					codigo += '<tr>';
+						codigo += '<th>Empresa</th>';
+						codigo += '<th>Nombre</th>';
+					codigo += '</tr>';
+				for (var i=0; i<app.modelMeet['users'].length; i++) {
+					codigo += '<tr onclick="app.idConfirm(this)" id="'+app.modelMeet['users'][i]['Cliente'].replace(' ','-')+'_'+app.modelMeet['users'][i]['Nombre'].replace(' ','-')+'" data-toggle="modal" data-target="#myModal16">';
+						codigo += '<td>'+app.modelMeet['users'][i]['Cliente']+'</td>';
+						codigo += '<td>'+app.modelMeet['users'][i]['Nombre']+'</td>';
+					codigo += '</tr>';
+				}
+				codigo += '</tbody>';
+			codigo += '</table>';
+		users.append(codigo);
+		if (!app.modelMeet['users'][0]) {
+			app.delMeet();
 		}
 	},
 
+	sendMeet: function(){
+  		var h2 = app.modelMeet['fecha'].split(' ');
+  		var tit = app.modelMeet['titulo'];
+  		var fec = app.modelMeet['fecha'].split(' ')[0];
+		for(var key in app.model.meetings){
+  			if (app.model.meetings[key]['titulo']===tit) {
+  				if (app.model.meetings[key]['fecha'].split(' ')[0]===fec) {
+  					var h1 = app.model.meetings[key]['fecha'].split(' ');
+  					var hora1 = h1[1]+' '+h1[2];
+  					var hora2 = h2[1]+' '+h2[2];
+  					if (hora1 === hora2) {
+  						firebase.database().ref('meetings').child(key).remove();
+  						break;
+  					}
+  				}
+  			}
+  		}
+		firebase.database().ref('meetings').push(app.modelMeet);
+		var color = 0;
+		var codigo = '<div>Título: '+app.modelMeet['titulo']+'</div>';
+			codigo += '<div>Sala: '+app.modelMeet['sala']+'</div>';
+			codigo += '<div>Fecha: '+app.modelMeet['fecha']+'</div>';
+			codigo += '<div>Tecnología: </div>';
+				if (app.modelMeet['tech']['video']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Video Beam</div>';
+				}
+				if (app.modelMeet['tech']['sound']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cornetas</div>';
+				}
+				if (app.modelMeet['tech']['laser']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apuntador</div>';
+				}
+				if (app.modelMeet['tech']['comment']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['tech']['comment']+'</div>';
+				}
+			codigo += '<div>Materiales POP:</div>';
+				if (app.modelMeet['mat']['brochures'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brochure Soutec: '+app.modelMeet['mat']['brochures']+'</div>';
+				}
+				if (app.modelMeet['mat']['brochurep'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brochure Proyecto U: '+app.modelMeet['mat']['brochurep']+'</div>';
+				}
+				if (app.modelMeet['mat']['notebook'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cuadernos Soutec: '+app.modelMeet['mat']['notebook']+'</div>';
+				}
+				if (app.modelMeet['mat']['pens'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bolígrafos: '+app.modelMeet['mat']['pens']+'</div>';
+				}
+				if (app.modelMeet['mat']['magazine'] != 0) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revistas: '+app.modelMeet['mat']['magazine']+'</div>';
+				}
+			codigo += '<div>Invitados:</div>';
+			codigo += '<table style="color:#383838;">';
+				codigo += '<tbody>';
+					codigo += '<tr>';
+						codigo += '<th style="background:#395062;color:#fff;">Empresa</th>';
+						codigo += '<th style="background:#395062;color:#fff;">Nombre</th>';
+					codigo += '</tr>';
+				for (var i=0; i<app.modelMeet['users'].length; i++) {
+					if (color) {
+					codigo += '<tr style="background:#eaeaea;">';
+						color = 0;	
+					}
+					else{
+					codigo += '<tr>';
+						color = 1;
+					}
+						codigo += '<td>'+app.modelMeet['users'][i]['Cliente']+'</td>';
+						codigo += '<td>'+app.modelMeet['users'][i]['Nombre']+'</td>';
+					codigo += '</tr>';
+				}
+				codigo += '</tbody>';
+			codigo += '</table>';
+		emailjs.send("gmail","meetings",{message_html: codigo});
+		alert('Reunión guardada');
+		app.delMeet();
+	},
+
 	delMeet: function(){
-		var users = $('#info-meet');
+		document.getElementById('title-meet').value = '';
+		document.getElementById('room-meet').value = '';
+		document.getElementById('datepicker').value = '';
+		document.getElementById('video').checked = false;
+		document.getElementById('sound').checked = false;
+		document.getElementById('laser').checked = false;
+		document.getElementById('brochures').value = 0;
+		document.getElementById('brochurep').value = 0;
+		document.getElementById('notebook').value = 0;
+		document.getElementById('pens').value = 0;
+		document.getElementById('magazine').value = 0;
+		var users = $('#info-meet-data');
 		users.html('');
 		var codigo = '';
 		codigo += '<label>Invitados para la reunión:</label>';
-		codigo += '<div class="input-group">';
+		codigo += '<div class="input-group" style="width:62.5%;">';
 			codigo += '<span class="input-group-addon"><img src="img/social.svg" height="20px"></span>';
-			codigo += '<input type="text" class="form-control" placeholder="Invitado" style="width:100%;" data-toggle="modal" data-target="#modalclientes" id="invited">';
+			codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#myModal7" id="invited">';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
 		users.append(codigo);
-		document.getElementById('borrar-button').disabled = true;
 		document.getElementById('guardar-button').disabled = true;
-		app.auxModelMeet['users'] = [];
+		document.getElementById('borrar-button').disabled = true;
+		app.modelMeet = {'titulo':'','sala':'','fecha':'','tech':{},'mat':{},'users':[]};
+		app.refreshMeetingModal();
 	},
+
+	delUser: function(){
+		debugger;
+		var datos = document.getElementsByClassName('confirm')[0].id;
+		var key = datos.split('_')[0].replace('-',' ');
+		var key2 = datos.split('_')[1].replace('-',' ');
+		var index = -1;
+		for(var i=0; i<app.modelMeet['users'].length; i++){
+			if (app.modelMeet['users'][i]['Nombre'] === key2 && app.modelMeet['users'][i]['Cliente'] === key) {
+				index = i;
+				break;
+			}
+		}
+		if (index >= 0) {
+			app.modelMeet['users'].splice(index,1);
+		}
+		app.refreshMeeting();
+		app.refreshMeetingModal();
+	},
+
 
 	idConfirm: function(data){
-		document.getElementsByClassName('confirm')[0].id = data;
+		document.getElementsByClassName('confirm')[0].id = data.id;	
 	},
 
+	confirmeet: function(datakey){
+		document.getElementsByClassName('confirmmeet')[0].id = datakey;
+	},
+	
 	delOrder: function(){
 		app.order.splice(document.getElementsByClassName('confirm')[0].id,1);
 		app.refreshCart();
@@ -560,7 +762,8 @@ var app = {
 
 	sendMail: function(){
 		var tituloMail;
-		var aux = 0;
+		var aux = [];
+		var color = 0;
 		var codigo = '<table style="color:#383838;">';
 		codigo += '<tbody>';
 			codigo += '<tr>';
@@ -571,34 +774,30 @@ var app = {
 			codigo += '</tr>';
 		for (var i=0; i<app.order.length; i++) {
 			for(var key in app.order[i]){
-				for(var key2 in app.order[i][key]){
-					if (aux) {
+					if (color) {
 					codigo += '<tr style="background:#eaeaea;">';
-						aux = 0;	
+						color = 0;	
 					}
 					else{
 					codigo += '<tr>';
-						aux = 1;
+						color = 1;
 					}
-						codigo += '<td>'+key+'</td>'
-						codigo += '<td>'+key2+'</td>';
-						codigo += '<td>'+app.order[i][key][key2]['Bebida']+'</td>';
-	        			codigo += '<td>'+app.order[i][key][key2]['Coment']+'</td>';
+						codigo += '<td>'+app.order[i][key]['client']+'</td>'
+						codigo += '<td>'+key+'</td>';
+						codigo += '<td>'+app.order[i][key]['Bebida']+'</td>';
+	        			codigo += '<td>'+app.order[i][key]['Coment']+'</td>';
 					codigo += '</tr>';
-	   			}
 			}
 		}
 			codigo += '</tbody>';
 		codigo += '</table>';
-		console.log(codigo);
 		if (app.order.length > 0) {
 			var hoy = new Date();
-			hoy = hoy.toDateString();
+			hoy = hoy.toLocaleDateString();
 			if (app.model.order['fecha'] === hoy) {
-				tituloMail = app.model.order['titulo'];
 				var aux = app.model.order['orders'];
 				for (var i=0; i<app.order.length; i++) {
-				aux.push(app.order[i]);
+					aux.push(app.order[i]);
 				}
 				firebase.database().ref().update({order:{'fecha':hoy,'orders':aux}});
 			}
@@ -606,15 +805,126 @@ var app = {
 				firebase.database().ref().update({order:{'fecha':hoy,'orders':app.order}});
 			}
 			emailjs.send("gmail","pedidos",{message_html: codigo});
+			for(var i=0; i<app.order.length; i++){
+				for(var key in app.order[i]){
+					if (app.order[i][key]['Bebida'] === 'Agua'){
+						app.inventory['Agua'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Jugo Naranja') {
+						app.inventory['Jugo'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Cafe Negro') {
+						app.inventory['Cafe'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Cafe Marron') {
+						app.inventory['Cafe'] -= 1;
+						app.inventory['Leche'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Cafe con Leche') {
+						app.inventory['Cafe'] -= 1;
+						app.inventory['Leche'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Te Verde') {
+						app.inventory['TeVerde'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Te Negro') {
+						app.inventory['TeNegro'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Te Flor de Jamaica') {
+						app.inventory['FlorJamaica'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Manzanilla') {
+						app.inventory['Manzanilla'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Coca Cola') {
+						app.inventory['CocaCola'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Coca Cola Light') {
+						app.inventory['CocaLight'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Chinotto') {
+						app.inventory['Chinotto'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Frescolita') {
+						app.inventory['Frescolita'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Vino Espumante') {
+						app.inventory['VinoEspumante'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Vino Tinto') {
+						app.inventory['VinoTinto'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Vino Blanco') {
+						app.inventory['VinoBlanco'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Ron') {
+						app.inventory['Ron'] -= 1;
+					}
+					else if (app.order[i][key]['Bebida'] === 'Whisky') {
+						app.inventory['Whisky'] -= 1;
+					}
+					var xxx = app.order[i][key]['Coment'].split('.');
+					for(var j=0; j<xxx.length; j++){
+						com = xxx[j].split(' ');
+						var num;
+						try{
+							num = int(com[0]);
+						}
+						catch(err){}
+						if (com[1] === 'agua'){
+							app.inventory['Agua'] -= 1;
+						}
+						if (com[1] === 'soda'){
+							app.inventory['Soda'] -= 1;
+						}
+						if(com[1] === 'limón'){
+							app.inventory['Limon'] -= 1;
+						}
+						if(com[1] === 'aguakina'){
+							app.inventory['Aguakina'] -= 1;
+						}
+						if(com[1] === 'chinotto'){
+							app.inventory['Chinotto'] -= 1;
+						}
+						if(com[1] === 'coca-cola'){
+							app.inventory['CocaCola'] -= 1;
+						}
+						if(com[1] === 'azucar'){
+							app.inventory['Azucar'] -= num;
+						}
+						if(com[1] === 'splenda'){
+							app.inventory['Splenda'] -= num;
+						}
+					}
+				}
+			}
+			firebase.database().ref().update({inventory:app.inventory});
+			app.order = [];
+			app.refreshCart();
+			app.refreshShopping();
+			app.previousPage();
 			alert('Pedido enviado');
 			app.saveFirebase();
 		}
-		app.order = [];
-		app.refreshCart();
-		app.refreshShopping();
-		app.previousPage();
+	},
+
+	add: function(opt){
+		var value = document.getElementById(opt).value;
+		value++;
+		document.getElementById(opt).value = value
+	},
+
+	minus: function(opt){
+		var value = document.getElementById(opt).value;
+		value--;
+		if (value < 0) {
+			value = 0;
+		}
+		document.getElementById(opt).value = value
 	},
 }
+
+emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
 
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref().on('value', function(snap){
@@ -626,6 +936,5 @@ firebase.database().ref().on('value', function(snap){
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
     	FastClick.attach(document.body);
-        app.initFirebase();
     }, false);
 }

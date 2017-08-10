@@ -7,9 +7,9 @@
 
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/ionicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/AdminLTE.min.css">
     <link rel="stylesheet" type="text/css" href="css/_all-skins.min.css">
     <link rel="stylesheet" type="text/css" href="css/index.css" />
@@ -23,7 +23,7 @@
     <div id="buttons">
       <span style="display:none;font-size:30px;position:fixed;right:4em;top:0.4em;" id="back"><img src="img/previous.png"></span><span style="display:none;position:fixed;top:4.2em;right:8.6em;" id="back2">Atrás</span>
       &nbsp;&nbsp;&nbsp;
-      <span data-toggle="modal" data-target="#myModal2"><img src="img/bandejitapq.png" style="position:fixed;right:1.2em;top:1em;"><span class="badge badge-pill badge-danger" id="number-order" style="font-size:10px;position:fixed;top:2.2em;right:2.7em;display:none;">0</span></span><span style="position:fixed;top:4.2em;right:1.6em;">Ordenar</span>
+      <span data-toggle="modal" data-target="#myModal2"><img src="img/bandejitapq.png" style="position:fixed;right:1.2em;top:1em;"><span class="badge badge-pill badge-danger" id="number-order" style="font-size:10px;position:fixed;top:2.2em;right:2.7em;display:none;">0</span></span><span style="position:fixed;top:4.2em;right:1.6em;" data-toggle="modal" data-target="#myModal2">Ordenar</span>
     </div>
     <div id="title" class="title-clients">Vive la experiencia Soutec</div>
   </header>
@@ -53,7 +53,7 @@
         <div class="cuadro" style="margin-right: 8%;" data-toggle="modal" data-target="#myModal4"><img src="img/gaseosaspq.png">
           <div style="text-align:center;font-size:15px;color:#424242;">Bebidas Gaseosas</div>
         </div>
-        <div class="cuadro" style="margin-left: 8%;" data-toggle="modal" data-target="#myModal3"><img src="img/alcoholicaspq.png">
+        <div id="cuadro-alcol" class="cuadro" style="margin-left: 8%;" data-toggle="modal" data-target="#myModal3"><img src="img/alcoholicaspq.png">
          <div style="text-align:center;font-size:15px;color:#424242;">Bebidas Alcohólicas</div>
         </div>
       </div>
@@ -383,10 +383,83 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Nueva reunión</h4>
       </div>
-      <div id="newmeet" class="modal-body">
+      <div id="newmeet" class="modal-body">      
+        <div class="form-group" style="width: 62.5%;">
+          <label>Título de la reunión:</label>
+          <input type="text" class="form-control" placeholder="Coloque el título de la reunión..." style="width:100%;" id="title-meet" value="">
+        </div>
+        <div class="form-group">
+          <label>Tecnología requerida:</label>
+          <div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="video" value="Video Beam">
+                Video Beam
+              </label>
+            </div>  
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="sound" value="Cornetas">
+                Cornetas
+              </label>
+            </div> 
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="laser" value="Apuntador">
+                Apuntador
+              </label>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+          <label>Material POP requerido:</label>
+          <div>
+            <div class="checkbox">
+              <label>
+                Brochure Soutec
+              </label>
+              <input type="text" value="0" id="brochures" size="2" style="margin-left:9.8%;">
+              <i class="fa fa-plus" onclick="app.add('brochures');"></i>
+              <i class="fa fa-minus" onclick="app.minus('brochures');"></i>
+            </div>  
+            <div class="checkbox">
+              <label>
+                Brochure Proyecto U
+              </label>
+              <input type="text" value="0" id="brochurep" size="2" style="margin-left:4.6%;">
+              <i class="fa fa-plus" onclick="app.add('brochurep');"></i>
+              <i class="fa fa-minus" onclick="app.minus('brochurep');"></i>
+            </div> 
+            <div class="checkbox">
+              <label>
+                Cuadernos Soutec
+              </label>
+              <input type="text" value="0" id="notebook" size="2" style="margin-left:7.6%;">
+              <i class="fa fa-plus" onclick="app.add('notebook');"></i>
+              <i class="fa fa-minus" onclick="app.minus('notebook');"></i>
+            </div>
+            <div class="checkbox">
+              <label>
+                Bolígrafos
+              </label>
+              <input type="text" value="0" id="pens" size="2" style="margin-left:18%;">
+              <i class="fa fa-plus" onclick="app.add('pens');"></i>
+              <i class="fa fa-minus" onclick="app.minus('pens');"></i>
+            </div>
+            <div class="checkbox">
+              <label>
+                Revistas
+              </label>
+              <input type="text" value="0" id="magazine" size="2" style="margin-left:20%;">
+              <i class="fa fa-plus" onclick="app.add('magazine');"></i>
+              <i class="fa fa-minus" onclick="app.minus('magazine');"></i>
+            </div>
+          </div>
+        </div>
         <div id="info-meet">
           <label>Invitados para la reunión:</label>
-          <div class="input-group">
+          <div class="input-group" style="width:62.5%;">
             <span class="input-group-addon"><img src="img/social.svg" height="20px"></span>
             <input type="text" class="form-control" placeholder="Invitado" style="width: 100%;" data-toggle="modal" data-target="#modalclientes" id="invited">
             <span class="ocult" style="display: none;"></span>
@@ -398,30 +471,8 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal12">Persona nueva</button>
         <button id="borrar-button" type="button" class="btn btn-default" onclick="app.delMeet();" disabled="">Borrar</button>
-        <button type="button" class="btn btn-primary" onclick="app.addClient();">Agregar</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal15">Agregar</button>
         <button id="guardar-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal10" disabled="">Guardar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- ###################################################################################################### -->
-<!-- ###################################################################################################### -->
-
-<!-- ###################################################################################################### -->
-<!-- #####################################  Modal Cliente ################################################# -->
-<!-- ###################################################################################################### -->
-<div class="modal fade" id="modalclientes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel" style="color: #000;">Clientes</h4>
-      </div>
-      <div id="clients-modal" class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -515,6 +566,74 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ###################################################################################################### -->
+<!-- ###################################################################################################### -->
+
+<!-- ###################################################################################################### -->
+<!-- #####################################  Modal Cliente ################################################# -->
+<!-- ###################################################################################################### -->
+<div class="modal fade" id="modalclientes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" style="color: #000;">Clientes</h4>
+      </div>
+      <div id="clients-modal" class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ###################################################################################################### -->
+<!-- ###################################################################################################### -->
+
+<!-- ###################################################################################################### -->
+<!-- #####################################  Modal Gaseosa ################################################# -->
+<!-- ###################################################################################################### -->
+<div class="modal fade" id="myModal15" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" style="color: #000;">Tipo de cliente</h4>
+      </div>
+      <div class="modal-body">
+        <div style="margin-left:5%;">
+          <div><label><input type="radio" id="vip" name="optionsRadios" class="options">&nbsp;&nbsp;V.I.P.</label></div>
+          <div><label><input type="radio" id="regular" name="optionsRadios" class="options">&nbsp;&nbsp;Regular</label></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.addClient();">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ###################################################################################################### -->
+<!-- ###################################################################################################### -->
+
+<!-- ###################################################################################################### -->
+<!-- #####################################  Modal Cliente ################################################# -->
+<!-- ###################################################################################################### -->
+<div class="modal fade" id="myModal16" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" style="color: #000;">Confirmar borrado</h4>
+      </div>
+      <div id="" class="confirm">¿Estás seguro que deseas eliminar esta persona?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="app.delUser();">Sí</button>
       </div>
     </div>
   </div>

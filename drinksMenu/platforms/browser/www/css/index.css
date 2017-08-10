@@ -20,6 +20,10 @@ th{
 label{
 	font-weight: normal;
 }
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
 .badge-pill{
 	border-radius: 20px;
 	padding-left: 5px;
