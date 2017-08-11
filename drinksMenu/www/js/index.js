@@ -510,7 +510,7 @@ var app = {
 		}
 		app.modelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+today.getMinutes()+' '+amopm+' - ';
 		app.modelMeet['fecha'] += hour2+':'+today.getMinutes()+' '+amopm2;
-		app.modelMeet['sala'] = '';
+		app.modelMeet['sala'] = document.getElementById('room-meet').value;
 		app.modelMeet['titulo'] = document.getElementById('title-meet').value;
 		app.modelMeet['tech'] = {video:0,sound:0,laser:0,comment:''};
 		app.modelMeet['mat'] = {brochures:0,brochurep:0,notebook:0,pens:0,magazine:0};
