@@ -824,14 +824,8 @@ var app = {
 						app.inventory['Cafe'] -= 1;
 						app.inventory['Leche'] -= 1;
 					}
-					else if (app.order[i][key]['Bebida'] === 'Te Verde') {
-						app.inventory['TeVerde'] -= 1;
-					}
-					else if (app.order[i][key]['Bebida'] === 'Te Negro') {
-						app.inventory['TeNegro'] -= 1;
-					}
-					else if (app.order[i][key]['Bebida'] === 'Te Flor de Jamaica') {
-						app.inventory['FlorJamaica'] -= 1;
+					else if (app.order[i][key]['Bebida'] === 'Te') {
+						app.inventory['Te'] -= 1;
 					}
 					else if (app.order[i][key]['Bebida'] === 'Manzanilla') {
 						app.inventory['Manzanilla'] -= 1;
@@ -844,12 +838,6 @@ var app = {
 					}
 					else if (app.order[i][key]['Bebida'] === 'Chinotto') {
 						app.inventory['Chinotto'] -= 1;
-					}
-					else if (app.order[i][key]['Bebida'] === 'Frescolita') {
-						app.inventory['Frescolita'] -= 1;
-					}
-					else if (app.order[i][key]['Bebida'] === 'Vino Espumante') {
-						app.inventory['VinoEspumante'] -= 1;
 					}
 					else if (app.order[i][key]['Bebida'] === 'Vino Tinto') {
 						app.inventory['VinoTinto'] -= 1;
