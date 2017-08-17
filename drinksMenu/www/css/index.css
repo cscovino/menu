@@ -73,6 +73,11 @@ label{
 	text-align: center;
 	font-size: 15px;
 }
+.radio{
+	margin-left: 3%;
+	font-size: 15px;
+	color: #383838;
+}
 #header-menu{
 	width: 100%;
 	position: fixed;

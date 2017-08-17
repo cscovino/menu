@@ -416,7 +416,7 @@ var app = {
 		}
 		codigo += '<div class="input-group" style="width:62.5%;">';
 			codigo += '<span class="input-group-addon"><img src="img/social.svg" height="20px"></span>';
-			codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#modalclientes" id="invited">';
+			codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#modalclientes" id="invited" readonly>';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
 		users.append(codigo);	
@@ -510,7 +510,7 @@ var app = {
 		}
 		app.modelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+today.getMinutes()+' '+amopm+' - ';
 		app.modelMeet['fecha'] += hour2+':'+today.getMinutes()+' '+amopm2;
-		app.modelMeet['sala'] = '';
+		app.modelMeet['sala'] = document.getElementById('room-meet').value;
 		app.modelMeet['titulo'] = document.getElementById('title-meet').value;
 		app.modelMeet['tech'] = {video:0,sound:0,laser:0,comment:''};
 		app.modelMeet['mat'] = {brochures:0,brochurep:0,notebook:0,pens:0,magazine:0};
@@ -824,14 +824,8 @@ var app = {
 						app.inventory['Cafe'] -= 1;
 						app.inventory['Leche'] -= 1;
 					}
-					else if (app.order[i][key]['Bebida'] === 'Te Verde') {
-						app.inventory['TeVerde'] -= 1;
-					}
-					else if (app.order[i][key]['Bebida'] === 'Te Negro') {
-						app.inventory['TeNegro'] -= 1;
-					}
-					else if (app.order[i][key]['Bebida'] === 'Te Flor de Jamaica') {
-						app.inventory['FlorJamaica'] -= 1;
+					else if (app.order[i][key]['Bebida'] === 'Te') {
+						app.inventory['Te'] -= 1;
 					}
 					else if (app.order[i][key]['Bebida'] === 'Manzanilla') {
 						app.inventory['Manzanilla'] -= 1;
@@ -844,12 +838,6 @@ var app = {
 					}
 					else if (app.order[i][key]['Bebida'] === 'Chinotto') {
 						app.inventory['Chinotto'] -= 1;
-					}
-					else if (app.order[i][key]['Bebida'] === 'Frescolita') {
-						app.inventory['Frescolita'] -= 1;
-					}
-					else if (app.order[i][key]['Bebida'] === 'Vino Espumante') {
-						app.inventory['VinoEspumante'] -= 1;
 					}
 					else if (app.order[i][key]['Bebida'] === 'Vino Tinto') {
 						app.inventory['VinoTinto'] -= 1;

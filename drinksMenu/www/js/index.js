@@ -44,6 +44,7 @@ var app = {
 		app.inventory = snap.inventory;
 		app.refreshData();
 		app.refreshMeets();
+  		app.loadClients();
 	},
 
 	refreshName: function(data){
@@ -129,6 +130,10 @@ var app = {
 	nextPage: function(data){
 		var next = data.id.split(/_(.+)/)[0];
 		var prev = data.id.split(/_(.+)/)[1];
+		var meetid = document.getElementById('meet-id').innerHTML;
+		if (app.model.meetings[meetid]['tipo'] === 'regular') {
+			document.getElementById('cuadro-alcol').style.display = 'none';
+		}
 		document.getElementsByClassName('title-clients')[1].innerHTML = '<span style="font-style:italic;color:#00a5ba;font-size:24px;">' + data.innerHTML + '</span>, escoge aquí tu bebida';
 		document.getElementsByClassName('title-clients')[1].id = next;
 		document.getElementById('title').style.display = 'none';
@@ -158,9 +163,12 @@ var app = {
 		  case 1:
 		    opts = document.getElementsByClassName('options-refresh');
 		    coment = document.getElementById('refresh-comment').value;
-		    if (document.getElementById('ice2').checked) {
-		    	coment = document.getElementById('ice2').value+'.'+coment;
-		    }  
+		    if (document.getElementById('ice5').checked) {
+		    	coment = document.getElementById('ice5').value+'.'+coment;
+		    }
+		    if (document.getElementById('ice6').checked) {
+		    	coment = document.getElementById('ice6').value+'.'+coment;
+		    } 
 		    break;
 		  case 2:
 		    opts = document.getElementsByClassName('options-hot');
@@ -174,26 +182,32 @@ var app = {
 		    else if (document.getElementById('sugar3').checked) {
 		    	coment = document.getElementById('sugar3').value+'.'+coment;
 		    }
-		    if (document.getElementById('sugar4').checked) {
-		    	coment = coment.replace('azucar','splenda');
-		    }
 		    else if (document.getElementById('sugar5').checked) {
 		    	coment = document.getElementById('sugar5').value+'.'+coment;
+		    }
+		    else if (document.getElementById('sugar6').checked) {
+		    	coment = document.getElementById('sugar6').value+'.'+coment;
 		    }
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');
 		    coment = document.getElementById('soda-comment').value;
-		    if (document.getElementById('ice').checked) {
-		    	coment = document.getElementById('ice').value+'.'+coment;
+		    if (document.getElementById('ice3').checked) {
+		    	coment = document.getElementById('ice3').value+'.'+coment;
+		    }
+		    if (document.getElementById('ice4').checked) {
+		    	coment = document.getElementById('ice4').value+'.'+coment;
 		    }        
 		    break;
 		  case 4:
 		  	alcohol = 1;
 		    opts = document.getElementsByClassName('options-alcol');
 		    coment = document.getElementById('alcol-comment').value;
-		    if (document.getElementById('ice3').checked) {
-		    	coment = document.getElementById('ice3').value+'.'+coment;
+		    if (document.getElementById('ice').checked) {
+		    	coment = document.getElementById('ice').value+'.'+coment;
+		    }
+		    if (document.getElementById('ice2').checked) {
+		    	coment = document.getElementById('ice2').value+'.'+coment;
 		    }
 		    if (document.getElementById('water').checked) {
 		    	coment = document.getElementById('water').value+'.'+coment;
@@ -355,6 +369,7 @@ var app = {
 		var args = dato.split("_");
 		$('#invited').attr('value',args[1]);
 		$('.ocult').attr('id',args[0]);
+		app.addClient();
 	},
 
 	addUserMeet: function(data){
@@ -448,6 +463,11 @@ var app = {
         document.getElementById('name-clients').value = '';
         document.getElementById('name-client').value = '';
         document.getElementById('email-client').value = '';
+        var dato = client.replace(' ','')+'_'+name.replace(' ','');
+		var args = dato.split("_");
+		$('#invited').attr('value',args[1].split(/(?=[A-Z])/).join(" "));
+		$('.ocult').attr('id',args[0].split(/(?=[A-Z])/).join(" "));
+		app.addClient();
     },
 
     saveNameMeet: function(){
@@ -514,6 +534,7 @@ var app = {
 		app.modelMeet['titulo'] = document.getElementById('title-meet').value;
 		app.modelMeet['tech'] = {video:0,sound:0,laser:0,comment:''};
 		app.modelMeet['mat'] = {brochures:0,brochurep:0,notebook:0,pens:0,magazine:0};
+		app.modelMeet['food'] = {food:'No'};
 		if (document.getElementById('video').checked) {
 	    	app.modelMeet['tech']['video'] = 1;
 	    }
@@ -522,6 +543,18 @@ var app = {
 	    }
 	    if (document.getElementById('laser').checked) {
 	    	app.modelMeet['tech']['laser'] = 1;
+	    }
+	    if (document.getElementById('vc').checked) {
+	    	app.modelMeet['tech']['vc'] = 1;
+	    }
+	    if (document.getElementById('vipmeet').checked) {
+	    	app.modelMeet['tipo'] = 'vip';
+	    }
+	    if (document.getElementById('regmeet').checked) {
+	    	app.modelMeet['tipo'] = 'regular';
+	    }
+	    if (document.getElementById('sifood').checked) {
+	    	app.modelMeet['food']['food'] = document.getElementById('comida').value;
 	    }
 	    app.modelMeet['mat']['brochures'] = document.getElementById('brochures').value;
 	    app.modelMeet['mat']['brochurep'] = document.getElementById('brochurep').value;
@@ -533,6 +566,13 @@ var app = {
 		users.html('');
 		var codigo = '<div id="" class="confirmmeet">¿Deseas programar esta reunión?</div><br>';
 			codigo += '<div>Título: '+app.modelMeet['titulo']+'</div>';
+			codigo += '<div>Tipo: ';
+			if (app.modelMeet['tipo'] === 'vip') {
+				codigo += 'V.I.P.</div>';
+			}
+			if (app.modelMeet['tipo'] === 'regular') {
+				codigo += 'Regular</div>';
+			}
 			codigo += '<div>Sala: '+app.modelMeet['sala']+'</div>';
 			codigo += '<div>Fecha: '+app.modelMeet['fecha']+'</div>';
 			codigo += '<div>Tecnología: </div>';
@@ -544,6 +584,9 @@ var app = {
 				}
 				if (app.modelMeet['tech']['laser']) {
 					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apuntador</div>';
+				}
+				if (app.modelMeet['tech']['vc']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Equipos de video conferencia</div>';
 				}
 				if (app.modelMeet['tech']['comment']) {
 					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['tech']['comment']+'</div>';
@@ -564,17 +607,21 @@ var app = {
 				if (app.modelMeet['mat']['magazine'] != 0) {
 					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revistas: '+app.modelMeet['mat']['magazine']+'</div>';
 				}
+			codigo += '<div>Comida:</div>';
+			codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['food']['food']+'</div>';
 			codigo += '<div>Invitados:</div>';
 			codigo += '<table class="table table-bordered" id="guests">';
 				codigo += '<tbody>';
 					codigo += '<tr>';
 						codigo += '<th>Empresa</th>';
 						codigo += '<th>Nombre</th>';
+						codigo += '<th>Eliminar</th>';
 					codigo += '</tr>';
 				for (var i=0; i<app.modelMeet['users'].length; i++) {
-					codigo += '<tr onclick="app.idConfirm(this)" id="'+app.modelMeet['users'][i]['Cliente'].replace(' ','-')+'_'+app.modelMeet['users'][i]['Nombre'].replace(' ','-')+'" data-toggle="modal" data-target="#myModal16">';
+					codigo += '<tr>';
 						codigo += '<td>'+app.modelMeet['users'][i]['Cliente']+'</td>';
 						codigo += '<td>'+app.modelMeet['users'][i]['Nombre']+'</td>';
+						codigo += '<td><i class="fa fa-trash" onclick="app.idConfirm(this)" id="'+app.modelMeet['users'][i]['Cliente'].replace(' ','-')+'_'+app.modelMeet['users'][i]['Nombre'].replace(' ','-')+'" style="margin-left:40%;" data-toggle="modal" data-target="#myModal16"></i></td>';
 					codigo += '</tr>';
 				}
 				codigo += '</tbody>';
@@ -605,6 +652,13 @@ var app = {
 		firebase.database().ref('meetings').push(app.modelMeet);
 		var color = 0;
 		var codigo = '<div>Título: '+app.modelMeet['titulo']+'</div>';
+			codigo += '<div>Tipo: ';
+			if (app.modelMeet['tipo'] === 'vip') {
+				codigo += 'V.I.P.</div>';
+			}
+			if (app.modelMeet['tipo'] === 'regular') {
+				codigo += 'Regular</div>';
+			}
 			codigo += '<div>Sala: '+app.modelMeet['sala']+'</div>';
 			codigo += '<div>Fecha: '+app.modelMeet['fecha']+'</div>';
 			codigo += '<div>Tecnología: </div>';
@@ -616,6 +670,9 @@ var app = {
 				}
 				if (app.modelMeet['tech']['laser']) {
 					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apuntador</div>';
+				}
+				if (app.modelMeet['tech']['vc']) {
+					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Equipos de video conferencia</div>';
 				}
 				if (app.modelMeet['tech']['comment']) {
 					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['tech']['comment']+'</div>';
@@ -636,6 +693,8 @@ var app = {
 				if (app.modelMeet['mat']['magazine'] != 0) {
 					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revistas: '+app.modelMeet['mat']['magazine']+'</div>';
 				}
+			codigo += '<div>Comida:</div>';
+			codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['food']['food']+'</div>';
 			codigo += '<div>Invitados:</div>';
 			codigo += '<table style="color:#383838;">';
 				codigo += '<tbody>';
@@ -670,6 +729,11 @@ var app = {
 		document.getElementById('video').checked = false;
 		document.getElementById('sound').checked = false;
 		document.getElementById('laser').checked = false;
+		document.getElementById('vc').checked = false;
+		document.getElementById('sifood').checked = false;
+		document.getElementById('nofood').checked = false;
+		document.getElementById('vipmeet').checked = false;
+		document.getElementById('regmeet').checked = false;
 		document.getElementById('brochures').value = 0;
 		document.getElementById('brochurep').value = 0;
 		document.getElementById('notebook').value = 0;
@@ -692,7 +756,6 @@ var app = {
 	},
 
 	delUser: function(){
-		debugger;
 		var datos = document.getElementsByClassName('confirm')[0].id;
 		var key = datos.split('_')[0].replace('-',' ');
 		var key2 = datos.split('_')[1].replace('-',' ');
@@ -743,20 +806,26 @@ var app = {
 	},
 
 	saveFirebase: function(){
+		console.log(app.order);
+		debugger;
 	    for(var i=0; i<app.order.length; i++){
 	      for(var key in app.order[i]){
 	        for(var key2 in app.order[i][key]){
-	        	if (app.model.clients[key][key2]['Bebida'][0] === '') {
-	        		app.model.clients[key][key2]['Bebida'] = [app.order[i][key][key2]['Bebida']];
-	        		app.model.clients[key][key2]['Coment'] = [app.order[i][key][key2]['Coment']];
-	        	}
-	        	else{
-			        app.model.clients[key][key2]['Bebida'].push(app.order[i][key][key2]['Bebida']);
-			        app.model.clients[key][key2]['Coment'].push(app.order[i][key][key2]['Coment']);
+	        	if (key2 === 'client') {
+	        		var aux = app.order[i][key][key2];
+	        		if (app.model.clients[aux][key]['Bebida'][0] === '') {
+		        		app.model.clients[aux][key]['Bebida'] = [app.order[i][key]['Bebida']];
+		        		app.model.clients[aux][key]['Coment'] = [app.order[i][key]['Coment']];
+		        	}
+		        	else{
+				        app.model.clients[aux][key]['Bebida'].push(app.order[i][key]['Bebida']);
+				        app.model.clients[aux][key]['Coment'].push(app.order[i][key]['Coment']);
+		        	}
 	        	}
 	        }
 	      }
 	    }
+	    console.log(app.model.clients);
 	    firebase.database().ref('clients').update(app.model.clients);
 	},
 
@@ -881,21 +950,46 @@ var app = {
 							app.inventory['Azucar'] -= num;
 						}
 						if(com[1] === 'splenda'){
-							app.inventory['Splenda'] -= num;
+							app.inventory['Splenda'] -= 1;
 						}
 					}
 				}
 			}
+			app.saveFirebase();
 			firebase.database().ref().update({inventory:app.inventory});
 			app.order = [];
 			app.refreshCart();
 			app.refreshShopping();
 			app.previousPage();
 			alert('Pedido enviado');
-			app.saveFirebase();
 		}
 	},
 
+	loadClients: function(opt){
+		var users = $('#clients');
+		users.html('');
+		var codigo = '';
+		for (var key in app.model.clients) {
+			codigo += '<div class="radio" onclick="app.refreshClient(this);" id="'+key+'" data-dismiss="modal">';
+				codigo += '<label>';
+					codigo += '<input type="radio" value="'+key+'">&nbsp;&nbsp;';
+					codigo += key;
+				codigo += '</label>';
+			codigo += '</div>';
+		}
+		codigo += '<br>';
+		users.append(codigo);
+	},
+
+	refreshClient: function(dat){
+        if (!dat.id) {
+            document.getElementById('name-clients').placeholder = "No ha seleccionado el cliente";
+        }
+        else{
+            document.getElementById('name-clients').value = dat.id;
+        }
+	},
+	
 	add: function(opt){
 		var value = document.getElementById(opt).value;
 		value++;
