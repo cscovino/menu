@@ -642,7 +642,8 @@ var app = {
 		codigo += '<label>Invitados para la reunión:</label>';
 		codigo += '<div class="input-group" style="width:62.5%;">';
 			codigo += '<span class="input-group-addon"><img src="img/social.svg" height="20px"></span>';
-			codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#modalclientes" id="invited">';
+			//codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#modalclientes" id="invited">';
+			codigo += '<span class="form-control" style="width: 100%;" data-toggle="modal" data-target="#modalclientes" id="invited">Invitado</span>';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
 		users.append(codigo);
