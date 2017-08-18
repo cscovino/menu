@@ -112,6 +112,7 @@ var app = {
 		document.getElementById('title').style.display = 'block';
 		document.getElementById('title').innerHTML = 'Vive la experiencia Soutec';
 		document.getElementById('menu-meetings').style.display = 'block';
+		app.modelMeet = {'titulo':'','sala':'','fecha':'','tech':{},'mat':{},'food':{},'users':[]};
 	},
 
 	userPage: function(data){
@@ -124,7 +125,7 @@ var app = {
 		document.getElementById('title').style.display = 'block';
 		document.getElementById('title').innerHTML = '¡Bienvenido! Por favor seleccione su nombre';
 		document.getElementById('menu-meetings').style.display = 'none';
-		document.getElementById('menu').style.display = 'none'
+		document.getElementById('menu').style.display = 'none';
 	},
 
 	nextPage: function(data){
@@ -132,7 +133,8 @@ var app = {
 		var prev = data.id.split(/_(.+)/)[1];
 		var meetid = document.getElementById('meet-id').innerHTML;
 		if (app.model.meetings[meetid]['tipo'] === 'regular') {
-			document.getElementById('cuadro-alcol').style.display = 'none';
+			document.getElementById('options-reg').style.display = 'block';
+			document.getElementById('options-vip').style.display = 'none';
 		}
 		document.getElementsByClassName('title-clients')[1].innerHTML = '<span style="font-style:italic;color:#00a5ba;font-size:24px;">' + data.innerHTML + '</span>, escoge aquí tu bebida';
 		document.getElementsByClassName('title-clients')[1].id = next;
@@ -258,20 +260,13 @@ var app = {
 			if (alcohol) {
 				for(var k=0; k<app.model.meetings[meetId]['users'].length; k++) {
 					if (app.model.meetings[meetId]['users'][k]['Nombre']===user) {
-						if (app.model.meetings[meetId]['users'][k]['Tipo']==='vip') {
-							var aux = {};
-							aux[user] = {};
-							aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
-							app.order.push(aux);
-							app.refreshCart();
-							app.refreshShopping();
-							alert('Pedido anotado');
-							break;
-						}
-						else{
-							alert('Lo sentimos, las bebidas alcohólicas son exclusivas para clientes V.I.P.');
-							break;
-						}
+						var aux = {};
+						aux[user] = {};
+						aux[user] = {'Bebida':drink,'Coment':coment,'Cantidad':cant,'meetId':meetId,'entregado':0,'client':client,'hora':hora};
+						app.order.push(aux);
+						app.refreshCart();
+						app.refreshShopping();
+						alert('Pedido anotado');
 					}
 				}
 			}
@@ -367,7 +362,8 @@ var app = {
 	addUser: function(data){
 		var dato = data.id
 		var args = dato.split("_");
-		$('#invited').attr('value',args[1]);
+		//$('#invited').attr('value',args[1]);
+		document.getElementById('invited').innerHTML = args[1];
 		$('.ocult').attr('id',args[0]);
 		app.addClient();
 	},
@@ -383,7 +379,8 @@ var app = {
 	addClient: function(){
 		var aux = 0;
 		var type;
-		var user = document.getElementById('invited').value;
+		//var user = document.getElementById('invited').value;
+		var user = document.getElementById('invited').innerHTML;
 		var client = document.getElementsByClassName('ocult')[0].id;
 		opts = document.getElementsByClassName('options');
 		for(var i=0; i<opts.length; i++){
@@ -406,7 +403,7 @@ var app = {
 				catch(err){
 					var car = app.model['clients'][client.replace(' ','')][user]['Caract'];
 				}
-				app.modelMeet['users'].push({'Nombre':user,'Cliente':client,'Caract':car,'Tipo':type});
+				app.modelMeet['users'].push({'Nombre':user,'Cliente':client,'Caract':car});
 			}
 			app.refreshMeeting();
 			app.refreshMeetingModal();
@@ -431,7 +428,8 @@ var app = {
 		}
 		codigo += '<div class="input-group" style="width:62.5%;">';
 			codigo += '<span class="input-group-addon"><img src="img/social.svg" height="20px"></span>';
-			codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#modalclientes" id="invited">';
+			//codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#modalclientes" id="invited">';
+			codigo += '<span class="form-control" style="width: 100%;" data-toggle="modal" data-target="#modalclientes" id="invited">Invitado</span>';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
 		users.append(codigo);	
@@ -535,33 +533,12 @@ var app = {
 		app.modelMeet['tech'] = {video:0,sound:0,laser:0,comment:''};
 		app.modelMeet['mat'] = {brochures:0,brochurep:0,notebook:0,pens:0,magazine:0};
 		app.modelMeet['food'] = {food:'No'};
-		if (document.getElementById('video').checked) {
-	    	app.modelMeet['tech']['video'] = 1;
-	    }
-	    if (document.getElementById('sound').checked) {
-	    	app.modelMeet['tech']['sound'] = 1;
-	    }
-	    if (document.getElementById('laser').checked) {
-	    	app.modelMeet['tech']['laser'] = 1;
-	    }
-	    if (document.getElementById('vc').checked) {
-	    	app.modelMeet['tech']['vc'] = 1;
-	    }
 	    if (document.getElementById('vipmeet').checked) {
 	    	app.modelMeet['tipo'] = 'vip';
 	    }
 	    if (document.getElementById('regmeet').checked) {
 	    	app.modelMeet['tipo'] = 'regular';
 	    }
-	    if (document.getElementById('sifood').checked) {
-	    	app.modelMeet['food']['food'] = document.getElementById('comida').value;
-	    }
-	    app.modelMeet['mat']['brochures'] = document.getElementById('brochures').value;
-	    app.modelMeet['mat']['brochurep'] = document.getElementById('brochurep').value;
-	    app.modelMeet['mat']['notebook'] = document.getElementById('notebook').value;
-	    app.modelMeet['mat']['pens'] = document.getElementById('pens').value;
-	    app.modelMeet['mat']['magazine'] = document.getElementById('magazine').value;
-	    app.modelMeet['tech']['comment'] = '';
 		var users = $('#user-body3');
 		users.html('');
 		var codigo = '<div id="" class="confirmmeet">¿Deseas programar esta reunión?</div><br>';
@@ -575,40 +552,6 @@ var app = {
 			}
 			codigo += '<div>Sala: '+app.modelMeet['sala']+'</div>';
 			codigo += '<div>Fecha: '+app.modelMeet['fecha']+'</div>';
-			codigo += '<div>Tecnología: </div>';
-				if (app.modelMeet['tech']['video']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Video Beam</div>';
-				}
-				if (app.modelMeet['tech']['sound']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cornetas</div>';
-				}
-				if (app.modelMeet['tech']['laser']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apuntador</div>';
-				}
-				if (app.modelMeet['tech']['vc']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Equipos de video conferencia</div>';
-				}
-				if (app.modelMeet['tech']['comment']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['tech']['comment']+'</div>';
-				}
-			codigo += '<div>Materiales POP:</div>';
-				if (app.modelMeet['mat']['brochures'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brochure Soutec: '+app.modelMeet['mat']['brochures']+'</div>';
-				}
-				if (app.modelMeet['mat']['brochurep'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brochure Proyecto U: '+app.modelMeet['mat']['brochurep']+'</div>';
-				}
-				if (app.modelMeet['mat']['notebook'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cuadernos Soutec: '+app.modelMeet['mat']['notebook']+'</div>';
-				}
-				if (app.modelMeet['mat']['pens'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bolígrafos: '+app.modelMeet['mat']['pens']+'</div>';
-				}
-				if (app.modelMeet['mat']['magazine'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revistas: '+app.modelMeet['mat']['magazine']+'</div>';
-				}
-			codigo += '<div>Comida:</div>';
-			codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['food']['food']+'</div>';
 			codigo += '<div>Invitados:</div>';
 			codigo += '<table class="table table-bordered" id="guests">';
 				codigo += '<tbody>';
@@ -661,40 +604,6 @@ var app = {
 			}
 			codigo += '<div>Sala: '+app.modelMeet['sala']+'</div>';
 			codigo += '<div>Fecha: '+app.modelMeet['fecha']+'</div>';
-			codigo += '<div>Tecnología: </div>';
-				if (app.modelMeet['tech']['video']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Video Beam</div>';
-				}
-				if (app.modelMeet['tech']['sound']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cornetas</div>';
-				}
-				if (app.modelMeet['tech']['laser']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apuntador</div>';
-				}
-				if (app.modelMeet['tech']['vc']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Equipos de video conferencia</div>';
-				}
-				if (app.modelMeet['tech']['comment']) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['tech']['comment']+'</div>';
-				}
-			codigo += '<div>Materiales POP:</div>';
-				if (app.modelMeet['mat']['brochures'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brochure Soutec: '+app.modelMeet['mat']['brochures']+'</div>';
-				}
-				if (app.modelMeet['mat']['brochurep'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brochure Proyecto U: '+app.modelMeet['mat']['brochurep']+'</div>';
-				}
-				if (app.modelMeet['mat']['notebook'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cuadernos Soutec: '+app.modelMeet['mat']['notebook']+'</div>';
-				}
-				if (app.modelMeet['mat']['pens'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bolígrafos: '+app.modelMeet['mat']['pens']+'</div>';
-				}
-				if (app.modelMeet['mat']['magazine'] != 0) {
-					codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revistas: '+app.modelMeet['mat']['magazine']+'</div>';
-				}
-			codigo += '<div>Comida:</div>';
-			codigo += '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+app.modelMeet['food']['food']+'</div>';
 			codigo += '<div>Invitados:</div>';
 			codigo += '<table style="color:#383838;">';
 				codigo += '<tbody>';
@@ -725,33 +634,21 @@ var app = {
 	delMeet: function(){
 		document.getElementById('title-meet').value = '';
 		document.getElementById('room-meet').value = '';
-		document.getElementById('datepicker').value = '';
-		document.getElementById('video').checked = false;
-		document.getElementById('sound').checked = false;
-		document.getElementById('laser').checked = false;
-		document.getElementById('vc').checked = false;
-		document.getElementById('sifood').checked = false;
-		document.getElementById('nofood').checked = false;
-		document.getElementById('vipmeet').checked = false;
 		document.getElementById('regmeet').checked = false;
-		document.getElementById('brochures').value = 0;
-		document.getElementById('brochurep').value = 0;
-		document.getElementById('notebook').value = 0;
-		document.getElementById('pens').value = 0;
-		document.getElementById('magazine').value = 0;
-		var users = $('#info-meet-data');
+		document.getElementById('vipmeet').checked = false;
+		var users = $('#info-meet');
 		users.html('');
 		var codigo = '';
 		codigo += '<label>Invitados para la reunión:</label>';
 		codigo += '<div class="input-group" style="width:62.5%;">';
 			codigo += '<span class="input-group-addon"><img src="img/social.svg" height="20px"></span>';
-			codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#myModal7" id="invited">';
+			codigo += '<input type="text" class="form-control" placeholder="Invitado" data-toggle="modal" data-target="#modalclientes" id="invited">';
 			codigo += '<span class="ocult" style="display: none;"></span>';
 		codigo += '</div><br>';
 		users.append(codigo);
 		document.getElementById('guardar-button').disabled = true;
 		document.getElementById('borrar-button').disabled = true;
-		app.modelMeet = {'titulo':'','sala':'','fecha':'','tech':{},'mat':{},'users':[]};
+		app.modelMeet = {'titulo':'','sala':'','fecha':'','tech':{},'mat':{},'food':{},'users':[]};
 		app.refreshMeetingModal();
 	},
 
@@ -806,8 +703,6 @@ var app = {
 	},
 
 	saveFirebase: function(){
-		console.log(app.order);
-		debugger;
 	    for(var i=0; i<app.order.length; i++){
 	      for(var key in app.order[i]){
 	        for(var key2 in app.order[i][key]){
@@ -825,7 +720,6 @@ var app = {
 	        }
 	      }
 	    }
-	    console.log(app.model.clients);
 	    firebase.database().ref('clients').update(app.model.clients);
 	},
 
@@ -988,21 +882,6 @@ var app = {
         else{
             document.getElementById('name-clients').value = dat.id;
         }
-	},
-	
-	add: function(opt){
-		var value = document.getElementById(opt).value;
-		value++;
-		document.getElementById(opt).value = value
-	},
-
-	minus: function(opt){
-		var value = document.getElementById(opt).value;
-		value--;
-		if (value < 0) {
-			value = 0;
-		}
-		document.getElementById(opt).value = value
 	},
 }
 
