@@ -92,7 +92,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel" style="color: #000;">Bebidas Alcohólicas</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="options-vip">
         <div id="menu-options-alcol" style="margin-bottom:3%;">
           <div style="float: left;margin-right: 15%;margin-bottom:3%;">
             <div><label><input type="radio" id="Ron" name="optionsRadios" class="options-alcol">&nbsp;&nbsp;Ron (Diplomático)</label></div>
@@ -165,6 +165,16 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(4);">Guardar</button>
+        </div>
+      </div>
+        <div class="modal-body" style="display:none;" id="options-reg">
+        <div id="menu-options-alcol" style="margin-bottom:3%;">
+          <div style="float: left;margin-right: 15%;margin-bottom:3%;">
+            Lo sentimos la bebidas alcohólicas son sólo para reuniones V.I.P.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -422,118 +432,21 @@
           <label>Sala:</label>
           <input type="text" class="form-control" placeholder="Coloque la sala..." style="width:100%;" id="room-meet" value="">
         </div>
-        <div class="form-group">
-          <label>Tecnología requerida:</label>
-          <div>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" id="video" value="Video Beam">
-                Video Beam
-              </label>
-            </div>  
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" id="sound" value="Cornetas">
-                Cornetas
-              </label>
-            </div> 
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" id="laser" value="Apuntador">
-                Apuntador
-              </label>
-            </div>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" id="vc" value="Video Conf">
-                Equipos de video conferencia
-              </label>
-            </div>
-          </div>
-        </div>
         <br>
-        <div class="form-group">
-          <label>Material POP requerido:</label>
-          <div>
-            <div class="checkbox">
-              <label>
-                Brochure Soutec
-              </label>
-              <input type="text" value="0" id="brochures" size="2" style="margin-left:10.1%;">
-              <i class="fa fa-plus" onclick="app.add('brochures');"></i>
-              <i class="fa fa-minus" onclick="app.minus('brochures');"></i>
-            </div>  
-            <div class="checkbox">
-              <label>
-                Brochure Proyecto U
-              </label>
-              <input type="text" value="0" id="brochurep" size="2" style="margin-left:4.4%;">
-              <i class="fa fa-plus" onclick="app.add('brochurep');"></i>
-              <i class="fa fa-minus" onclick="app.minus('brochurep');"></i>
-            </div> 
-            <div class="checkbox">
-              <label>
-                Cuadernos Soutec
-              </label>
-              <input type="text" value="0" id="notebook" size="2" style="margin-left:7.5%;">
-              <i class="fa fa-plus" onclick="app.add('notebook');"></i>
-              <i class="fa fa-minus" onclick="app.minus('notebook');"></i>
-            </div>
-            <div class="checkbox">
-              <label>
-                Bolígrafos
-              </label>
-              <input type="text" value="0" id="pens" size="2" style="margin-left:19.2%;">
-              <i class="fa fa-plus" onclick="app.add('pens');"></i>
-              <i class="fa fa-minus" onclick="app.minus('pens');"></i>
-            </div>
-            <div class="checkbox">
-              <label>
-                Revistas
-              </label>
-              <input type="text" value="0" id="magazine" size="2" style="margin-left:21.7%;">
-              <i class="fa fa-plus" onclick="app.add('magazine');"></i>
-              <i class="fa fa-minus" onclick="app.minus('magazine');"></i>
-            </div>
-            <br>
-            <div class="form-group">
-              <label>Se requiere comida:</label>
-              <div>
-                <div>
-                  <label>
-                    <input type="radio" id="sifood" value="si" name="optionsfood" onclick="document.getElementById('detalles').style.display = 'block';" class="options-food">
-                    Sí
-                  </label>
-                </div>  
-                <div>
-                  <label>
-                    <input type="radio" id="nofood" value="no" name="optionsfood" onclick="document.getElementById('detalles').style.display = 'none';" class="options-food">
-                    No
-                  </label>
-                </div> 
-              </div>
-              <div class="form-group" style="clear:both;display:none;" id="detalles">
-                <label>Indique detalles de interés:</label>
-                <textarea class="form-control" rows="2" style="width:60%;" placeholder="Ingrese comentario..." id="comida"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
         <div id="info-meet">
           <label>Invitados para la reunión:</label>
           <div class="input-group" style="width:62.5%;">
             <span class="input-group-addon"><img src="img/social.svg" height="20px"></span>
-            <input type="text" class="form-control" placeholder="Invitado" style="width: 100%;" data-toggle="modal" data-target="#modalclientes" id="invited">
+            <!-- <input type="text" class="form-control" placeholder="Invitado" style="width: 100%;" data-toggle="modal" data-target="#modalclientes" id="invited"> -->
+            <span class="form-control" style="width: 100%;" data-toggle="modal" data-target="#modalclientes" id="invited">Invitado</span>
             <span class="ocult" style="display: none;"></span>
           </div>
-          <br>
-          <br>
-        </div>
+        </div><br>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal17">Persona nueva</button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal17">Persona nueva</button>
-        <button id="borrar-button" type="button" class="btn btn-default" onclick="app.delMeet();" disabled="">Borrar</button>
-        <button id="guardar-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal10" disabled="">Guardar</button>
+        <button id="borrar-button" type="button" class="btn btn-default" onclick="app.delMeet();" disabled="">Borrar Todo</button>
+        <button id="guardar-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal10" disabled="">Enviar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -555,7 +468,7 @@
       <div class="modal-body" id="user-body3"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.sendMeet();">Guardar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.sendMeet();">Enviar</button>
       </div>
     </div>
   </div>
@@ -600,7 +513,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveNameMeet();">Guardar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveNameMeet();">Agregar</button>
       </div>
     </div>
   </div>
@@ -648,7 +561,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="app.saveName();" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-primary" onclick="app.saveName();" data-dismiss="modal">Agregar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
