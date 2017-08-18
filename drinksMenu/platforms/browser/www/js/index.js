@@ -629,6 +629,7 @@ var app = {
 		emailjs.send("gmail","meetings",{message_html: codigo});
 		alert('Reunión guardada');
 		app.delMeet();
+		 $('#myModal9').modal('hide');
 	},
 
 	delMeet: function(){
@@ -649,8 +650,9 @@ var app = {
 		users.append(codigo);
 		document.getElementById('guardar-button').disabled = true;
 		document.getElementById('borrar-button').disabled = true;
-		app.modelMeet = {'titulo':'','sala':'','fecha':'','tech':{},'mat':{},'food':{},'users':[]};
-		app.refreshMeetingModal();
+		//app.modelMeet = {'titulo':'','sala':'','fecha':'','tech':{},'mat':{},'food':{},'users':[]};
+		//app.refreshMeetingModal();
+		app.meetPage();
 	},
 
 	delUser: function(){
