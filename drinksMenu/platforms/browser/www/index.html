@@ -163,14 +163,14 @@
           <textarea class="form-control" rows="2" placeholder="Ingrese comentario..." id="alcol-comment"></textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="app.clearModal(4);">Cerrar</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(4);">Guardar</button>
         </div>
       </div>
         <div class="modal-body" style="display:none;" id="options-reg">
         <div id="menu-options-alcol" style="margin-bottom:3%;">
           <div style="float: left;margin-right: 15%;margin-bottom:3%;">
-            Lo sentimos la bebidas alcohólicas son sólo para reuniones V.I.P.
+            Lo sentimos las bebidas alcohólicas sólo están disponibles para clientes V.I.P.
           </div>
         </div>
         <div class="modal-footer">
@@ -224,7 +224,7 @@
           <textarea class="form-control" rows="2" placeholder="Ingrese comentario..." id="soda-comment"></textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="app.clearModal(3);">Cerrar</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(3);">Guardar</button>
         </div>
       </div>
@@ -297,7 +297,7 @@
           <textarea class="form-control" rows="2" placeholder="Ingrese comentario..." id="hot-comment"></textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="app.clearModal(2);">Cerrar</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(2);">Guardar</button>
         </div>
       </div>
@@ -348,7 +348,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"  onclick="app.clearModal(1);">Cerrar</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="app.saveOrder(1);">Guardar</button>
       </div>
     </div>

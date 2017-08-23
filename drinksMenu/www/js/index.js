@@ -27,12 +27,12 @@ var app = {
 	odd: 0,
 
 	firebaseConfig: {
-	apiKey: "AIzaSyC50skbZWPdmbhMgSz9ulM8pBJ8r8F8lag",
-	authDomain: "drinksmenu-ab56b.firebaseapp.com",
-	databaseURL: "https://drinksmenu-ab56b.firebaseio.com",
-	projectId: "drinksmenu-ab56b",
-	storageBucket: "drinksmenu-ab56b.appspot.com",
-	messagingSenderId: "495209622347"
+        apiKey: "AIzaSyCkQaGeVx7aqj0Gt2C15i8BdzSup3yNQuM",
+        authDomain: "reuniones-46a77.firebaseapp.com",
+        databaseURL: "https://reuniones-46a77.firebaseio.com",
+        projectId: "reuniones-46a77",
+        storageBucket: "reuniones-46a77.appspot.com",
+        messagingSenderId: "888234651975"
 	},
 
 	initFirebase: function(){
@@ -81,20 +81,17 @@ var app = {
 						codigo += '<th>Título</th>';
 					codigo += '</tr>';
 				for (var key in app.model.meetings) {
-					codigo += '<tr onclick="app.userPage('+"'"+key+"'"+');" data-dismiss="modal">';
 						var dd = app.model.meetings[key]['fecha'].split(' ');
 						var datee = dd[0].split('/');
 						var dait = new Date(datee[2],datee[0]-1,datee[1]);
 						var today = new Date();
 						if (dait.toDateString() === today.toDateString()) {
-							codigo += '<td>Hoy</td>';
+							codigo += '<tr onclick="app.userPage('+"'"+key+"'"+');" data-dismiss="modal">';
+								codigo += '<td>Hoy</td>';
+								codigo += '<td>'+dd[1]+' '+dd[2]+' - '+dd[4]+' '+dd[5]+'</td>';
+								codigo += '<td>'+app.model.meetings[key]['titulo']+'</td>';
+							codigo += '</tr>';
 						}
-						else{
-							codigo += '<td>'+app.weekday[dait.getDay()]+' '+dait.getDate()+' '+app.monthyear[dait.getMonth()]+'</td>';
-						}
-						codigo += '<td>'+dd[1]+' '+dd[2]+' - '+dd[4]+' '+dd[5]+'</td>';
-						codigo += '<td>'+app.model.meetings[key]['titulo']+'</td>';
-					codigo += '</tr>';
 				}
 				codigo += '</tbody>';
 			codigo += '</table>';
@@ -170,7 +167,8 @@ var app = {
 		    }
 		    if (document.getElementById('ice6').checked) {
 		    	coment = document.getElementById('ice6').value+'.'+coment;
-		    } 
+		    }
+		    app.clearModal(1); 
 		    break;
 		  case 2:
 		    opts = document.getElementsByClassName('options-hot');
@@ -190,6 +188,7 @@ var app = {
 		    else if (document.getElementById('sugar6').checked) {
 		    	coment = document.getElementById('sugar6').value+'.'+coment;
 		    }
+		    app.clearModal(2);
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');
@@ -199,7 +198,8 @@ var app = {
 		    }
 		    if (document.getElementById('ice4').checked) {
 		    	coment = document.getElementById('ice4').value+'.'+coment;
-		    }        
+		    }
+		    app.clearModal(3);      
 		    break;
 		  case 4:
 		  	alcohol = 1;
@@ -229,6 +229,7 @@ var app = {
 		    if (document.getElementById('lemon').checked) {
 		    	coment = document.getElementById('lemon').value+'.'+coment;
 		    }
+		    app.clearModal(4);
 		    break;
 		}	
 		for(var i=0; i<opts.length; i++){
@@ -282,6 +283,54 @@ var app = {
 		}
 		else{
 		  alert('Sólo se permiten máximo dos bebidas por persona');
+		}
+	},
+
+	clearModal: function(opt){
+		switch(opt){
+		  case 1:
+		    document.getElementById('Agua').checked = false;
+		    document.getElementById('Jugo-Naranja').checked = false;
+		    document.getElementById('ice5').checked = false;
+		    document.getElementById('ice6').checked = false; 
+		    document.getElementById('refresh-comment').value = '';
+		    break;
+		  case 2:
+		    document.getElementById('Cafe-con-Leche').checked = false;
+		    document.getElementById('Cafe-Marron').checked = false;
+		    document.getElementById('Cafe-Negro').checked = false;
+		    document.getElementById('Manzanilla').checked = false;
+		    document.getElementById('Te').checked = false;
+		    document.getElementById('sugar1').checked = false;
+		    document.getElementById('sugar2').checked = false;
+		    document.getElementById('sugar3').checked = false;
+		    document.getElementById('sugar5').checked = false;
+		    document.getElementById('sugar6').checked = false;
+		    document.getElementById('hot-comment').value = '';
+		    break;
+		  case 3:
+		    document.getElementById('Chinotto').checked = false;
+		    document.getElementById('Coca-Cola').checked = false;
+		    document.getElementById('Coca-Cola-Light').checked = false;
+		    document.getElementById('ice3').checked = false;
+		    document.getElementById('ice4').checked = false;  
+		    document.getElementById('soda-comment').value = '';   
+		    break;
+		  case 4:
+		    document.getElementById('Ron').checked = false;
+		    document.getElementById('Vino-Blanco').checked = false;
+		    document.getElementById('Vino-Tinto').checked = false;
+		    document.getElementById('Whisky').checked = false;
+		    document.getElementById('water').checked = false; 
+		    document.getElementById('aguakina').checked = false;
+		    document.getElementById('chinott').checked = false;
+		    document.getElementById('coke').checked = false;
+		    document.getElementById('lemon').checked = false;
+		    document.getElementById('soda').checked = false; 
+		    document.getElementById('ice').checked = false;
+		    document.getElementById('ice2').checked = false; 
+		    document.getElementById('alcol-comment').value = '';
+		    break;
 		}
 	},
 
