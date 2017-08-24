@@ -557,11 +557,15 @@ var app = {
 		var today = new Date();
 		var month = today.getMonth()+1;
 		var hour = today.getHours();
+		var min = today.getMinutes();
 		var hour2 = hour+1;
 		var amopm = 'AM';
 		var amopm2 = 'AM';
 		if (month < 10) {
 			month = '0'+month;
+		}
+		if (min < 10) {
+			min = '0'+min;
 		}
 		if (hour >= 12) {
 			amopm = 'PM';
@@ -575,8 +579,8 @@ var app = {
 				hour2 -= 12;
 			}
 		}
-		app.modelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+today.getMinutes()+' '+amopm+' - ';
-		app.modelMeet['fecha'] += hour2+':'+today.getMinutes()+' '+amopm2;
+		app.modelMeet['fecha'] = month+'/'+today.getDate()+'/'+today.getFullYear()+' '+hour+':'+min+' '+amopm+' - ';
+		app.modelMeet['fecha'] += hour2+':'+min+' '+amopm2;
 		app.modelMeet['sala'] = document.getElementById('room-meet').value;
 		app.modelMeet['titulo'] = document.getElementById('title-meet').value;
 		app.modelMeet['tech'] = {video:0,sound:0,laser:0,comment:''};
