@@ -151,12 +151,11 @@ var app = {
 	},
 
 	saveOrder: function(opt){
+		debugger;
 		var user = document.getElementsByClassName('title-clients')[1].innerHTML.split('>')[1].split('<')[0];
 		var client = document.getElementsByClassName('title-clients')[1].id;
 		var meetId = document.getElementById('meet-id').innerHTML;
-		var opts;
-		var coment;
-		var drink;
+		var opts,coment,drink,mood;
 		var alcohol = 0;
 		switch(opt){
 		  case 1:
@@ -168,7 +167,7 @@ var app = {
 		    if (document.getElementById('ice6').checked) {
 		    	coment = document.getElementById('ice6').value+'.'+coment;
 		    }
-		    app.clearModal(1); 
+		    mood = 1; 
 		    break;
 		  case 2:
 		    opts = document.getElementsByClassName('options-hot');
@@ -188,7 +187,7 @@ var app = {
 		    else if (document.getElementById('sugar6').checked) {
 		    	coment = document.getElementById('sugar6').value+'.'+coment;
 		    }
-		    app.clearModal(2);
+		    mood = 2;
 		    break;
 		  case 3:
 		    opts = document.getElementsByClassName('options-soda');
@@ -199,7 +198,7 @@ var app = {
 		    if (document.getElementById('ice4').checked) {
 		    	coment = document.getElementById('ice4').value+'.'+coment;
 		    }
-		    app.clearModal(3);      
+		    mood = 3;      
 		    break;
 		  case 4:
 		  	alcohol = 1;
@@ -229,7 +228,7 @@ var app = {
 		    if (document.getElementById('lemon').checked) {
 		    	coment = document.getElementById('lemon').value+'.'+coment;
 		    }
-		    app.clearModal(4);
+		    mood = 4;
 		    break;
 		}	
 		for(var i=0; i<opts.length; i++){
@@ -284,6 +283,7 @@ var app = {
 		else{
 		  alert('Sólo se permiten máximo dos bebidas por persona');
 		}
+		app.clearModal(mood);
 	},
 
 	clearModal: function(opt){
