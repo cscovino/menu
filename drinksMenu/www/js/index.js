@@ -823,6 +823,7 @@ var app = {
 				firebase.database().ref().update({order:{'fecha':hoy,'orders':app.order}});
 			}
 			emailjs.send("gmail","pedidos",{message_html: codigo});
+			setTimeout(function(){},500);
 			for(var i=0; i<app.order.length; i++){
 				for(var key in app.order[i]){
 					if (app.order[i][key]['Bebida'] === 'Agua'){
@@ -905,7 +906,9 @@ var app = {
 				}
 			}
 			firebase.database().ref().update({inventory:app.inventory});
+			setTimeout(function(){},200);
 			app.saveFirebase();
+			setTimeout(function(){},50);
 			app.order = [];
 			app.refreshCart();
 			app.refreshShopping();
