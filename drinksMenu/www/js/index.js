@@ -35,7 +35,7 @@ var app = {
         messagingSenderId: "888234651975"
 	},
 
-	initFirebase: function(){
+	initEmail: function(){
       emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
 	},
 
@@ -943,7 +943,8 @@ var app = {
 	},
 }
 
-emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
+//emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
+app.initEmail();
 
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref().on('value', function(snap){
