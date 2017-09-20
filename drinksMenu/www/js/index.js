@@ -35,10 +35,6 @@ var app = {
         messagingSenderId: "888234651975"
 	},
 
-	initEmail: function(){
-      emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
-	},
-
 	setSnap: function(snap){
 		app.model = snap;
 		app.inventory = snap.inventory;
@@ -943,8 +939,7 @@ var app = {
 	},
 }
 
-//emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
-app.initEmail();
+emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
 
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref().on('value', function(snap){
