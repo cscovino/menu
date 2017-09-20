@@ -940,16 +940,16 @@ var app = {
 }
 
 emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
-
 firebase.initializeApp(app.firebaseConfig);
-firebase.database().ref().on('value', function(snap){
-	if (snap.val() !== null) {
-		app.setSnap(snap.val());
-	}
-});
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
     	FastClick.attach(document.body);
     }, false);
 }
+
+firebase.database().ref().on('value', function(snap){
+	if (snap.val() !== null) {
+		app.setSnap(snap.val());
+	}
+});
