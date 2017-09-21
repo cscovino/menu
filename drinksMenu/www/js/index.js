@@ -775,37 +775,40 @@ var app = {
 	},
 
 	sendMail: function(){
-		var tituloMail;
-		var aux = [];
-		var color = 0;
-		var codigo = '<table style="color:#383838;">';
-		codigo += '<tbody>';
-			codigo += '<tr>';
-				codigo += '<th style="background:#395062;color:#fff;">Empresa</th>';
-				codigo += '<th style="background:#395062;color:#fff;">Nombre</th>';
-				codigo += '<th style="background:#395062;color:#fff;">Bebida</th>';
-	            codigo += '<th style="background:#395062;color:#fff;">Comentario</th>';
-			codigo += '</tr>';
-		for (var i=0; i<app.order.length; i++) {
-			for(var key in app.order[i]){
-					if (color) {
-					codigo += '<tr style="background:#eaeaea;">';
-						color = 0;	
-					}
-					else{
-					codigo += '<tr>';
-						color = 1;
-					}
-						codigo += '<td>'+app.order[i][key]['client']+'</td>'
-						codigo += '<td>'+key+'</td>';
-						codigo += '<td>'+app.order[i][key]['Bebida']+'</td>';
-	        			codigo += '<td>'+app.order[i][key]['Coment']+'</td>';
-					codigo += '</tr>';
-			}
-		}
-			codigo += '</tbody>';
-		codigo += '</table>';
 		if (app.order.length > 0) {
+			var tituloMail;
+			var aux = [];
+			var color = 0;
+			var codigo = '<table style="color:#383838;">';
+			codigo += '<tbody>';
+				codigo += '<tr>';
+					codigo += '<th style="background:#395062;color:#fff;">Empresa</th>';
+					codigo += '<th style="background:#395062;color:#fff;">Nombre</th>';
+					codigo += '<th style="background:#395062;color:#fff;">Bebida</th>';
+		            codigo += '<th style="background:#395062;color:#fff;">Comentario</th>';
+				codigo += '</tr>';
+			for (var i=0; i<app.order.length; i++) {
+				for(var key in app.order[i]){
+						if (color) {
+						codigo += '<tr style="background:#eaeaea;">';
+							color = 0;	
+						}
+						else{
+						codigo += '<tr>';
+							color = 1;
+						}
+							codigo += '<td>'+app.order[i][key]['client']+'</td>'
+							codigo += '<td>'+key+'</td>';
+							codigo += '<td>'+app.order[i][key]['Bebida']+'</td>';
+		        			codigo += '<td>'+app.order[i][key]['Coment']+'</td>';
+						codigo += '</tr>';
+				}
+			}
+				codigo += '</tbody>';
+			codigo += '</table>';
+			setTimeout(function(){},100);
+			emailjs.send("gmail","pedidos",{message_html: codigo});
+			setTimeout(function(){},200);
 			var hoy = new Date();
 			hoy = hoy.toLocaleDateString();
 			if (app.model.order['fecha'] === hoy) {
@@ -818,8 +821,6 @@ var app = {
 			else{
 				firebase.database().ref().update({order:{'fecha':hoy,'orders':app.order}});
 			}
-			emailjs.send("gmail","pedidos",{message_html: codigo});
-			setTimeout(function(){},500);
 			for(var i=0; i<app.order.length; i++){
 				for(var key in app.order[i]){
 					if (app.order[i][key]['Bebida'] === 'Agua'){
